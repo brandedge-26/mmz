@@ -44,7 +44,7 @@ export default function HeroSection() {
           {/* RIGHT — Image */}
           <div className="relative h-[380px] lg:h-[420px] rounded-3xl overflow-hidden shadow-xl shadow-gray-200">
             <Image
-              src="/home/home-phone-repair.jpg"
+              src="/home/technician-1.png"
               alt="Memom Mobile Zone repair store"
               fill
               priority

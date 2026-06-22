@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/User/Documents/Projects/new-jesup/frontend/public/header-images/**)",
+      "Read(//c/Users/User/Documents/Projects/new-jesup/frontend/public/brands/**)",
+      "Read(//c/Users/User/Documents/Projects/new-jesup/frontend/public/home/**)",
+      "Read(//c/Users/User/Documents/Projects/new-jesup/frontend/public/tech-repair/**)",
+      "Read(//c/Users/User/Documents/Projects/new-jesup/frontend/public/repair-guide/**)",
+      "Bash(cp \"C:/Users/User/Documents/Projects/new-jesup/frontend/public/home/people-like-repair/iPhone-17.jpg\" \"C:/Users/User/Documents/Projects/mmz/frontend/public/repairs/iphone-hero.jpg\")",
+      "Bash(cp \"C:/Users/User/Documents/Projects/new-jesup/frontend/public/home/people-like-repair/Samsung-galaxy.jpg\" \"C:/Users/User/Documents/Projects/mmz/frontend/public/repairs/samsung-hero.jpg\")",
+      "Bash(cp \"C:/Users/User/Documents/Projects/new-jesup/frontend/public/home/people-like-repair/google-pixel-7.jpg\" \"C:/Users/User/Documents/Projects/mmz/frontend/public/repairs/pixel-hero.jpg\")",
+      "Bash(cp \"C:/Users/User/Documents/Projects/new-jesup/frontend/public/repair-guide/mobile-front.png\" \"C:/Users/User/Documents/Projects/mmz/frontend/public/repairs/mobile-front.png\")",
+      "Bash(cp -r \"C:/Users/User/Documents/Projects/new-jesup/frontend/public/home/small-service\" \"C:/Users/User/Documents/Projects/mmz/frontend/public/repairs/features\")"
+    ]
+  }
+}
