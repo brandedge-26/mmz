@@ -1,46 +1,39 @@
 import Image from "next/image";
 import Link from "next/link";
+import { CalendarDays, ScanSearch, Wrench, BadgeCheck } from "lucide-react";
 
 const steps = [
   {
     number: "01",
+    icon: CalendarDays,
+    color: "bg-violet-600",
+    lightColor: "bg-violet-50 border-violet-100 text-violet-600",
     title: "Walk In or Book Online",
-    desc: "Visit our store directly or book an appointment online. No long wait times — we respect your schedule.",
-    icon: (
-      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-        <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-      </svg>
-    ),
+    desc: "Visit either branch directly or book ahead online. No long wait — we respect your time.",
   },
   {
     number: "02",
+    icon: ScanSearch,
+    color: "bg-blue-600",
+    lightColor: "bg-blue-50 border-blue-100 text-blue-600",
     title: "Free Diagnosis",
-    desc: "Our technician inspects your device thoroughly and tells you exactly what's wrong — completely free, no obligation.",
-    icon: (
-      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z" />
-      </svg>
-    ),
+    desc: "Our technician inspects your device thoroughly and explains exactly what's wrong — completely free, zero obligation.",
   },
   {
     number: "03",
+    icon: Wrench,
+    color: "bg-amber-500",
+    lightColor: "bg-amber-50 border-amber-100 text-amber-600",
     title: "We Fix It Fast",
-    desc: "Once you approve the quote, our certified technicians get to work using genuine parts. Most repairs done same day.",
-    icon: (
-      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-        <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" />
-      </svg>
-    ),
+    desc: "Once you approve the quote, our certified techs get to work with genuine parts. Most repairs done same day.",
   },
   {
     number: "04",
+    icon: BadgeCheck,
+    color: "bg-green-600",
+    lightColor: "bg-green-50 border-green-100 text-green-600",
     title: "Quality Check & Pickup",
-    desc: "Before handover, every device goes through a full quality test. You get it back working like new — with warranty.",
-    icon: (
-      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    ),
+    desc: "Every device passes a full quality test before handover. You get it back working like new — with warranty.",
   },
 ];
 
@@ -49,41 +42,51 @@ export default function HowItWorksSection() {
     <section className="bg-white py-20 border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Header */}
-        <div className="text-center max-w-xl mx-auto mb-14">
-          <p className="text-violet-600 text-sm font-semibold uppercase tracking-widest mb-2">Simple Process</p>
-          <h2 className="text-4xl font-extrabold text-gray-900 tracking-tight">How it works</h2>
-          <p className="text-gray-400 mt-3 text-base">
-            Getting your device fixed at Memom Mobile Zone is quick, easy, and stress-free.
-          </p>
-        </div>
-
-        {/* Main grid */}
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
 
           {/* LEFT — Steps */}
-          <div className="space-y-6">
-            {steps.map((s) => (
-              <div key={s.number} className="flex gap-5 group">
-                {/* Icon */}
-                <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-violet-50 border border-violet-100 flex items-center justify-center text-violet-600 group-hover:bg-violet-600 group-hover:text-white transition-all">
-                  {s.icon}
-                </div>
-                {/* Text */}
-                <div className="pt-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs font-bold text-gray-300 tracking-widest">{s.number}</span>
-                    <h3 className="text-gray-900 font-bold text-base">{s.title}</h3>
-                  </div>
-                  <p className="text-gray-400 text-sm leading-relaxed">{s.desc}</p>
-                </div>
-              </div>
-            ))}
+          <div>
+            <p className="text-violet-600 text-xs font-bold uppercase tracking-widest mb-3">Simple Process</p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight leading-tight mb-3">
+              Fixed in 4 easy steps.
+            </h2>
+            <p className="text-gray-400 text-base mb-10">
+              Getting your device repaired at Memon Mobile Zone is quick, easy, and stress-free.
+            </p>
 
-            {/* CTA */}
-            <div className="pt-2">
+            <div className="relative">
+              {/* Vertical connector line */}
+              <div className="absolute left-5 top-10 bottom-10 w-px bg-gradient-to-b from-violet-200 via-blue-200 to-green-200 hidden sm:block" />
+
+              <div className="space-y-8">
+                {steps.map((s, i) => {
+                  const Icon = s.icon;
+                  return (
+                    <div key={s.number} className="flex gap-5 group relative">
+                      {/* Icon circle */}
+                      <div className={`relative z-10 w-10 h-10 rounded-full flex items-center justify-center shrink-0 border ${s.lightColor} group-hover:${s.color} transition-all duration-300`}>
+                        <Icon className="w-4.5 h-4.5" strokeWidth={1.75} />
+                      </div>
+
+                      {/* Content */}
+                      <div className="flex-1 pt-1 pb-2">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-[11px] font-extrabold text-gray-200 tracking-widest">{s.number}</span>
+                          <h3 className="text-gray-900 font-bold text-base group-hover:text-violet-700 transition-colors">
+                            {s.title}
+                          </h3>
+                        </div>
+                        <p className="text-gray-400 text-sm leading-relaxed">{s.desc}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="mt-10">
               <Link
-                href="#"
+                href="/contact"
                 className="inline-flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white font-semibold px-7 py-3.5 rounded-full transition-colors text-sm shadow-md shadow-violet-200"
               >
                 Book a Repair
@@ -94,26 +97,48 @@ export default function HowItWorksSection() {
             </div>
           </div>
 
-          {/* RIGHT — Images */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="relative h-72 rounded-2xl overflow-hidden shadow-md">
-              <Image
-                src="/home/home-phone-repair.jpg"
-                alt="Technician repairing device"
-                fill
-                className="object-cover object-center"
-              />
-            </div>
-            <div className="relative h-72 rounded-2xl overflow-hidden shadow-md mt-8">
-              <Image
-                src="/home/technician-2.png"
-                alt="Expert device repair"
-                fill
-                className="object-cover object-center"
-              />
-            </div>
-          </div>
+          {/* RIGHT — Staggered images + stat badge */}
+          <div className="relative">
 
+            {/* Image grid */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="relative h-72 rounded-3xl overflow-hidden shadow-lg shadow-gray-200/60">
+                <Image
+                  src="/home/home-phone-repair.jpg"
+                  alt="Technician repairing a device"
+                  fill
+                  className="object-cover object-center"
+                />
+              </div>
+              <div className="relative h-72 rounded-3xl overflow-hidden shadow-lg shadow-gray-200/60 mt-10">
+                <Image
+                  src="/home/technician-2.png"
+                  alt="Expert repair at MMZ"
+                  fill
+                  className="object-cover object-center"
+                />
+              </div>
+            </div>
+
+            {/* Floating stat card */}
+            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-white border border-gray-100 rounded-2xl shadow-xl shadow-gray-200/60 px-6 py-4 flex items-center gap-4 whitespace-nowrap">
+              <div className="text-center">
+                <p className="text-2xl font-extrabold text-gray-900 leading-none">10,000+</p>
+                <p className="text-xs text-gray-400 mt-1">Devices Repaired</p>
+              </div>
+              <div className="w-px h-10 bg-gray-100" />
+              <div className="text-center">
+                <p className="text-2xl font-extrabold text-gray-900 leading-none">4.9★</p>
+                <p className="text-xs text-gray-400 mt-1">Customer Rating</p>
+              </div>
+              <div className="w-px h-10 bg-gray-100" />
+              <div className="text-center">
+                <p className="text-2xl font-extrabold text-gray-900 leading-none">100%</p>
+                <p className="text-xs text-gray-400 mt-1">Warranty</p>
+              </div>
+            </div>
+
+          </div>
         </div>
 
       </div>

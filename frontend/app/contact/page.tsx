@@ -154,55 +154,55 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              {/* Branches */}
-              <div>
-                <h2 className="text-xl font-bold text-gray-900 mb-5">Our Branches</h2>
-                <div className="space-y-5">
+            </div>
+          </div>
 
-                  {/* Branch 1 */}
-                  <div className="border border-gray-100 rounded-2xl overflow-hidden">
-                    <iframe
-                      src="https://www.google.com/maps?q=City+Star+Mall+Saddar+Karachi&output=embed"
-                      width="100%"
-                      height="180"
-                      style={{ border: 0 }}
-                      allowFullScreen
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                      title="Branch 1 - Saddar"
-                    />
-                    <div className="p-4 space-y-1">
-                      <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-violet-500 flex-shrink-0" />
-                        <p className="text-gray-900 font-bold text-sm">Branch 1 — Saddar</p>
-                      </div>
-                      <p className="text-gray-500 text-sm pl-4">Shop No LB-41, City Star Mall, Saddar, Karachi</p>
-                      <p className="text-gray-400 text-xs pl-4">Mon–Sat: 1:00 PM – 11:00 PM &nbsp;·&nbsp; Sun: 10:00 AM – 12:00 AM</p>
-                    </div>
+          {/* Branches — 2-col grid below */}
+          <div className="mt-14 pt-10 border-t border-gray-100">
+            <h2 className="text-xl font-bold text-gray-900 mb-6">Our Branches</h2>
+            <div className="grid sm:grid-cols-2 gap-5">
+
+              {/* Branch 1 */}
+              <div className="border border-gray-100 rounded-2xl overflow-hidden">
+                <iframe
+                  src="https://www.google.com/maps?q=City+Star+Mall+Saddar+Karachi&output=embed"
+                  width="100%"
+                  height="200"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Branch 1 - Saddar"
+                />
+                <div className="p-4 space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-violet-500 flex-shrink-0" />
+                    <p className="text-gray-900 font-bold text-sm">Branch 1 — Saddar</p>
                   </div>
+                  <p className="text-gray-500 text-sm pl-4">Shop No LB-41, City Star Mall, Saddar, Karachi</p>
+                  <p className="text-gray-400 text-xs pl-4">Mon–Sat: 1:00 PM – 11:00 PM &nbsp;·&nbsp; Sun: 10:00 AM – 12:00 AM</p>
+                </div>
+              </div>
 
-                  {/* Branch 2 */}
-                  <div className="border border-gray-100 rounded-2xl overflow-hidden">
-                    <iframe
-                      src="https://www.google.com/maps?q=Geo+Mobile+Market+North+Karachi&output=embed"
-                      width="100%"
-                      height="180"
-                      style={{ border: 0 }}
-                      allowFullScreen
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                      title="Branch 2 - North Karachi"
-                    />
-                    <div className="p-4 space-y-1">
-                      <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-violet-500 flex-shrink-0" />
-                        <p className="text-gray-900 font-bold text-sm">Branch 2 — North Karachi</p>
-                      </div>
-                      <p className="text-gray-500 text-sm pl-4">Shop No 122, 1st Floor, Geo Mobile Market, North Karachi</p>
-                      <p className="text-gray-400 text-xs pl-4">Mon–Sat: 1:00 PM – 11:00 PM &nbsp;·&nbsp; Sun: 10:00 AM – 12:00 AM</p>
-                    </div>
+              {/* Branch 2 */}
+              <div className="border border-gray-100 rounded-2xl overflow-hidden">
+                <iframe
+                  src="https://www.google.com/maps?q=Geo+Mobile+Market+North+Karachi&output=embed"
+                  width="100%"
+                  height="200"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Branch 2 - North Karachi"
+                />
+                <div className="p-4 space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-violet-500 flex-shrink-0" />
+                    <p className="text-gray-900 font-bold text-sm">Branch 2 — North Karachi</p>
                   </div>
-
+                  <p className="text-gray-500 text-sm pl-4">Shop No 122, 1st Floor, Geo Mobile Market, North Karachi</p>
+                  <p className="text-gray-400 text-xs pl-4">Mon–Sat: 1:00 PM – 11:00 PM &nbsp;·&nbsp; Sun: 10:00 AM – 12:00 AM</p>
                 </div>
               </div>
 

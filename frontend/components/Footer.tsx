@@ -64,7 +64,7 @@ export default function Footer() {
                 </svg>
               </div>
               <span className="text-gray-900 font-bold text-xl tracking-tight">
-                Memom <span className="text-violet-600">Mobile Zone</span>
+                Memon <span className="text-violet-600">Mobile Zone</span>
               </span>
             </Link>
 
@@ -235,7 +235,7 @@ export default function Footer() {
       <div className="border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-gray-400 text-xs">
-            &copy; {new Date().getFullYear()} Memom Mobile Zone. All rights reserved.
+            &copy; {new Date().getFullYear()} Memon Mobile Zone. All rights reserved.
           </p>
           <div className="flex gap-5">
             {["Privacy Policy", "Terms of Service"].map((item) => (

@@ -20,7 +20,7 @@ export default function SignupPage() {
               </svg>
             </div>
             <span className="text-gray-900 font-bold text-xl tracking-tight">
-              Memom <span className="text-violet-600">Mobile Zone</span>
+              Memon <span className="text-violet-600">Mobile Zone</span>
             </span>
           </Link>
           <h1 className="mt-6 text-2xl font-extrabold text-gray-900">Create your account</h1>

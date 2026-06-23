@@ -13,6 +13,7 @@ type NavLink = {
 };
 
 const navLinks: NavLink[] = [
+  { label: "About", href: "/about" },
   {
     label: "Phone Repairs",
     dropdown: {
@@ -43,14 +44,16 @@ const navLinks: NavLink[] = [
       heading: "Expert fixes for your tech",
       subtext: "Tablets, iPads and more — all repaired with genuine parts.",
       items: [
-        { label: "iPad", image: "/header-images/tech-repair/ipad.png", desc: "All iPad models", href: "#" },
-        { label: "Tablet", image: "/header-images/tech-repair/tablet.png", desc: "All Android tablets", href: "#" },
-        { label: "All repair options", desc: "", href: "#", isAll: true },
+        { label: "iPad", image: "/header-images/tech-repair/ipad.png", desc: "All iPad models", href: "/repairs/ipad" },
+        { label: "Tablet", image: "/header-images/tech-repair/tablet.png", desc: "All Android tablets", href: "/repairs/tablet" },
+        { label: "Something Else", image: "/header-images/tech-repair/something-else.png", desc: "Watches, earbuds & more", href: "/repairs/something-else" },
+        { label: "All repair options", desc: "", href: "/repairs/something-else", isAll: true },
       ],
     },
     mobileChildren: [
-      { label: "iPad", image: "/header-images/tech-repair/ipad.png", href: "#" },
-      { label: "Tablet", image: "/header-images/tech-repair/tablet.png", href: "#" },
+      { label: "iPad", image: "/header-images/tech-repair/ipad.png", href: "/repairs/ipad" },
+      { label: "Tablet", image: "/header-images/tech-repair/tablet.png", href: "/repairs/tablet" },
+      { label: "Something Else", image: "/header-images/tech-repair/ipad.png", href: "/repairs/something-else" },
     ],
   },
   {
@@ -58,20 +61,28 @@ const navLinks: NavLink[] = [
     dropdown: {
       icon: "/header-images/icons/shop-accessories.svg",
       heading: "Accessories for your device",
-      subtext: "Cases, screen protectors, chargers & more.",
+      subtext: "Earbuds, smartwatches, chargers & more.",
       items: [
-        { label: "Cases & Covers", image: "/header-images/shop-accessories/case.png", desc: "Protect your device", href: "#" },
-        { label: "Screen Protectors", image: "/header-images/shop-accessories/screen-protector.png", desc: "Tempered glass & film", href: "#" },
+        { label: "Earbuds", image: "/header-images/shop-accessories/earbuds.jpg", desc: "Wireless & wired", href: "#" },
+        { label: "Smart Watch", image: "/header-images/shop-accessories/smartwatch.png", desc: "Fitness & smart bands", href: "#" },
         { label: "Chargers & Cables", image: "/header-images/shop-accessories/power-accessories.png", desc: "Fast charge & wireless", href: "#" },
+        { label: "All iPhone", image: "/header-images/shop-accessories/iphone.png", desc: "iPhone accessories", href: "#" },
+        { label: "All Samsung", image: "/header-images/shop-accessories/samsung.png", desc: "Samsung accessories", href: "#" },
+        { label: "All Google", image: "/header-images/shop-accessories/pixel.png", desc: "Google accessories", href: "#" },
         { label: "Audio", image: "/header-images/shop-accessories/audio.png", desc: "Earphones & speakers", href: "#" },
+        { label: "Tablet & Laptop", image: "/header-images/shop-accessories/tablet-and-laptop.png", desc: "Covers & stands", href: "#" },
         { label: "All accessories", desc: "", href: "#", isAll: true },
       ],
     },
     mobileChildren: [
-      { label: "Cases & Covers", image: "/header-images/shop-accessories/case.png", href: "#" },
-      { label: "Screen Protectors", image: "/header-images/shop-accessories/screen-protector.png", href: "#" },
+      { label: "Earbuds", image: "/header-images/shop-accessories/earbuds.jpg", href: "#" },
+      { label: "Smart Watch", image: "/header-images/shop-accessories/smartwatch.png", href: "#" },
       { label: "Chargers & Cables", image: "/header-images/shop-accessories/power-accessories.png", href: "#" },
+      { label: "All iPhone", image: "/header-images/shop-accessories/iphone.png", href: "#" },
+      { label: "All Samsung", image: "/header-images/shop-accessories/samsung.png", href: "#" },
+      { label: "All Google", image: "/header-images/shop-accessories/pixel.png", href: "#" },
       { label: "Audio", image: "/header-images/shop-accessories/audio.png", href: "#" },
+      { label: "Tablet & Laptop", image: "/header-images/shop-accessories/tablet-and-laptop.png", href: "#" },
     ],
   },
   { label: "Contact", href: "/contact" },
@@ -102,7 +113,7 @@ export default function Header() {
                 </svg>
               </div>
               <span className="text-gray-900 font-bold text-lg tracking-tight">
-                Memom <span className="text-violet-600">Mobile Zone</span>
+                Memon <span className="text-violet-600">Mobile Zone</span>
               </span>
             </Link>
 
@@ -192,7 +203,7 @@ export default function Header() {
             {/* Drawer header */}
             <div className="flex items-center justify-between px-5 h-16 border-b border-gray-100 shrink-0">
               <span className="text-gray-900 font-bold text-base tracking-tight">
-                Memom <span className="text-violet-600">Mobile Zone</span>
+                Memon <span className="text-violet-600">Mobile Zone</span>
               </span>
               <button onClick={() => setMobileOpen(false)} className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
