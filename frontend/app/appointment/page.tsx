@@ -309,26 +309,35 @@ export default function AppointmentPage() {
   const visualStep     = isMailIn && step === 5 ? 4 : step;
 
   const progressBar = (
-    <div className="flex items-center gap-0 mb-10">
-      {activeSteps.map((s, i) => (
-        <div key={s} className="flex items-center">
-          <div className="flex flex-col items-center">
-            <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold border-2 transition-all ${
-              visualStep > i + 1
-                ? "bg-violet-600 border-violet-600 text-white"
-                : visualStep === i + 1
-                ? "bg-white border-violet-600 text-violet-600"
-                : "bg-white border-gray-200 text-gray-300"
-            }`}>
-              {visualStep > i + 1 ? <Check className="w-4 h-4" /> : i + 1}
+    <div className="flex items-center gap-0 mb-7 sm:mb-10">
+      {activeSteps.map((s, i) => {
+        const done    = visualStep > i + 1;
+        const current = visualStep === i + 1;
+        return (
+          <div key={s} className="flex items-center">
+            <div className="flex flex-col items-center">
+              <div className={`w-7 h-7 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold border-2 transition-all ${
+                done    ? "bg-violet-600 border-violet-600 text-white"
+                : current ? "bg-white border-violet-600 text-violet-600"
+                          : "bg-white border-gray-200 text-gray-300"
+              }`}>
+                {done ? <Check className="w-3 h-3 sm:w-4 sm:h-4" /> : i + 1}
+              </div>
+              {/* On mobile: only show label for current step */}
+              <span className={`text-[9px] sm:text-xs mt-1 sm:mt-1.5 font-semibold transition-colors ${
+                done || current ? "text-gray-700" : "text-gray-300"
+              } ${current ? "block" : "hidden sm:block"}`}>
+                {s}
+              </span>
+              {/* Mobile placeholder so spacing stays even */}
+              {!current && <span className="sm:hidden text-[9px] mt-1 invisible">·</span>}
             </div>
-            <span className={`text-xs mt-1.5 font-medium ${visualStep >= i + 1 ? "text-gray-700" : "text-gray-300"}`}>{s}</span>
+            {i < activeSteps.length - 1 && (
+              <div className={`h-px w-6 sm:w-20 mx-1 mb-4 sm:mb-5 transition-colors flex-shrink-0 ${done ? "bg-violet-500" : "bg-gray-200"}`} />
+            )}
           </div>
-          {i < activeSteps.length - 1 && (
-            <div className={`h-px w-14 sm:w-24 mx-1 mb-5 transition-colors ${visualStep > i + 1 ? "bg-violet-500" : "bg-gray-200"}`} />
-          )}
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 
@@ -336,27 +345,27 @@ export default function AppointmentPage() {
   const BottomNav = ({
     onBack, onContinue, disabled, backLabel = "Back", continueLabel = "Continue →",
   }: { onBack?: () => void; onContinue: () => void; disabled?: boolean; backLabel?: string; continueLabel?: string }) => (
-    <div className="flex items-center justify-between pt-5 mt-6 border-t border-gray-100">
-      {onBack ? (
-        <button onClick={onBack} className="flex items-center gap-1 text-sm text-gray-400 hover:text-gray-700 transition-colors font-medium">
-          <ChevronLeft className="w-4 h-4" /> {backLabel}
-        </button>
-      ) : (
-        <Link href="/" className="flex items-center gap-1 text-sm text-gray-400 hover:text-gray-700 transition-colors font-medium">
-          <ChevronLeft className="w-4 h-4" /> {backLabel}
-        </Link>
-      )}
+    <div className="pt-5 mt-6 border-t border-gray-100 space-y-3 sm:space-y-0 sm:flex sm:items-center sm:justify-between">
       <button
         onClick={onContinue}
         disabled={disabled}
-        className={`px-8 py-2.5 rounded-full text-sm font-bold transition-all ${
+        className={`w-full sm:w-auto order-first sm:order-last px-8 py-3 sm:py-2.5 rounded-full text-sm font-bold transition-all ${
           !disabled
-            ? "bg-violet-600 text-white hover:bg-violet-700 shadow-sm hover:shadow-md hover:-translate-y-px"
+            ? "bg-violet-600 text-white hover:bg-violet-700 shadow-sm hover:shadow-md"
             : "bg-gray-100 text-gray-300 cursor-not-allowed"
         }`}
       >
         {continueLabel}
       </button>
+      {onBack ? (
+        <button onClick={onBack} className="flex items-center justify-center sm:justify-start gap-1 text-sm text-gray-400 hover:text-gray-700 transition-colors font-medium w-full sm:w-auto">
+          <ChevronLeft className="w-4 h-4" /> {backLabel}
+        </button>
+      ) : (
+        <Link href="/" className="flex items-center justify-center sm:justify-start gap-1 text-sm text-gray-400 hover:text-gray-700 transition-colors font-medium w-full sm:w-auto">
+          <ChevronLeft className="w-4 h-4" /> {backLabel}
+        </Link>
+      )}
     </div>
   );
 
@@ -440,7 +449,7 @@ export default function AppointmentPage() {
     return (
       <div className="min-h-screen bg-white">
         <Header />
-        <main className="max-w-lg mx-auto px-4 py-24 text-center">
+        <main className="max-w-lg mx-auto px-4 pt-28 pb-24 text-center">
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle2 className="w-10 h-10 text-green-500" />
           </div>
@@ -480,13 +489,13 @@ export default function AppointmentPage() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-32 sm:pt-24 sm:pb-16">
 
         {/* Page title */}
-        <div className="mb-8">
-          <p className="text-xs font-bold text-violet-600 uppercase tracking-widest mb-2">Book a Repair</p>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Schedule Your Repair</h1>
-          <p className="text-gray-500 text-sm mt-1">Same-day service · 2 branches in Karachi</p>
+        <div className="mb-5 sm:mb-8">
+          <p className="text-xs font-bold text-violet-600 uppercase tracking-widest mb-1">Book a Repair</p>
+          <h1 className="text-xl sm:text-3xl font-bold text-gray-900">Schedule Your Repair</h1>
+          <p className="text-gray-500 text-xs sm:text-sm mt-1">Same-day service · 2 branches in Karachi</p>
         </div>
 
         {progressBar}
@@ -704,7 +713,7 @@ export default function AppointmentPage() {
                 <p className="text-sm text-gray-500 mb-7">Choose your preferred service method.</p>
 
                 {/* Tab buttons */}
-                <div className="flex gap-3 mb-7">
+                <div className="flex flex-col sm:flex-row gap-3 mb-7">
                   {[
                     { key: "mail-in",     icon: <Package className="w-5 h-5" />,  label: "Mail In",     desc: "Send your device to us" },
                     { key: "visit-store", icon: <Store className="w-5 h-5" />,    label: "Visit Store", desc: "Bring it to our branch" },
