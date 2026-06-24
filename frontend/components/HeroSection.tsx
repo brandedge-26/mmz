@@ -28,12 +28,12 @@ export default function HeroSection() {
             </p>
 
             {/* Device cards */}
-            <div className="flex flex-wrap gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {deviceCards.map((card) => (
                 <Link
                   key={card.label}
                   href={card.href}
-                  className="flex flex-col items-center gap-2 p-4 w-[110px] rounded-2xl border border-gray-200 hover:border-violet-300 hover:bg-violet-50 transition-all group"
+                  className="flex flex-col items-center gap-2 p-4 rounded-2xl border border-gray-200 hover:border-violet-300 hover:bg-violet-50 transition-all group"
                 >
                   <div className="relative w-14 h-12">
                     <Image

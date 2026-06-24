@@ -155,8 +155,8 @@ export default function Header() {
               <Link href="/login" className="text-sm text-gray-600 hover:text-gray-900 px-4 py-2 rounded-full border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-colors font-medium">
                 Login
               </Link>
-              <Link href="/signup" className="text-sm font-semibold bg-violet-600 hover:bg-violet-700 text-white px-5 py-2 rounded-full transition-colors">
-                Start a Repair
+              <Link href="/appointment" className="text-sm font-semibold bg-violet-600 hover:bg-violet-700 text-white px-5 py-2 rounded-full transition-colors">
+                Book a Repair
               </Link>
             </div>
 

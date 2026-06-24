@@ -13,7 +13,7 @@ type RepairPageProps = {
   badgeIcon: string | null;
   headline: string;
   subtext: string;
-  repairs: { name: string; desc: string; price: string; time: string }[];
+  repairs: { name: string; desc: string; price?: string; time?: string }[];
   repairsHeading: string;
   models: string[];
   modelsHeading: string;
@@ -171,31 +171,25 @@ export default function RepairPageTemplate({
                   key={r.name}
                   className="bg-white border border-gray-100 hover:border-violet-200 hover:shadow-md rounded-2xl p-6 transition-all group"
                 >
-                  {/* Top row */}
-                  <div className="flex items-start justify-between mb-3">
-                    <h3 className="text-base font-bold text-gray-900 group-hover:text-violet-700 transition-colors leading-snug">
-                      {r.name}
-                    </h3>
-                    <span className="bg-violet-50 text-violet-600 text-xs rounded-full px-2.5 py-1 whitespace-nowrap ml-2 flex-shrink-0">
-                      {r.time}
-                    </span>
-                  </div>
+                  {/* Title */}
+                  <h3 className="text-base font-bold text-gray-900 group-hover:text-violet-700 transition-colors leading-snug mb-3">
+                    {r.name}
+                  </h3>
 
                   {/* Description */}
                   <p className="text-sm text-gray-400 leading-relaxed mb-4">{r.desc}</p>
 
                   {/* Bottom */}
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-bold text-violet-600">{r.price}</p>
-                    <span className="text-xs text-gray-400 group-hover:text-violet-500 transition-colors">
-                      Get Quote →
-                    </span>
-                  </div>
+                  <Link
+                    href="/appointment"
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-violet-600 hover:text-white bg-violet-50 hover:bg-violet-600 border border-violet-200 hover:border-violet-600 px-3.5 py-2 rounded-full transition-all"
+                  >
+                    Book Appointment →
+                  </Link>
                 </div>
               ))}
             </div>
 
-            <p className="text-xs text-gray-400 mt-4">* Prices vary by model. Final quote given after free diagnosis.</p>
           </div>
         </section>
 

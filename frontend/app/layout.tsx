@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import MobileBottomNav from "@/components/MobileBottomNav";
 
 const jakartaSans = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
@@ -21,9 +22,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${jakartaSans.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col pb-16 md:pb-0">
         {children}
         <WhatsAppButton />
+        <MobileBottomNav />
       </body>
     </html>
   );
