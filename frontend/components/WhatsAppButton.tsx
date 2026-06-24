@@ -4,7 +4,7 @@ export default function WhatsAppButton() {
       href="https://api.whatsapp.com/send/?phone=923152413134&text=Hi%2C+I+need+a+phone+repair&type=phone_number&app_absent=0"
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center shadow-lg shadow-green-300/50 hover:scale-110 transition-all duration-200"
+      className="fixed bottom-6 md:bottom-6 right-6 z-50 w-14 h-14 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center shadow-lg shadow-green-300/50 hover:scale-110 transition-all duration-200 mb-16 md:mb-0"
       aria-label="Chat on WhatsApp"
     >
       <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
