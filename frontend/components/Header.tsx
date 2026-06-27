@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import NavDropdown, { type DropdownPanel } from "./NavDropdown";
 
 type NavLink = {
@@ -88,13 +89,60 @@ const navLinks: NavLink[] = [
   { label: "Contact", href: "/contact" },
 ];
 
-export default function Header() {
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
-  const leaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+type AuthUser = { name: string; email: string; role: string } | null;
 
-  const clearTimer = () => { if (leaveTimer.current) clearTimeout(leaveTimer.current); };
+function getInitials(name: string) {
+  const parts = name.trim().split(" ").filter(Boolean);
+  if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+  return name.slice(0, 2).toUpperCase();
+}
+
+export default function Header() {
+  const router = useRouter();
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [mobileOpen, setMobileOpen]         = useState(false);
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+  const [user, setUser]                     = useState<AuthUser>(null);
+  const [authLoading, setAuthLoading]       = useState(true);
+  const [avatarOpen, setAvatarOpen]         = useState(false);
+  const leaveTimer  = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const avatarRef   = useRef<HTMLDivElement>(null);
+
+  // Read user from localStorage on mount
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("user");
+      if (stored) setUser(JSON.parse(stored));
+    } catch {}
+    setAuthLoading(false);
+  }, []);
+
+  // Close avatar dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (avatarRef.current && !avatarRef.current.contains(e.target as Node)) {
+        setAvatarOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch {}
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("user");
+    setUser(null);
+    setAvatarOpen(false);
+    router.push("/");
+  };
+
+  const clearTimer   = () => { if (leaveTimer.current) clearTimeout(leaveTimer.current); };
   const scheduleClose = () => { leaveTimer.current = setTimeout(() => setActiveDropdown(null), 180); };
 
   const activeItem = navLinks.find((n) => n.label === activeDropdown);
@@ -152,17 +200,73 @@ export default function Header() {
 
             {/* Desktop Actions */}
             <div className="hidden md:flex items-center gap-2">
-              <Link href="/login" className="text-sm text-gray-600 hover:text-gray-900 px-4 py-2 rounded-full border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-colors font-medium">
-                Login
-              </Link>
+
+              {/* Skeleton while loading */}
+              {authLoading && (
+                <div className="w-9 h-9 rounded-full bg-gray-200 animate-pulse" />
+              )}
+
+              {/* Logged in — avatar + dropdown */}
+              {!authLoading && user && (
+                <div ref={avatarRef} className="relative">
+                  <button
+                    onClick={() => setAvatarOpen(!avatarOpen)}
+                    className="w-9 h-9 rounded-full bg-violet-100 hover:bg-violet-200 text-violet-700 text-sm font-bold flex items-center justify-center transition-colors border-2 border-transparent hover:border-violet-300"
+                  >
+                    {getInitials(user.name)}
+                  </button>
+
+                  {avatarOpen && (
+                    <div className="absolute right-0 top-full mt-2 w-52 bg-white rounded-2xl border border-gray-100 shadow-xl shadow-gray-200/60 overflow-hidden z-50 animate-dropdown-in">
+                      <div className="px-4 py-3 border-b border-gray-100">
+                        <p className="text-sm font-semibold text-gray-900 truncate">{user.name}</p>
+                        <p className="text-xs text-gray-400 truncate">{user.email}</p>
+                      </div>
+                      <div className="p-1.5">
+                        <Link href="/appointment" onClick={() => setAvatarOpen(false)}
+                          className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-700 transition-colors font-medium">
+                          Book a Repair
+                        </Link>
+                        {user.role === "admin" && (
+                          <Link href="/admin" onClick={() => setAvatarOpen(false)}
+                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-700 transition-colors font-medium">
+                            Admin Dashboard
+                          </Link>
+                        )}
+                        <button onClick={handleLogout}
+                          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-red-500 hover:bg-red-50 transition-colors font-medium">
+                          Sign out
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Not logged in */}
+              {!authLoading && !user && (
+                <Link href="/login" className="text-sm text-gray-600 hover:text-gray-900 px-4 py-2 rounded-full border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-colors font-medium">
+                  Login
+                </Link>
+              )}
+
               <Link href="/appointment" className="text-sm font-semibold bg-violet-600 hover:bg-violet-700 text-white px-5 py-2 rounded-full transition-colors">
                 Book a Repair
               </Link>
             </div>
 
-            {/* Mobile hamburger */}
+            {/* Mobile avatar + hamburger */}
+            <div className="md:hidden flex items-center gap-1.5">
+              {authLoading && (
+                <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" />
+              )}
+              {!authLoading && user && (
+                <div className="w-8 h-8 rounded-full bg-violet-100 text-violet-700 text-xs font-bold flex items-center justify-center flex-shrink-0">
+                  {getInitials(user.name)}
+                </div>
+              )}
             <button
-              className="md:hidden p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Toggle menu"
             >
@@ -172,6 +276,7 @@ export default function Header() {
                   : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />}
               </svg>
             </button>
+            </div>
           </div>
         </div>
 
@@ -269,11 +374,46 @@ export default function Header() {
 
             {/* Bottom */}
             <div className="px-4 pb-6 pt-2 border-t border-gray-100 space-y-2.5 shrink-0">
-              <Link href="/login" onClick={() => setMobileOpen(false)} className="block text-center py-3 text-sm font-semibold text-gray-700 border border-gray-200 rounded-full hover:bg-gray-50 transition-colors">
-                Login
-              </Link>
-              <Link href="/signup" onClick={() => setMobileOpen(false)} className="block text-center py-3 text-sm font-bold bg-violet-600 text-white rounded-full hover:bg-violet-700 transition-colors shadow-md shadow-violet-200">
-                Start a Repair
+
+              {/* Skeleton */}
+              {authLoading && (
+                <div className="flex items-center gap-3 px-1 py-2">
+                  <div className="w-9 h-9 rounded-full bg-gray-200 animate-pulse flex-shrink-0" />
+                  <div className="flex-1 space-y-1.5">
+                    <div className="h-3 bg-gray-200 rounded-full animate-pulse w-24" />
+                    <div className="h-2.5 bg-gray-100 rounded-full animate-pulse w-32" />
+                  </div>
+                </div>
+              )}
+
+              {/* Logged in */}
+              {!authLoading && user && (
+                <>
+                  <div className="flex items-center gap-3 px-1 py-2">
+                    <div className="w-9 h-9 rounded-full bg-violet-100 text-violet-700 text-sm font-bold flex items-center justify-center flex-shrink-0">
+                      {getInitials(user.name)}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-gray-900 truncate">{user.name}</p>
+                      <p className="text-xs text-gray-400 truncate">{user.email}</p>
+                    </div>
+                  </div>
+                  <button onClick={() => { handleLogout(); setMobileOpen(false); }}
+                    className="block w-full text-center py-3 text-sm font-semibold text-red-500 border border-red-100 rounded-full hover:bg-red-50 transition-colors">
+                    Sign out
+                  </button>
+                </>
+              )}
+
+              {/* Not logged in */}
+              {!authLoading && !user && (
+                <Link href="/login" onClick={() => setMobileOpen(false)} className="block text-center py-3 text-sm font-semibold text-gray-700 border border-gray-200 rounded-full hover:bg-gray-50 transition-colors">
+                  Login
+                </Link>
+              )}
+
+              <Link href="/appointment" onClick={() => setMobileOpen(false)} className="block text-center py-3 text-sm font-bold bg-violet-600 text-white rounded-full hover:bg-violet-700 transition-colors shadow-md shadow-violet-200">
+                Book a Repair
               </Link>
               <a
                 href="https://api.whatsapp.com/send/?phone=923152413134"

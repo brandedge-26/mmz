@@ -1,0 +1,64 @@
+import { create } from "zustand";
+import { publicAxios } from "@/lib/axios";
+
+export interface AuthUser {
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+}
+
+interface AuthState {
+    user: AuthUser | null;
+    accessToken: string | null;
+    isAuthenticated: boolean;
+    isInitialized: boolean;
+
+    setAccessToken: (token: string) => void;
+    initAuth: () => Promise<void>;
+    login: (email: string, password: string) => Promise<void>;
+    register: (name: string, email: string, password: string) => Promise<void>;
+    logout: () => Promise<void>;
+}
+
+export const useAuthStore = create<AuthState>((set) => ({
+    user: null,
+    accessToken: null,
+    isAuthenticated: false,
+    isInitialized: false,
+
+    setAccessToken: (token) => set({ accessToken: token }),
+
+    // Called once on app mount — uses refresh cookie to restore session
+    initAuth: async () => {
+        try {
+            const res = await publicAxios.get("/auth/refresh");
+            set({
+                accessToken: res.data.accessToken,
+                user: res.data.user,
+                isAuthenticated: true,
+                isInitialized: true,
+            });
+        } catch {
+            set({ accessToken: null, user: null, isAuthenticated: false, isInitialized: true });
+        }
+    },
+
+    login: async (email, password) => {
+        const res = await publicAxios.post("/auth/login", { email, password });
+        set({ user: res.data.user, accessToken: res.data.accessToken, isAuthenticated: true });
+    },
+
+    register: async (name, email, password) => {
+        const res = await publicAxios.post("/auth/register", { name, email, password });
+        set({ user: res.data.user, accessToken: res.data.accessToken, isAuthenticated: true });
+    },
+
+    logout: async () => {
+        try {
+            await publicAxios.post("/auth/logout");
+        } finally {
+            set({ user: null, accessToken: null, isAuthenticated: false });
+        }
+    },
+}));

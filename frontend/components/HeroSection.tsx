@@ -2,10 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 const deviceCards = [
-  { label: "Phone", image: "/home/phone-repair/iphone.png", href: "/repairs/iphone" },
-  { label: "Tablet", image: "/header-images/tech-repair/tablet.png", href: "#" },
-  { label: "Earbuds", image: "/home/services/earbuds-service.jpg", href: "#" },
-  { label: "Smart Watch", image: "/home/services/smartwatch-service.png", href: "#" },
+  { label: "Phone",       image: "/home/phone-repair/iphone.png",          href: "/appointment" },
+  { label: "Tablet",      image: "/header-images/tech-repair/tablet.png",  href: "/appointment" },
+  { label: "Earbuds",     image: "/home/services/earbuds-service.jpg",     href: "/appointment" },
+  { label: "Smart Watch", image: "/home/services/smartwatch-service.png",  href: "/appointment" },
 ];
 
 export default function HeroSection() {

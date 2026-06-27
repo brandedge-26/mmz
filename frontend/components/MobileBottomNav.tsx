@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Home, Calendar, Phone, Cpu, Mail, X } from "lucide-react";
 
 const PHONE_REPAIRS = [
@@ -22,6 +23,7 @@ const TECH_REPAIRS = [
 type MenuKey = "phone" | "tech" | null;
 
 export default function MobileBottomNav() {
+  const pathname = usePathname();
   const [openMenu, setOpenMenu]   = useState<MenuKey>(null);
   const [visible, setVisible]     = useState(false);   // drives the CSS animation
   const [current, setCurrent]     = useState<MenuKey>(null); // what's actually rendered
@@ -118,7 +120,9 @@ export default function MobileBottomNav() {
           <Link
             href="/"
             onClick={close}
-            className="flex-1 flex flex-col items-center justify-center gap-1 py-3 text-gray-400 hover:text-violet-600 transition-colors"
+            className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-colors ${
+              pathname === "/" ? "text-violet-600" : "text-gray-400 hover:text-violet-600"
+            }`}
           >
             <Home className="w-5 h-5" />
             <span className="text-[10px] font-semibold">Home</span>
@@ -128,7 +132,9 @@ export default function MobileBottomNav() {
           <button
             onClick={() => toggle("phone")}
             className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-colors ${
-              openMenu === "phone" ? "text-violet-600" : "text-gray-400 hover:text-violet-600"
+              openMenu === "phone" || PHONE_REPAIRS.some(r => pathname === r.href)
+                ? "text-violet-600"
+                : "text-gray-400 hover:text-violet-600"
             }`}
           >
             <Phone className="w-5 h-5" />
@@ -139,7 +145,9 @@ export default function MobileBottomNav() {
           <Link
             href="/appointment"
             onClick={close}
-            className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-colors text-gray-400 hover:text-violet-600`}
+            className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-colors ${
+              pathname === "/appointment" ? "text-violet-600" : "text-gray-400 hover:text-violet-600"
+            }`}
           >
             <Calendar className="w-5 h-5" />
             <span className="text-[10px] font-semibold">Book</span>
@@ -149,7 +157,9 @@ export default function MobileBottomNav() {
           <button
             onClick={() => toggle("tech")}
             className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-colors ${
-              openMenu === "tech" ? "text-violet-600" : "text-gray-400 hover:text-violet-600"
+              openMenu === "tech" || TECH_REPAIRS.some(r => pathname === r.href)
+                ? "text-violet-600"
+                : "text-gray-400 hover:text-violet-600"
             }`}
           >
             <Cpu className="w-5 h-5" />
@@ -160,7 +170,9 @@ export default function MobileBottomNav() {
           <Link
             href="/contact"
             onClick={close}
-            className="flex-1 flex flex-col items-center justify-center gap-1 py-3 text-gray-400 hover:text-violet-600 transition-colors"
+            className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-colors ${
+              pathname === "/contact" ? "text-violet-600" : "text-gray-400 hover:text-violet-600"
+            }`}
           >
             <Mail className="w-5 h-5" />
             <span className="text-[10px] font-semibold">Contact</span>

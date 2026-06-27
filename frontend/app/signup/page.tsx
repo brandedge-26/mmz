@@ -2,10 +2,65 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function SignupPage() {
+  const router = useRouter();
+
+  const [firstName, setFirstName]       = useState("");
+  const [lastName, setLastName]         = useState("");
+  const [email, setEmail]               = useState("");
+  const [password, setPassword]         = useState("");
+  const [confirm, setConfirm]           = useState("");
+  const [terms, setTerms]               = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
+  const [showConfirm, setShowConfirm]   = useState(false);
+  const [loading, setLoading]           = useState(false);
+  const [error, setError]               = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    if (password !== confirm) {
+      setError("Passwords do not match.");
+      return;
+    }
+    if (!terms) {
+      setError("Please accept the Terms of Service to continue.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          name:     `${firstName.trim()} ${lastName.trim()}`.trim(),
+          email,
+          password,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.message || "Registration failed. Please try again.");
+        return;
+      }
+
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      router.push("/");
+    } catch {
+      setError("Could not connect to server. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
@@ -28,10 +83,17 @@ export default function SignupPage() {
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 space-y-5">
+        <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 space-y-5">
 
-          {/* Google */}
-          <button className="w-full flex items-center justify-center gap-3 border border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-700 font-medium py-3 rounded-full transition-all text-sm">
+          {/* Error */}
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl">
+              {error}
+            </div>
+          )}
+
+          {/* Google (UI only) */}
+          <button type="button" className="w-full flex items-center justify-center gap-3 border border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-700 font-medium py-3 rounded-full transition-all text-sm">
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
               <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
@@ -52,25 +114,52 @@ export default function SignupPage() {
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
               <label className="text-sm font-semibold text-gray-700">First name</label>
-              <input type="text" placeholder="John" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-violet-500 focus:ring-2 focus:ring-violet-100 outline-none text-sm text-gray-900 placeholder-gray-400 transition-all" />
+              <input
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="John"
+                required
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-violet-500 focus:ring-2 focus:ring-violet-100 outline-none text-sm text-gray-900 placeholder-gray-400 transition-all"
+              />
             </div>
             <div className="space-y-1.5">
               <label className="text-sm font-semibold text-gray-700">Last name</label>
-              <input type="text" placeholder="Doe" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-violet-500 focus:ring-2 focus:ring-violet-100 outline-none text-sm text-gray-900 placeholder-gray-400 transition-all" />
+              <input
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="Doe"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-violet-500 focus:ring-2 focus:ring-violet-100 outline-none text-sm text-gray-900 placeholder-gray-400 transition-all"
+              />
             </div>
           </div>
 
           {/* Email */}
           <div className="space-y-1.5">
             <label className="text-sm font-semibold text-gray-700">Email address</label>
-            <input type="email" placeholder="you@example.com" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-violet-500 focus:ring-2 focus:ring-violet-100 outline-none text-sm text-gray-900 placeholder-gray-400 transition-all" />
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              required
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-violet-500 focus:ring-2 focus:ring-violet-100 outline-none text-sm text-gray-900 placeholder-gray-400 transition-all"
+            />
           </div>
 
           {/* Password */}
           <div className="space-y-1.5">
             <label className="text-sm font-semibold text-gray-700">Password</label>
             <div className="relative">
-              <input type={showPassword ? "text" : "password"} placeholder="Min. 8 characters" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-violet-500 focus:ring-2 focus:ring-violet-100 outline-none text-sm text-gray-900 placeholder-gray-400 transition-all pr-11" />
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Min. 6 characters"
+                required
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-violet-500 focus:ring-2 focus:ring-violet-100 outline-none text-sm text-gray-900 placeholder-gray-400 transition-all pr-11"
+              />
               <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
                 {showPassword ? (
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" /></svg>
@@ -85,7 +174,18 @@ export default function SignupPage() {
           <div className="space-y-1.5">
             <label className="text-sm font-semibold text-gray-700">Confirm password</label>
             <div className="relative">
-              <input type={showConfirm ? "text" : "password"} placeholder="Repeat your password" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-violet-500 focus:ring-2 focus:ring-violet-100 outline-none text-sm text-gray-900 placeholder-gray-400 transition-all pr-11" />
+              <input
+                type={showConfirm ? "text" : "password"}
+                value={confirm}
+                onChange={(e) => setConfirm(e.target.value)}
+                placeholder="Repeat your password"
+                required
+                className={`w-full px-4 py-3 rounded-xl border focus:ring-2 outline-none text-sm text-gray-900 placeholder-gray-400 transition-all pr-11 ${
+                  confirm && confirm !== password
+                    ? "border-red-300 focus:border-red-400 focus:ring-red-100"
+                    : "border-gray-200 focus:border-violet-500 focus:ring-violet-100"
+                }`}
+              />
               <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
                 {showConfirm ? (
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" /></svg>
@@ -94,11 +194,20 @@ export default function SignupPage() {
                 )}
               </button>
             </div>
+            {confirm && confirm !== password && (
+              <p className="text-xs text-red-500 mt-1">Passwords do not match</p>
+            )}
           </div>
 
           {/* Terms */}
           <div className="flex items-start gap-2">
-            <input type="checkbox" id="terms" className="w-4 h-4 mt-0.5 rounded border-gray-300 text-violet-600 focus:ring-violet-500 cursor-pointer flex-shrink-0" />
+            <input
+              type="checkbox"
+              id="terms"
+              checked={terms}
+              onChange={(e) => setTerms(e.target.checked)}
+              className="w-4 h-4 mt-0.5 rounded border-gray-300 text-violet-600 focus:ring-violet-500 cursor-pointer flex-shrink-0"
+            />
             <label htmlFor="terms" className="text-sm text-gray-500 cursor-pointer leading-relaxed">
               I agree to the{" "}
               <Link href="#" className="text-violet-600 hover:text-violet-700 font-medium">Terms of Service</Link>
@@ -108,10 +217,18 @@ export default function SignupPage() {
           </div>
 
           {/* Submit */}
-          <button className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold py-3.5 rounded-full transition-colors text-sm shadow-md shadow-violet-200">
-            Create Account
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full font-semibold py-3.5 rounded-full transition-colors text-sm shadow-md shadow-violet-200 ${
+              loading
+                ? "bg-violet-400 text-white cursor-not-allowed"
+                : "bg-violet-600 hover:bg-violet-700 text-white"
+            }`}
+          >
+            {loading ? "Creating account..." : "Create Account"}
           </button>
-        </div>
+        </form>
 
         <p className="text-center text-sm text-gray-500 mt-6">
           Already have an account?{" "}
