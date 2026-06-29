@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import AuthProvider from "@/components/providers/AuthProvider";
 import MobileBottomNav from "@/components/MobileBottomNav";
+import Footer from "@/components/Footer";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -23,6 +24,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-white text-gray-900 pb-16 lg:pb-0">
         <AuthProvider>
           {children}
+          <Footer />
           <MobileBottomNav />
         </AuthProvider>
       </body>

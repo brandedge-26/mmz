@@ -106,7 +106,7 @@ export default function CartSidebar({ open, onClose }: Props) {
           <div className="border-t border-gray-100 px-5 py-5 space-y-3 bg-gray-50/60">
             <div className="flex items-center justify-between">
               <span className="text-sm text-gray-500">Subtotal</span>
-              <span className="text-lg font-extrabold text-gray-900">$0.00</span>
+              <span className="text-lg font-extrabold text-gray-900">PKR 0</span>
             </div>
             <p className="text-xs text-gray-400 text-center">Shipping &amp; taxes calculated at checkout</p>
             <Link

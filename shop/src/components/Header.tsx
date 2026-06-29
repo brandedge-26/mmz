@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { ShoppingBag, Search, Menu, X, ChevronDown, LogOut, User, LayoutDashboard, Package } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
 import CartSidebar from "./CartSidebar";
+import SearchModal from "./SearchModal";
 
 // ─── Nav data ─────────────────────────────────────────────────────────────────
 
@@ -188,8 +189,8 @@ export default function Header() {
   const logout          = useAuthStore((s) => s.logout);
 
   const [openIndex, setOpenIndex]               = useState<number | null>(null);
-  const [browseOpen, setBrowseOpen]             = useState(false);
   const [cartOpen, setCartOpen]                 = useState(false);
+  const [searchOpen, setSearchOpen]             = useState(false);
   const [userMenuOpen, setUserMenuOpen]         = useState(false);
   const [mobileOpen, setMobileOpen]             = useState(false);
   const [mobileVisible, setMobileVisible]       = useState(false);
@@ -198,14 +199,13 @@ export default function Header() {
   const headerRef   = useRef<HTMLElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
   const closeTimer  = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const browseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Close dropdown on outside click / scroll
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
       if (headerRef.current && !headerRef.current.contains(e.target as Node)) setOpenIndex(null);
     };
-    const onScroll = () => { setOpenIndex(null); setBrowseOpen(false); };
+    const onScroll = () => setOpenIndex(null);
     document.addEventListener("mousedown", onClick);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => { document.removeEventListener("mousedown", onClick); window.removeEventListener("scroll", onScroll); };
@@ -223,8 +223,6 @@ export default function Header() {
   const scheduleClose = () => { closeTimer.current = setTimeout(() => setOpenIndex(null), 80); };
   const cancelClose   = () => { if (closeTimer.current) clearTimeout(closeTimer.current); };
 
-  const openBrowse    = () => { if (browseTimer.current) clearTimeout(browseTimer.current); setBrowseOpen(true); setOpenIndex(null); };
-  const closeBrowse   = () => { browseTimer.current = setTimeout(() => setBrowseOpen(false), 80); };
 
   const openMobile  = () => { setMobileOpen(true); requestAnimationFrame(() => requestAnimationFrame(() => setMobileVisible(true))); };
   const closeMobile = () => { setMobileVisible(false); setTimeout(() => { setMobileOpen(false); setMobileExpandedIdx(null); }, 300); };
@@ -257,79 +255,12 @@ export default function Header() {
           {/* Nav */}
           <nav className="flex items-stretch h-full">
 
-            {/* Browse All — mega panel */}
-            <div
-              className="relative flex items-stretch"
-              onMouseEnter={openBrowse}
-              onMouseLeave={closeBrowse}
+            <Link
+              href="/panels"
+              className="flex items-center px-3 text-sm font-medium text-gray-700 hover:text-violet-600 transition-colors"
             >
-              <button
-                className={`relative flex items-center gap-1 px-3 text-sm font-medium transition-colors ${
-                  browseOpen ? "text-violet-600" : "text-gray-700 hover:text-violet-600"
-                }`}
-              >
-                Browse
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${browseOpen ? "rotate-180" : ""}`} />
-                {browseOpen && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-violet-600 rounded-full" />}
-              </button>
-
-              {browseOpen && (
-                <div
-                  className="fixed left-4 right-4 bg-white border border-gray-200 shadow-2xl rounded-2xl z-50 overflow-hidden"
-                  style={{ top: "calc(4rem + 8px)" }}
-                >
-                  {/* Device cards */}
-                  <div className="px-6 pt-5 pb-4 border-b border-gray-100">
-                    <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">Shop by Device</p>
-                    <div className="grid grid-cols-4 gap-3">
-                      {deviceCategories.map((cat) => (
-                        <Link
-                          key={cat.name}
-                          href={cat.href}
-                          onClick={() => setBrowseOpen(false)}
-                          className="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:border-violet-200 hover:bg-violet-50 transition-all group"
-                        >
-                          <div className="w-12 h-10 relative shrink-0">
-                            <Image src={cat.image} alt={cat.name} fill className="object-contain" sizes="48px" />
-                          </div>
-                          <span className="text-sm font-semibold text-gray-800 group-hover:text-violet-700 transition-colors">
-                            {cat.name}
-                          </span>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Category columns */}
-                  <div className="px-6 py-5 grid grid-cols-5 gap-6">
-                    {navItems.map((item) => (
-                      <div key={item.label}>
-                        <Link
-                          href={item.href}
-                          onClick={() => setBrowseOpen(false)}
-                          className="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-violet-600 transition-colors mb-3 block"
-                        >
-                          {item.label}
-                        </Link>
-                        <ul className="space-y-1.5">
-                          {item.columns[0].links.slice(0, 5).map((link) => (
-                            <li key={link.label}>
-                              <Link
-                                href={link.href}
-                                onClick={() => setBrowseOpen(false)}
-                                className="text-sm text-gray-500 hover:text-violet-600 transition-colors block"
-                              >
-                                {link.label}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+              Panels
+            </Link>
 
             {navItems.map((item, idx) => (
               <div
@@ -468,7 +399,7 @@ export default function Header() {
           <div className="flex items-center gap-1">
 
             {/* Search */}
-            <button className="p-2 rounded-xl text-gray-700 hover:text-violet-600 hover:bg-violet-50 transition-colors">
+            <button onClick={() => setSearchOpen(true)} className="p-2 rounded-xl text-gray-700 hover:text-violet-600 hover:bg-violet-50 transition-colors">
               <Search className="w-5 h-5" />
             </button>
 
@@ -568,7 +499,7 @@ export default function Header() {
           </Link>
 
           <div className="flex items-center gap-1">
-            <button className="p-2 rounded-xl text-gray-700 hover:text-violet-600 hover:bg-violet-50 transition-colors">
+            <button onClick={() => setSearchOpen(true)} className="p-2 rounded-xl text-gray-700 hover:text-violet-600 hover:bg-violet-50 transition-colors">
               <Search className="w-5 h-5" />
             </button>
             <button onClick={() => setCartOpen(true)} className="relative p-2 rounded-xl text-gray-700 hover:text-violet-600 hover:bg-violet-50 transition-colors">
@@ -584,6 +515,9 @@ export default function Header() {
           </div>
         </div>
       </header>
+
+      {/* Search Modal */}
+      <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
 
       {/* Cart Sidebar */}
       <CartSidebar open={cartOpen} onClose={() => setCartOpen(false)} />

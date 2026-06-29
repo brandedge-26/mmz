@@ -1,17 +1,28 @@
 import Header from "@/components/Header";
+import HeroBanner from "@/components/HeroBanner";
+import CategoryCards from "@/components/CategoryCards";
+import NewArrivals from "@/components/NewArrivals";
+import WhyMMZ from "@/components/WhyMMZ";
+import TrendingProducts from "@/components/TrendingProducts";
+import BrandShowcase from "@/components/BrandShowcase";
+import Newsletter from "@/components/Newsletter";
+import TrustStrip from "@/components/TrustStrip";
 
 export default function Home() {
   return (
     <>
       <Header />
-      <main className="pt-16 flex-1">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-          <p className="text-violet-600 text-sm font-semibold uppercase tracking-widest mb-3">MMZ Shop</p>
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-4">Coming Soon</h1>
-          <p className="text-gray-400 text-lg max-w-md mx-auto">
-            Accessories, parts, and devices — all in one place. Shop launching soon.
-          </p>
+      <main className="flex-1">
+        <div className="px-3 sm:px-6 pt-4">
+          <HeroBanner />
         </div>
+        <CategoryCards />
+        <NewArrivals />
+        <WhyMMZ />
+        <TrendingProducts />
+        <BrandShowcase />
+        <TrustStrip />
+        <Newsletter />
       </main>
     </>
   );
