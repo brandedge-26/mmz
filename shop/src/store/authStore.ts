@@ -15,6 +15,7 @@ interface AuthState {
     isInitialized: boolean;
 
     setAccessToken: (token: string) => void;
+    updateUser: (data: Partial<AuthUser>) => void;
     initAuth: () => Promise<void>;
     login: (email: string, password: string) => Promise<void>;
     register: (name: string, email: string, password: string) => Promise<void>;
@@ -28,6 +29,8 @@ export const useAuthStore = create<AuthState>((set) => ({
     isInitialized: false,
 
     setAccessToken: (token) => set({ accessToken: token }),
+
+    updateUser: (data) => set((s) => ({ user: s.user ? { ...s.user, ...data } : s.user })),
 
     // Called once on app mount — uses refresh cookie to restore session
     initAuth: async () => {

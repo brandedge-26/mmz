@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import AuthProvider from "@/components/providers/AuthProvider";
+import MobileBottomNav from "@/components/MobileBottomNav";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -19,8 +20,11 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${jakarta.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-white text-gray-900">
-        <AuthProvider>{children}</AuthProvider>
+      <body className="min-h-full flex flex-col bg-white text-gray-900 pb-16 lg:pb-0">
+        <AuthProvider>
+          {children}
+          <MobileBottomNav />
+        </AuthProvider>
       </body>
     </html>
   );

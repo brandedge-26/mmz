@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Home, Calendar, Phone, Cpu, Mail, X } from "lucide-react";
+import { Home, Calendar, Phone, Cpu, ShoppingBag, X } from "lucide-react";
 
 const PHONE_REPAIRS = [
   { label: "iPhone",        image: "/header-images/phone-repair/iphone.png",  href: "/repairs/iphone" },
@@ -166,16 +166,16 @@ export default function MobileBottomNav() {
             <span className="text-[10px] font-semibold">Tech</span>
           </button>
 
-          {/* Contact */}
+          {/* Shop */}
           <Link
-            href="/contact"
+            href="http://localhost:3001"
+            target="_blank"
+            rel="noopener noreferrer"
             onClick={close}
-            className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-colors ${
-              pathname === "/contact" ? "text-violet-600" : "text-gray-400 hover:text-violet-600"
-            }`}
+            className="flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-colors text-gray-400 hover:text-violet-600"
           >
-            <Mail className="w-5 h-5" />
-            <span className="text-[10px] font-semibold">Contact</span>
+            <ShoppingBag className="w-5 h-5" />
+            <span className="text-[10px] font-semibold">Shop</span>
           </Link>
 
         </div>

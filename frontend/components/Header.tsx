@@ -108,13 +108,34 @@ export default function Header() {
   const leaveTimer  = useRef<ReturnType<typeof setTimeout> | null>(null);
   const avatarRef   = useRef<HTMLDivElement>(null);
 
-  // Read user from localStorage on mount
+  // Sync fresh user data from backend on every mount
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem("user");
-      if (stored) setUser(JSON.parse(stored));
-    } catch {}
-    setAuthLoading(false);
+    const init = async () => {
+      try {
+        const stored = localStorage.getItem("user");
+        if (stored) setUser(JSON.parse(stored)); // show immediately
+
+        // Use refresh endpoint — returns fresh user + new token (works even if access token expired)
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/refresh`, {
+          credentials: "include",
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setUser(data.user);
+          localStorage.setItem("accessToken", data.accessToken);
+          localStorage.setItem("user", JSON.stringify(data.user));
+        } else {
+          // Refresh failed — user logged out
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("user");
+          setUser(null);
+        }
+      } catch {}
+      finally {
+        setAuthLoading(false);
+      }
+    };
+    init();
   }, []);
 
   // Close avatar dropdown on outside click
@@ -223,6 +244,10 @@ export default function Header() {
                         <p className="text-xs text-gray-400 truncate">{user.email}</p>
                       </div>
                       <div className="p-1.5">
+                        <Link href="/account" onClick={() => setAvatarOpen(false)}
+                          className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-700 transition-colors font-medium">
+                          My Account
+                        </Link>
                         <Link href="/appointment" onClick={() => setAvatarOpen(false)}
                           className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-700 transition-colors font-medium">
                           Book a Repair

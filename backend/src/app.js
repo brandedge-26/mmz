@@ -7,6 +7,7 @@ import { ENV } from "./config/envs.js";
 import appointmentRoutes from "./routes/appointment.routes.js";
 import contactRoutes from "./routes/contact.routes.js";
 import authRoutes from "./routes/auth.routes.js";
+import userRoutes from "./routes/user.routes.js";
 
 
 
@@ -60,6 +61,7 @@ app.get("/", (req, res) => {
 
 // ROUTES
 app.use("/api/auth",         authRoutes);
+app.use("/api/users",        userRoutes);
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/contact",      contactRoutes);
 
