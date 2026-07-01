@@ -2,6 +2,11 @@
 .claude/
 
 
+# agent file
+admin/AGENTS.md
+admin/CLAUDE.md
+
+
 # Dependencies
 node_modules/
 .pnp
@@ -61,3 +66,6 @@ coverage/
 # Misc
 *.pem
 .cache/
+
+# Admin/backend scripts (sensitive seed files)
+backend/scripts/

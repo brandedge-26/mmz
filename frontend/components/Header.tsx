@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import NavDropdown, { type DropdownPanel } from "./NavDropdown";
+import TrackRepairModal from "./TrackRepairModal";
 
 type NavLink = {
   label: string;
@@ -105,6 +106,7 @@ export default function Header() {
   const [user, setUser]                     = useState<AuthUser>(null);
   const [authLoading, setAuthLoading]       = useState(true);
   const [avatarOpen, setAvatarOpen]         = useState(false);
+  const [trackOpen, setTrackOpen]           = useState(false);
   const leaveTimer  = useRef<ReturnType<typeof setTimeout> | null>(null);
   const avatarRef   = useRef<HTMLDivElement>(null);
 
@@ -252,6 +254,10 @@ export default function Header() {
                           className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-700 transition-colors font-medium">
                           Book a Repair
                         </Link>
+                        <button onClick={() => { setAvatarOpen(false); setTrackOpen(true); }}
+                          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-700 transition-colors font-medium">
+                          Track Repair
+                        </button>
                         {user.role === "admin" && (
                           <Link href="/admin" onClick={() => setAvatarOpen(false)}
                             className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-700 transition-colors font-medium">
@@ -267,6 +273,12 @@ export default function Header() {
                   )}
                 </div>
               )}
+
+              {/* Track Repair — always visible on desktop */}
+              <button onClick={() => setTrackOpen(true)}
+                className="text-sm text-gray-600 hover:text-violet-700 px-4 py-2 rounded-full border border-gray-200 hover:border-violet-300 hover:bg-violet-50 transition-colors font-medium">
+                Track Repair
+              </button>
 
               {/* Not logged in */}
               {!authLoading && !user && (
@@ -423,6 +435,10 @@ export default function Header() {
                       <p className="text-xs text-gray-400 truncate">{user.email}</p>
                     </div>
                   </div>
+                  <button onClick={() => { setMobileOpen(false); setTrackOpen(true); }}
+                    className="block w-full text-center py-3 text-sm font-semibold text-violet-600 border border-violet-100 rounded-full hover:bg-violet-50 transition-colors">
+                    Track Repair
+                  </button>
                   <button onClick={() => { handleLogout(); setMobileOpen(false); }}
                     className="block w-full text-center py-3 text-sm font-semibold text-red-500 border border-red-100 rounded-full hover:bg-red-50 transition-colors">
                     Sign out
@@ -432,9 +448,15 @@ export default function Header() {
 
               {/* Not logged in */}
               {!authLoading && !user && (
-                <Link href="/login" onClick={() => setMobileOpen(false)} className="block text-center py-3 text-sm font-semibold text-gray-700 border border-gray-200 rounded-full hover:bg-gray-50 transition-colors">
-                  Login
-                </Link>
+                <>
+                  <button onClick={() => { setMobileOpen(false); setTrackOpen(true); }}
+                    className="block w-full text-center py-3 text-sm font-semibold text-violet-600 border border-violet-100 rounded-full hover:bg-violet-50 transition-colors">
+                    Track Repair
+                  </button>
+                  <Link href="/login" onClick={() => setMobileOpen(false)} className="block text-center py-3 text-sm font-semibold text-gray-700 border border-gray-200 rounded-full hover:bg-gray-50 transition-colors">
+                    Login
+                  </Link>
+                </>
               )}
 
               <Link href="/appointment" onClick={() => setMobileOpen(false)} className="block text-center py-3 text-sm font-bold bg-violet-600 text-white rounded-full hover:bg-violet-700 transition-colors shadow-md shadow-violet-200">
@@ -455,6 +477,7 @@ export default function Header() {
           </div>
         </div>
       )}
+      {trackOpen && <TrackRepairModal onClose={() => setTrackOpen(false)} />}
     </>
   );
 }

@@ -1,5 +1,12 @@
 import { Appointment } from "../models/appointment.model.js";
 
+const genTrackingId = () => {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let id = "MMZ-";
+  for (let i = 0; i < 6; i++) id += chars[Math.floor(Math.random() * chars.length)];
+  return id;
+};
+
 // POST /api/appointments
 export const createAppointment = async (req, res, next) => {
   try {
@@ -33,12 +40,20 @@ export const createAppointment = async (req, res, next) => {
       });
     }
 
+    // Generate unique tracking ID
+    let trackingId, exists = true;
+    while (exists) {
+      trackingId = genTrackingId();
+      exists = !!(await Appointment.findOne({ trackingId }));
+    }
+
     const appointment = await Appointment.create({
       category, brand, model,
       issues, otherIssueText,
       serviceType, zipCode, streetAddress,
       date, time,
       name, phone, email,
+      trackingId,
     });
 
     return res.status(201).json({
@@ -109,6 +124,20 @@ export const updateAppointmentStatus = async (req, res, next) => {
       return res.status(404).json({ success: false, message: "Appointment not found." });
     }
 
+    return res.status(200).json({ success: true, data: appointment });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// GET /api/appointments/track/:trackingId  (public)
+export const trackAppointment = async (req, res, next) => {
+  try {
+    const appointment = await Appointment.findOne({ trackingId: req.params.trackingId })
+      .select("trackingId name brand model category status serviceType date time createdAt issues");
+    if (!appointment) {
+      return res.status(404).json({ success: false, message: "Appointment not found. Please check your tracking ID." });
+    }
     return res.status(200).json({ success: true, data: appointment });
   } catch (err) {
     next(err);

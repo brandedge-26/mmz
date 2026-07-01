@@ -405,56 +405,50 @@ export default function Header() {
 
             {/* User */}
             <div ref={userMenuRef} className="relative">
-              <button
-                onClick={() => setUserMenuOpen((o) => !o)}
-                className="p-2 rounded-xl text-gray-700 hover:text-violet-600 hover:bg-violet-50 transition-colors"
-              >
-                {!isInitialized ? (
-                  <div className="w-6 h-6 rounded-full bg-gray-200 animate-pulse" />
-                ) : isAuthenticated && user ? (
-                  <span className="w-7 h-7 rounded-full bg-violet-100 text-violet-700 text-xs font-bold flex items-center justify-center">
-                    {getInitials(user.name)}
-                  </span>
-                ) : (
+              {!isInitialized ? (
+                <div className="w-9 h-9 rounded-full bg-gray-200 animate-pulse" />
+              ) : isAuthenticated && user ? (
+                <button
+                  onClick={() => setUserMenuOpen((o) => !o)}
+                  className="w-9 h-9 rounded-full bg-violet-100 hover:bg-violet-200 text-violet-700 text-sm font-bold flex items-center justify-center transition-colors border-2 border-transparent hover:border-violet-300"
+                >
+                  {getInitials(user.name)}
+                </button>
+              ) : (
+                <button
+                  onClick={() => setUserMenuOpen((o) => !o)}
+                  className="p-2 rounded-xl text-gray-700 hover:text-violet-600 hover:bg-violet-50 transition-colors"
+                >
                   <User className="w-5 h-5" />
-                )}
-              </button>
+                </button>
+              )}
 
               {userMenuOpen && (
-                <div className="absolute right-0 top-full mt-2 w-60 bg-white border border-gray-200 rounded-2xl shadow-2xl z-50 overflow-hidden">
+                <div className="absolute right-0 top-full mt-2 w-52 bg-white rounded-2xl border border-gray-100 shadow-xl shadow-gray-200/60 overflow-hidden z-50 animate-dropdown-in">
                   {isAuthenticated && user ? (
                     <>
-                      <div className="px-4 py-4 border-b border-gray-100">
-                        <div className="flex items-center gap-3">
-                          <span className="w-10 h-10 rounded-full bg-violet-100 text-violet-700 text-sm font-bold flex items-center justify-center shrink-0">
-                            {getInitials(user.name)}
-                          </span>
-                          <div className="min-w-0">
-                            <p className="text-sm font-bold text-gray-900 truncate">{user.name}</p>
-                            <p className="text-xs text-gray-400 truncate">{user.email}</p>
-                          </div>
-                        </div>
+                      <div className="px-4 py-3 border-b border-gray-100">
+                        <p className="text-sm font-semibold text-gray-900 truncate">{user.name}</p>
+                        <p className="text-xs text-gray-400 truncate">{user.email}</p>
                       </div>
-                      <div className="py-2">
+                      <div className="p-1.5">
                         <Link href="/account" onClick={() => setUserMenuOpen(false)}
-                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600 transition-colors">
-                          <User className="w-4 h-4 text-gray-400" /> My Account
+                          className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-700 transition-colors font-medium">
+                          My Account
                         </Link>
                         <Link href="/orders" onClick={() => setUserMenuOpen(false)}
-                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600 transition-colors">
-                          <Package className="w-4 h-4 text-gray-400" /> My Orders
+                          className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-700 transition-colors font-medium">
+                          My Orders
                         </Link>
                         {user.role === "admin" && (
                           <Link href="/admin" onClick={() => setUserMenuOpen(false)}
-                            className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600 transition-colors">
-                            <LayoutDashboard className="w-4 h-4 text-gray-400" /> Dashboard
+                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-700 transition-colors font-medium">
+                            Admin Dashboard
                           </Link>
                         )}
-                      </div>
-                      <div className="border-t border-gray-100 py-2">
                         <button onClick={handleLogout}
-                          className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 transition-colors">
-                          <LogOut className="w-4 h-4" /> Sign out
+                          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-red-500 hover:bg-red-50 transition-colors font-medium">
+                          Sign out
                         </button>
                       </div>
                     </>

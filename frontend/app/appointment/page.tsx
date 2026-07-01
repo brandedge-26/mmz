@@ -260,6 +260,45 @@ export default function AppointmentPage() {
   const [email, setEmail]                       = useState("");
 
   const [submitted, setSubmitted]               = useState(false);
+  const [submitting, setSubmitting]             = useState(false);
+  const [submitError, setSubmitError]           = useState("");
+  const [trackingId, setTrackingId]             = useState("");
+  const [copied, setCopied]                     = useState(false);
+
+  // Submit booking to backend
+  const handleSubmit = async () => {
+    setSubmitting(true);
+    setSubmitError("");
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/appointments`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          category,
+          brand:    brand === "Other" ? otherBrandText : brand,
+          model:    model === "Other / Not Listed" ? otherModelText : model,
+          issues:   selectedIssues,
+          otherIssueText,
+          serviceType,
+          zipCode,
+          streetAddress,
+          date,
+          time,
+          name,
+          phone,
+          email,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Something went wrong.");
+      setTrackingId(data.data?.trackingId ?? "");
+      setSubmitted(true);
+    } catch (err: unknown) {
+      setSubmitError(err instanceof Error ? err.message : "Could not book appointment. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   // Geolocation
   const getLocation = () => {
@@ -454,11 +493,28 @@ export default function AppointmentPage() {
             <CheckCircle2 className="w-10 h-10 text-green-500" />
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Booking Confirmed!</h1>
-          <p className="text-gray-500 text-sm mb-8 leading-relaxed">
+          <p className="text-gray-500 text-sm mb-6 leading-relaxed">
             Thank you <strong className="text-gray-800">{name}</strong>! We&apos;ve received your repair request
             for <strong className="text-gray-800">{model || brand || category}</strong>.
             Our team will call <strong className="text-gray-800">{phone}</strong> to confirm.
           </p>
+
+          {/* Tracking ID */}
+          {trackingId && (
+            <div className="bg-violet-50 border border-violet-200 rounded-2xl p-5 mb-6">
+              <p className="text-xs font-bold text-violet-500 uppercase tracking-widest mb-2">Your Tracking ID</p>
+              <div className="flex items-center justify-center gap-3">
+                <span className="text-2xl font-bold text-violet-700 tracking-widest">{trackingId}</span>
+                <button
+                  onClick={() => { navigator.clipboard.writeText(trackingId); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+                  className="px-3 py-1.5 rounded-lg bg-violet-100 hover:bg-violet-200 text-violet-600 text-xs font-semibold transition-colors"
+                >
+                  {copied ? "Copied!" : "Copy"}
+                </button>
+              </div>
+              <p className="text-xs text-violet-400 mt-2">Save this ID to track your repair status</p>
+            </div>
+          )}
           <div className="bg-gray-50 rounded-2xl p-5 text-left mb-8 space-y-2.5 text-sm border border-gray-100">
             {[
               { label: "Device",   value: `${category} › ${brand === "Other" ? otherBrandText || "Other" : brand}${(brand === "Other" ? otherModelText : model === "Other / Not Listed" ? otherModelText : model) ? " › " + (brand === "Other" ? otherModelText : model === "Other / Not Listed" ? otherModelText : model) : ""}` },
@@ -947,11 +1003,14 @@ export default function AppointmentPage() {
                   })}
                 </div>
 
+                {submitError && (
+                  <p className="text-sm text-red-500 text-center font-medium mb-2">{submitError}</p>
+                )}
                 <BottomNav
                   onBack={() => serviceType === "visit-store" ? setStep(4) : setStep(3)}
-                  onContinue={() => setSubmitted(true)}
-                  disabled={!name || !phone}
-                  continueLabel="Confirm Booking"
+                  onContinue={handleSubmit}
+                  disabled={!name || !phone || submitting}
+                  continueLabel={submitting ? "Booking…" : "Confirm Booking"}
                 />
               </div>
             )}

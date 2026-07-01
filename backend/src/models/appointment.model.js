@@ -75,6 +75,13 @@ const appointmentSchema = new mongoose.Schema(
       default: "",
     },
 
+    // Tracking
+    trackingId: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
+
     // Admin
     status: {
       type: String,

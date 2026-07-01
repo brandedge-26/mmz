@@ -41,6 +41,11 @@ const ALLOWED_ORIGINS = (ENV.CLIENT_URL || "http://localhost:3000")
   .split(",")
   .map((o) => o.trim());
 
+// Add admin port always
+if (!ALLOWED_ORIGINS.includes("http://localhost:3002")) {
+  ALLOWED_ORIGINS.push("http://localhost:3002");
+}
+
 app.use(cors({
     origin: (origin, cb) => {
         if (!origin || ALLOWED_ORIGINS.includes(origin)) return cb(null, true);
