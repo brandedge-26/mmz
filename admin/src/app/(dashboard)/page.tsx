@@ -1,7 +1,6 @@
 "use client";
 
 import Topbar from "@/components/Topbar";
-import { useMenuToggle } from "@/app/(dashboard)/layout";
 import {
   TrendingUp,
   ShoppingBag,
@@ -152,11 +151,10 @@ const statusBadge = (status: string) => {
 };
 
 export default function DashboardPage() {
-  const onMenuClick = useMenuToggle();
 
   return (
     <div>
-      <Topbar title="Dashboard" onMenuClick={onMenuClick} />
+      <Topbar title="Dashboard" />
 
       <div className="p-4 lg:p-6 space-y-6">
         {/* Stats */}

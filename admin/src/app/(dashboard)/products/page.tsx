@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Topbar from "@/components/Topbar";
-import { useMenuToggle } from "@/app/(dashboard)/layout";
 import { Search, Plus, Pencil, Trash2, Package } from "lucide-react";
 
 type Category = "All" | "Cases" | "Chargers" | "Accessories" | "Audio" | "Cables";
@@ -83,7 +82,6 @@ const stockConfig: Record<string, string> = {
 const categories: Category[] = ["All", "Cases", "Chargers", "Accessories", "Audio", "Cables"];
 
 export default function ProductsPage() {
-  const onMenuClick = useMenuToggle();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<Category>("All");
 
@@ -95,7 +93,7 @@ export default function ProductsPage() {
 
   return (
     <div>
-      <Topbar title="Products" onMenuClick={onMenuClick} />
+      <Topbar title="Products" />
 
       <div className="p-4 lg:p-6 space-y-5">
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm">

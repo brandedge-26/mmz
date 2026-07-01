@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Topbar from "@/components/Topbar";
-import { useMenuToggle } from "@/app/(dashboard)/layout";
 import { Search, Plus, Eye, ChevronLeft, ChevronRight } from "lucide-react";
 
 type RepairStatus =
@@ -134,7 +133,6 @@ const tabs: RepairStatus[] = [
 ];
 
 export default function RepairsPage() {
-  const onMenuClick = useMenuToggle();
   const [activeTab, setActiveTab] = useState<RepairStatus>("All");
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -157,7 +155,7 @@ export default function RepairsPage() {
 
   return (
     <div>
-      <Topbar title="Repairs" onMenuClick={onMenuClick} />
+      <Topbar title="Repairs" />
 
       <div className="p-4 lg:p-6 space-y-5">
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm">

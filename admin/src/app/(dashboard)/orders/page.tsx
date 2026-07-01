@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Topbar from "@/components/Topbar";
-import { useMenuToggle } from "@/app/(dashboard)/layout";
 import { Search, Eye, ChevronLeft, ChevronRight } from "lucide-react";
 
 type OrderStatus = "All" | "Pending" | "Processing" | "Completed" | "Cancelled";
@@ -100,7 +99,6 @@ const statusConfig: Record<string, string> = {
 const tabs: OrderStatus[] = ["All", "Pending", "Processing", "Completed", "Cancelled"];
 
 export default function OrdersPage() {
-  const onMenuClick = useMenuToggle();
   const [activeTab, setActiveTab] = useState<OrderStatus>("All");
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -119,7 +117,7 @@ export default function OrdersPage() {
 
   return (
     <div>
-      <Topbar title="Orders" onMenuClick={onMenuClick} />
+      <Topbar title="Orders" />
 
       <div className="p-4 lg:p-6 space-y-5">
         {/* Search + Tabs */}
