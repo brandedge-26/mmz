@@ -15,7 +15,9 @@
       "Bash(cp \"C:/Users/User/Documents/Projects/new-jesup/frontend/public/header-images/tech-repair/ipad.png\" \"C:/Users/User/Documents/Projects/mmz/frontend/public/header-images/tech-repair/ipad.png\")",
       "Bash(cp \"C:/Users/User/Documents/Projects/new-jesup/frontend/public/header-images/tech-repair/tablet.png\" \"C:/Users/User/Documents/Projects/mmz/frontend/public/header-images/tech-repair/tablet.png\")",
       "Bash(cp /c/Users/User/Documents/Projects/mmz/frontend/public/home/services/earbuds-service.jpg /c/Users/User/Documents/Projects/mmz/frontend/public/header-images/shop-accessories/earbuds.jpg)",
-      "Bash(cp /c/Users/User/Documents/Projects/mmz/frontend/public/home/services/smartwatch-service.png /c/Users/User/Documents/Projects/mmz/frontend/public/header-images/shop-accessories/smartwatch.png)"
+      "Bash(cp /c/Users/User/Documents/Projects/mmz/frontend/public/home/services/smartwatch-service.png /c/Users/User/Documents/Projects/mmz/frontend/public/header-images/shop-accessories/smartwatch.png)",
+      "WebSearch",
+      "Bash(npx tsc:*)"
     ]
   }
 }

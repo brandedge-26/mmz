@@ -137,6 +137,10 @@ export default function TrackRepairModal({ onClose }: Props) {
                 {/* Device info */}
                 <div className="bg-gray-50 border border-gray-100 rounded-xl divide-y divide-gray-100">
                   <div className="flex justify-between items-center px-4 py-3 text-sm">
+                    <span className="text-gray-400">Name</span>
+                    <span className="font-semibold text-gray-900">{result.name}</span>
+                  </div>
+                  <div className="flex justify-between items-center px-4 py-3 text-sm">
                     <span className="text-gray-400 flex items-center gap-1.5"><Package className="w-3.5 h-3.5" /> Device</span>
                     <span className="font-semibold text-gray-800">{result.brand} {result.model}</span>
                   </div>

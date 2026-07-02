@@ -134,7 +134,7 @@ export const updateAppointmentStatus = async (req, res, next) => {
 export const trackAppointment = async (req, res, next) => {
   try {
     const appointment = await Appointment.findOne({ trackingId: req.params.trackingId })
-      .select("trackingId name brand model category status serviceType date time createdAt issues");
+      .select("trackingId name phone email brand model category issues serviceType streetAddress zipCode date time notes status createdAt");
     if (!appointment) {
       return res.status(404).json({ success: false, message: "Appointment not found. Please check your tracking ID." });
     }

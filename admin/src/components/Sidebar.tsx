@@ -6,7 +6,7 @@ import { useState } from "react";
 import {
   LayoutDashboard, ShoppingBag, Package, Wrench,
   Users, BarChart3, Settings, LogOut, X,
-  ChevronDown, CalendarCheck, MessageSquare,
+  ChevronDown, CalendarCheck, MessageSquare, PlusCircle, List,
 } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
 
@@ -23,7 +23,11 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
     pathname.startsWith("/appointments") ||
     pathname.startsWith("/contacts");
 
-  const [repairsExpanded, setRepairsExpanded] = useState(repairsOpen);
+  const productsOpen =
+    pathname.startsWith("/products");
+
+  const [repairsExpanded,   setRepairsExpanded]   = useState(repairsOpen);
+  const [productsExpanded,  setProductsExpanded]  = useState(productsOpen);
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
@@ -79,8 +83,55 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
         <ul className="space-y-1">
 
           <li><NavLink href="/"          icon={LayoutDashboard} label="Dashboard" /></li>
-          <li><NavLink href="/orders"    icon={ShoppingBag}     label="Orders" /></li>
-          <li><NavLink href="/products"  icon={Package}         label="Products" /></li>
+          <li><NavLink href="/orders" icon={ShoppingBag} label="Orders" /></li>
+
+          {/* Products — expandable */}
+          <li>
+            <button
+              onClick={() => setProductsExpanded((o) => !o)}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                productsOpen
+                  ? "bg-violet-600 text-white shadow-sm shadow-violet-900"
+                  : "text-gray-400 hover:text-white hover:bg-gray-800"
+              }`}
+            >
+              <Package className="w-[18px] h-[18px] flex-shrink-0" />
+              <span className="flex-1 text-left">Products</span>
+              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${productsExpanded ? "rotate-180" : ""}`} />
+            </button>
+            {productsExpanded && (
+              <ul className="mt-1 ml-3 pl-4 border-l border-gray-700 space-y-1">
+                <li>
+                  <Link
+                    href="/products"
+                    onClick={onClose}
+                    className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium transition-all ${
+                      pathname === "/products"
+                        ? "text-violet-400 bg-gray-800"
+                        : "text-gray-500 hover:text-white hover:bg-gray-800"
+                    }`}
+                  >
+                    <List className="w-[15px] h-[15px] flex-shrink-0" />
+                    All Products
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/products/add"
+                    onClick={onClose}
+                    className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium transition-all ${
+                      pathname === "/products/add"
+                        ? "text-violet-400 bg-gray-800"
+                        : "text-gray-500 hover:text-white hover:bg-gray-800"
+                    }`}
+                  >
+                    <PlusCircle className="w-[15px] h-[15px] flex-shrink-0" />
+                    Add Product
+                  </Link>
+                </li>
+              </ul>
+            )}
+          </li>
 
           {/* Repairs — expandable */}
           <li>

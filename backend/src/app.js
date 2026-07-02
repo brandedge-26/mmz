@@ -8,6 +8,8 @@ import appointmentRoutes from "./routes/appointment.routes.js";
 import contactRoutes from "./routes/contact.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
+import productRoutes from "./routes/product.routes.js";
+import reviewRoutes  from "./routes/review.routes.js";
 
 
 
@@ -41,9 +43,11 @@ const ALLOWED_ORIGINS = (ENV.CLIENT_URL || "http://localhost:3000")
   .split(",")
   .map((o) => o.trim());
 
-// Add admin port always
 if (!ALLOWED_ORIGINS.includes("http://localhost:3002")) {
   ALLOWED_ORIGINS.push("http://localhost:3002");
+}
+if (!ALLOWED_ORIGINS.includes("http://localhost:3001")) {
+  ALLOWED_ORIGINS.push("http://localhost:3001");
 }
 
 app.use(cors({
@@ -69,6 +73,8 @@ app.use("/api/auth",         authRoutes);
 app.use("/api/users",        userRoutes);
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/contact",      contactRoutes);
+app.use("/api/products",     productRoutes);
+app.use("/api/reviews",      reviewRoutes);
 
 // GLOBAL ERROR HANDLER
 app.use(globalErrorHandler);
