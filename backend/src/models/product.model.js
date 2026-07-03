@@ -51,6 +51,11 @@ const productSchema = new mongoose.Schema(
       enum: ["New", "Hot", "Sale", "Trending", "Best Seller", ""],
       default: "",
     },
+    quantity: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
     inStock: {
       type: Boolean,
       default: true,

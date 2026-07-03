@@ -212,7 +212,7 @@ export default function AccountPage() {
       <>
         <Header />
         <main className="flex-1 bg-gray-50 min-h-screen">
-          <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10 space-y-4">
+          <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10 pb-28 lg:pb-10 space-y-4">
             {[...Array(4)].map((_, i) => (
               <div key={i} className="h-20 bg-white rounded-2xl border border-gray-100 animate-pulse" />
             ))}
@@ -254,7 +254,7 @@ export default function AccountPage() {
     <>
       <Header />
       <main className="flex-1 bg-gray-50 min-h-screen">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10 pb-28 lg:pb-10">
 
           {/* Page header */}
           <div className="mb-8 flex items-center gap-4">

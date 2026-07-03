@@ -5,6 +5,8 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import { type ShopProduct } from "@/lib/products";
 import { useAuthStore } from "@/store/authStore";
+import { useCartStore } from "@/store/cartStore";
+import { useWishlistStore } from "@/store/wishlistStore";
 import {
   ShoppingCart, Heart, Share2, ChevronRight, Check,
   Truck, RotateCcw, ShieldCheck, Star, Minus, Plus,
@@ -572,9 +574,10 @@ export default function ProductDetail({ product, related }: Props) {
   const [activeImage, setActiveImage]   = useState(product.image);
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0] ?? "");
   const [qty, setQty]                   = useState(1);
-  const [added, setAdded]               = useState(false);
-  const [wished, setWished]             = useState(false);
-  const [copied, setCopied]             = useState(false);
+  const [added, setAdded]   = useState(false);
+  const [copied, setCopied] = useState(false);
+  const wishlistToggle = useWishlistStore((s) => s.toggle);
+  const wished         = useWishlistStore((s) => s.has(product.id));
   const [activeTab, setActiveTab]       = useState<"features" | "specs" | "reviews">("features");
   const [liveRating, setLiveRating]     = useState(product.rating);
   const [liveCount,  setLiveCount]      = useState(product.reviews);
@@ -592,9 +595,21 @@ export default function ProductDetail({ product, related }: Props) {
     : null;
 
   const features = product.features ?? [];
+  const addToCart = useCartStore((s) => s.addItem);
 
   function handleAdd() {
     if (!product.inStock || added) return;
+    addToCart({
+      id:            product.id,
+      slug:          product.slug,
+      name:          product.name,
+      brand:         product.brand,
+      price:         product.price,
+      originalPrice: product.originalPrice,
+      image:         product.image,
+      color:         selectedColor || undefined,
+      quantity:      qty,
+    });
     setAdded(true);
     setTimeout(() => setAdded(false), 2500);
   }
@@ -653,7 +668,16 @@ export default function ProductDetail({ product, related }: Props) {
                 </div>
                 {/* Wishlist button */}
                 <button
-                  onClick={() => setWished((w) => !w)}
+                  onClick={() => wishlistToggle({
+                    id:            product.id,
+                    slug:          product.slug,
+                    name:          product.name,
+                    brand:         product.brand,
+                    price:         product.price,
+                    originalPrice: product.originalPrice,
+                    image:         product.image,
+                    inStock:       product.inStock,
+                  })}
                   className={`absolute bottom-4 right-4 p-2.5 rounded-full shadow-md backdrop-blur-sm transition-all z-10 ${
                     wished ? "bg-red-500 text-white" : "bg-white/90 text-gray-400 hover:text-red-500"
                   }`}
@@ -809,7 +833,16 @@ export default function ProductDetail({ product, related }: Props) {
                 </button>
 
                 <button
-                  onClick={() => setWished((w) => !w)}
+                  onClick={() => wishlistToggle({
+                    id:            product.id,
+                    slug:          product.slug,
+                    name:          product.name,
+                    brand:         product.brand,
+                    price:         product.price,
+                    originalPrice: product.originalPrice,
+                    image:         product.image,
+                    inStock:       product.inStock,
+                  })}
                   className={`w-12 h-12 flex items-center justify-center rounded-full border-2 transition-all ${
                     wished ? "border-red-200 bg-red-50 text-red-500" : "border-gray-200 text-gray-400 hover:border-red-200 hover:text-red-400"
                   }`}

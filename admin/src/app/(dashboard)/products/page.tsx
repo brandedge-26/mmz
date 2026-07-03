@@ -5,6 +5,8 @@ import Link from "next/link";
 import Topbar from "@/components/Topbar";
 import { privateAxios } from "@/lib/axios";
 import { Search, Plus, Pencil, Trash2, Package, RefreshCw } from "lucide-react";
+import EditProductModal, { type FullProduct } from "./EditProductModal";
+import DeleteModal from "./DeleteModal";
 
 const CATEGORIES = ["All", "Cases", "Screen Protection", "Power & Charging", "Audio", "Accessories", "Panels"];
 
@@ -35,7 +37,13 @@ export default function ProductsPage() {
   const [error, setError]         = useState("");
   const [search, setSearch]       = useState("");
   const [category, setCategory]   = useState("All");
-  const [deleting, setDeleting]   = useState<string | null>(null);
+
+  // Edit modal
+  const [editId, setEditId] = useState<string | null>(null);
+
+  // Delete modal
+  const [deleteTarget, setDeleteTarget] = useState<{ _id: string; name: string } | null>(null);
+  const [deleting, setDeleting]         = useState(false);
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
@@ -52,21 +60,45 @@ export default function ProductsPage() {
 
   useEffect(() => { fetchProducts(); }, [fetchProducts]);
 
-  async function handleDelete(id: string, name: string) {
-    if (!confirm(`Delete "${name}"? This cannot be undone.`)) return;
-    setDeleting(id);
+  async function handleDelete() {
+    if (!deleteTarget) return;
+    setDeleting(true);
     try {
-      await privateAxios.delete(`/products/${id}`);
-      setProducts((prev) => prev.filter((p) => p._id !== id));
+      await privateAxios.delete(`/products/${deleteTarget._id}`);
+      setProducts((prev) => prev.filter((p) => p._id !== deleteTarget._id));
+      setDeleteTarget(null);
     } catch {
       alert("Failed to delete product.");
     } finally {
-      setDeleting(null);
+      setDeleting(false);
     }
   }
 
+  function handleSaved(updated: FullProduct) {
+    setProducts((prev) =>
+      prev.map((p) =>
+        p._id === updated._id
+          ? {
+              ...p,
+              name:          updated.name,
+              brand:         updated.brand,
+              category:      updated.category,
+              price:         updated.price,
+              originalPrice: updated.originalPrice ?? undefined,
+              image:         updated.image,
+              inStock:       updated.inStock,
+              status:        updated.status,
+              badge:         updated.badge,
+              trending:      updated.trending,
+              newArrival:    updated.newArrival,
+            }
+          : p
+      )
+    );
+  }
+
   const filtered = products.filter((p) => {
-    const matchesCat  = category === "All" || p.category === category;
+    const matchesCat    = category === "All" || p.category === category;
     const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase()) ||
                           p.brand?.toLowerCase().includes(search.toLowerCase());
     return matchesCat && matchesSearch;
@@ -78,6 +110,7 @@ export default function ProductsPage() {
 
       <div className="p-4 lg:p-6 space-y-5">
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm">
+
           {/* Header */}
           <div className="px-5 pt-5 pb-4 border-b border-gray-100 flex flex-wrap items-center gap-3 justify-between">
             <div className="flex flex-wrap items-center gap-3">
@@ -160,7 +193,9 @@ export default function ProductsPage() {
                 ) : filtered.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="px-6 py-12 text-center text-gray-400 text-sm">
-                      {products.length === 0 ? "No products yet. Add your first product." : "No products match your search."}
+                      {products.length === 0
+                        ? "No products yet. Add your first product."
+                        : "No products match your search."}
                     </td>
                   </tr>
                 ) : (
@@ -211,16 +246,17 @@ export default function ProductsPage() {
                       </td>
                       <td className="px-4 py-3.5">
                         <div className="flex items-center gap-2">
-                          <Link
-                            href={`/products/edit/${product._id}`}
+                          <button
+                            onClick={() => setEditId(product._id)}
                             className="w-7 h-7 flex items-center justify-center rounded-lg text-blue-500 hover:bg-blue-50 border border-blue-200 transition"
+                            title="Edit product"
                           >
                             <Pencil className="w-3.5 h-3.5" />
-                          </Link>
+                          </button>
                           <button
-                            onClick={() => handleDelete(product._id, product.name)}
-                            disabled={deleting === product._id}
-                            className="w-7 h-7 flex items-center justify-center rounded-lg text-red-500 hover:bg-red-50 border border-red-200 transition disabled:opacity-40"
+                            onClick={() => setDeleteTarget({ _id: product._id, name: product.name })}
+                            className="w-7 h-7 flex items-center justify-center rounded-lg text-red-500 hover:bg-red-50 border border-red-200 transition"
+                            title="Delete product"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -242,6 +278,20 @@ export default function ProductsPage() {
           </div>
         </div>
       </div>
+
+      {/* Modals */}
+      <EditProductModal
+        productId={editId}
+        onClose={() => setEditId(null)}
+        onSaved={handleSaved}
+      />
+
+      <DeleteModal
+        product={deleteTarget}
+        deleting={deleting}
+        onClose={() => setDeleteTarget(null)}
+        onConfirm={handleDelete}
+      />
     </div>
   );
 }

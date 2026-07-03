@@ -49,6 +49,7 @@ function toProductCardProps(p: ApiProduct) {
     : "violet";
   return {
     id:            p._id,
+    slug:          p.slug,
     name:          p.name,
     brand:         p.brand,
     price:         p.price,
@@ -56,6 +57,7 @@ function toProductCardProps(p: ApiProduct) {
     image:         p.image,
     badge:         p.badge,
     badgeColor:    badgeColor as "violet" | "red" | "green",
+    inStock:       p.inStock,
     href:          `/products/${p.slug}`,
   };
 }
@@ -167,12 +169,17 @@ function ProductsPageInner() {
   const [drawerOpen,  setDrawerOpen]  = useState(false);
   const [drawerVis,   setDrawerVis]   = useState(false);
 
-  // Pre-apply ?category= from URL
+  // Pre-apply ?category= and ?q= from URL
   useEffect(() => {
     const urlCat = searchParams.get("category");
+    const urlQ   = searchParams.get("q");
     if (urlCat) {
       const match = CATEGORIES.find((c) => c.toLowerCase() === urlCat.toLowerCase());
       if (match) setCategory(match);
+    }
+    if (urlQ) {
+      setSearch(urlQ);
+      setDebouncedQ(urlQ);
     }
   }, [searchParams]);
 

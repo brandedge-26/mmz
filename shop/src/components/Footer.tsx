@@ -1,19 +1,19 @@
 import Link from "next/link";
 
 const repairLinks = [
-  { label: "iPhone Repair",       href: "http://localhost:3000/repairs/iphone" },
-  { label: "Samsung Repair",      href: "http://localhost:3000/repairs/samsung" },
+  { label: "iPhone Repair", href: "http://localhost:3000/repairs/iphone" },
+  { label: "Samsung Repair", href: "http://localhost:3000/repairs/samsung" },
   { label: "Google Pixel Repair", href: "http://localhost:3000/repairs/google-pixel" },
-  { label: "Motorola Repair",     href: "http://localhost:3000/repairs/motorola" },
-  { label: "LG Repair",           href: "http://localhost:3000/repairs/lg" },
+  { label: "Motorola Repair", href: "http://localhost:3000/repairs/motorola" },
+  { label: "LG Repair", href: "http://localhost:3000/repairs/lg" },
 ];
 
 const shopLinks = [
-  { label: "All Products",      href: "/products" },
-  { label: "Cases",             href: "/products?category=Cases" },
+  { label: "All Products", href: "/products" },
+  { label: "Cases", href: "/products?category=Cases" },
   { label: "Screen Protection", href: "/products?category=Screen+Protection" },
-  { label: "Power & Cables",    href: "/products?category=Power" },
-  { label: "Audio",             href: "/products?category=Audio" },
+  { label: "Power & Cables", href: "/products?category=Power" },
+  { label: "Audio", href: "/products?category=Audio" },
 ];
 
 const socials = [
@@ -52,7 +52,7 @@ export default function Footer() {
 
       {/* Main footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
 
           {/* Brand col */}
           <div className="lg:col-span-2 space-y-6">
@@ -75,29 +75,6 @@ export default function Footer() {
 
             {/* Contact details */}
             <div className="space-y-3">
-              <a href="tel:+923152413134" className="flex items-start gap-3 group">
-                <div className="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center flex-shrink-0 group-hover:bg-violet-600 transition-colors">
-                  <svg className="w-4 h-4 text-violet-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-400 leading-none mb-0.5">Call / WhatsApp</p>
-                  <p className="text-sm font-semibold text-gray-800 group-hover:text-violet-600 transition-colors">0315-2413134</p>
-                </div>
-              </a>
-
-              <a href="mailto:info@memonmobilezone.pk" className="flex items-start gap-3 group">
-                <div className="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center flex-shrink-0 group-hover:bg-violet-600 transition-colors">
-                  <svg className="w-4 h-4 text-violet-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-400 leading-none mb-0.5">Email</p>
-                  <p className="text-sm font-semibold text-gray-800 group-hover:text-violet-600 transition-colors">info@memonmobilezone.pk</p>
-                </div>
-              </a>
 
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center flex-shrink-0">
@@ -156,32 +133,33 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Repairs column */}
-          <div>
-            <h3 className="text-gray-900 font-bold text-sm mb-5">Phone Repairs</h3>
-            <ul className="space-y-3">
-              {repairLinks.map((item) => (
-                <li key={item.label}>
-                  <a href={item.href} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-violet-600 text-sm transition-colors">
-                    {item.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Repairs + Shop — side by side on mobile, separate columns on lg */}
+          <div className="grid grid-cols-2 gap-6 lg:contents">
+            <div>
+              <h3 className="text-gray-900 font-bold text-sm mb-5">Phone Repairs</h3>
+              <ul className="space-y-3">
+                {repairLinks.map((item) => (
+                  <li key={item.label}>
+                    <a href={item.href} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-violet-600 text-sm transition-colors">
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          {/* Shop column */}
-          <div>
-            <h3 className="text-gray-900 font-bold text-sm mb-5">Shop</h3>
-            <ul className="space-y-3">
-              {shopLinks.map((item) => (
-                <li key={item.label}>
-                  <Link href={item.href} className="text-gray-500 hover:text-violet-600 text-sm transition-colors">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <div>
+              <h3 className="text-gray-900 font-bold text-sm mb-5">Shop</h3>
+              <ul className="space-y-3">
+                {shopLinks.map((item) => (
+                  <li key={item.label}>
+                    <Link href={item.href} className="text-gray-500 hover:text-violet-600 text-sm transition-colors">
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           {/* Get in touch column */}

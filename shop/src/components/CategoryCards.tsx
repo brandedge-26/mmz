@@ -4,27 +4,27 @@ const CATEGORIES = [
   {
     label: "Cases",
     image: "/shop/category/Cases.webp",
-    href:  "/products?category=Cases",
+    href:  "/cases",
   },
   {
     label: "Screen Protectors",
     image: "/shop/category/Screen_Protectors.webp",
-    href:  "/products?category=Screen+Protection",
+    href:  "/screen-protection",
   },
   {
     label: "Power & Charging",
     image: "/shop/category/Charging.webp",
-    href:  "/products?category=Power",
+    href:  "/power-charging",
   },
   {
     label: "Audio",
     image: "/shop/category/Audio_Category_Tile.webp",
-    href:  "/products?category=Audio",
+    href:  "/audio",
   },
   {
     label: "Accessories",
     image: "/shop/category/accessory.webp",
-    href:  "/products?category=Accessories",
+    href:  "/accessories",
   },
 ];
 

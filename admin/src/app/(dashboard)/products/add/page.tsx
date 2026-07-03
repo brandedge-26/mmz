@@ -60,6 +60,7 @@ export default function AddProductPage() {
   const [badge,        setBadge]        = useState("None");
   const [price,        setPrice]        = useState("");
   const [strikePrice,  setStrikePrice]  = useState("");
+  const [quantity,     setQuantity]     = useState("");
   const [inStock,      setInStock]      = useState(true);
   const [trending,     setTrending]     = useState(false);
   const [newArrival,   setNewArrival]   = useState(false);
@@ -127,6 +128,7 @@ export default function AddProductPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!name.trim() || !price) { showToast("error", "Name and price are required."); return; }
+    if (!quantity) { showToast("error", "Quantity is required."); return; }
     if (!mainFile) { showToast("error", "Please upload a main product image."); return; }
 
     setSubmitting(true);
@@ -136,8 +138,9 @@ export default function AddProductPage() {
       formData.append("brand",       brand.trim());
       formData.append("category",    category);
       formData.append("badge",       badge === "None" ? "" : badge);
-      formData.append("price",       price);
+      formData.append("price",         price);
       formData.append("originalPrice", strikePrice);
+      formData.append("quantity",      quantity);
       formData.append("inStock",     String(inStock));
       formData.append("trending",    String(trending));
       formData.append("newArrival",  String(newArrival));
@@ -156,7 +159,7 @@ export default function AddProductPage() {
 
       showToast("success", "Product added successfully!");
       setName(""); setBrand(""); setCategory(CATEGORIES[0]); setBadge("None");
-      setPrice(""); setStrikePrice(""); setInStock(true); setTrending(false); setNewArrival(false);
+      setPrice(""); setStrikePrice(""); setQuantity(""); setInStock(true); setTrending(false); setNewArrival(false);
       setDescription(""); setColors([]); setFeatures([""]); setSpecs([{ key: "", value: "" }]);
       setMainImage(null); setMainFile(null); setVariantPreviews([]); setVariantFiles([]);
     } catch {
@@ -230,7 +233,7 @@ export default function AddProductPage() {
               </SectionCard>
 
               {/* Pricing */}
-              <SectionCard title="Pricing">
+              <SectionCard title="Pricing & Stock">
                 <div className="grid grid-cols-2 gap-4">
                   <Field label="Selling Price (PKR)" required hint="The actual price customers pay">
                     <div className="relative">
@@ -257,6 +260,16 @@ export default function AddProductPage() {
                         className={`${inputCls} pl-12`}
                       />
                     </div>
+                  </Field>
+                  <Field label="Quantity" required hint="Stock quantity — sets availability automatically">
+                    <input
+                      type="number"
+                      value={quantity}
+                      onChange={(e) => setQuantity(e.target.value)}
+                      placeholder="0"
+                      min={0}
+                      className={inputCls}
+                    />
                   </Field>
                 </div>
               </SectionCard>

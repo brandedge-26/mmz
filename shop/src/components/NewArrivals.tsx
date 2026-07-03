@@ -1,63 +1,66 @@
-import Link from "next/link";
-import ProductCard, { type Product } from "./ProductCard";
+"use client";
 
-const NEW_ARRIVALS: Product[] = [
-  {
-    id: "1",
-    name: "iPhone 16 Pro Max Silicone Case with MagSafe",
-    brand: "Apple",
-    price: 3999,
-    originalPrice: 4999,
-    image: "/shop/category/Cases.webp",
-    badge: "New",
-    badgeColor: "violet",
-    href: "/products/iphone-16-pro-max-case",
-  },
-  {
-    id: "2",
-    name: "Galaxy S25 Ultra Tempered Glass Screen Protector",
-    brand: "Samsung",
-    price: 1499,
-    image: "/shop/category/Screen_Protectors.webp",
-    badge: "New",
-    badgeColor: "violet",
-    href: "/products/galaxy-s25-ultra-screen-protector",
-  },
-  {
-    id: "3",
-    name: "65W USB-C GaN Fast Charger with Cable",
-    brand: "Anker",
-    price: 2999,
-    originalPrice: 3799,
-    image: "/shop/category/Charging.webp",
-    badge: "New",
-    badgeColor: "violet",
-    href: "/products/65w-gan-charger",
-  },
-  {
-    id: "4",
-    name: "True Wireless Noise Cancelling Earbuds Pro",
-    brand: "JBL",
-    price: 8999,
-    originalPrice: 11999,
-    image: "/shop/category/Audio_Category_Tile.webp",
-    badge: "New",
-    badgeColor: "violet",
-    href: "/products/jbl-earbuds-pro",
-  },
-];
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import ProductCard from "./ProductCard";
+
+const API = process.env.NEXT_PUBLIC_API_URL;
+
+interface ApiProduct {
+  _id: string;
+  name: string;
+  slug: string;
+  brand: string;
+  price: number;
+  originalPrice?: number;
+  image: string;
+  badge?: string;
+  inStock: boolean;
+}
+
+function toCard(p: ApiProduct) {
+  const badgeColor =
+    p.badge === "Hot" || p.badge === "Sale" ? "red"
+    : p.badge === "Trending" ? "green"
+    : "violet";
+  return {
+    id:            p._id,
+    slug:          p.slug,
+    name:          p.name,
+    brand:         p.brand,
+    price:         p.price,
+    originalPrice: p.originalPrice,
+    image:         p.image,
+    badge:         p.badge,
+    badgeColor:    badgeColor as "violet" | "red" | "green",
+    inStock:       p.inStock,
+    href:          `/products/${p.slug}`,
+  };
+}
 
 export default function NewArrivals() {
+  const [products, setProducts] = useState<ApiProduct[]>([]);
+  const [loading,  setLoading]  = useState(true);
+
+  useEffect(() => {
+    fetch(`${API}/api/products?sort=newest&status=Active&limit=4`)
+      .then((r) => r.json())
+      .then((data) => setProducts(data.products ?? []))
+      .catch(() => setProducts([]))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (!loading && products.length === 0) return null;
+
   return (
     <section className="px-3 sm:px-6 py-8">
-      {/* Header */}
       <div className="flex items-end justify-between mb-5">
         <div>
           <h2 className="text-xl sm:text-2xl font-extrabold text-gray-900">New Arrivals</h2>
           <p className="text-sm text-gray-400 mt-1">Fresh drops — the latest products just added to the store.</p>
         </div>
         <Link
-          href="/products?badge=New"
+          href="/products"
           className="text-sm font-semibold text-violet-600 hover:text-violet-700 transition-colors shrink-0 flex items-center gap-1"
         >
           View all
@@ -67,11 +70,14 @@ export default function NewArrivals() {
         </Link>
       </div>
 
-      {/* 4-column grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        {NEW_ARRIVALS.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+        {loading
+          ? Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="rounded-2xl border border-gray-100 bg-gray-50 animate-pulse" style={{ height: 320 }} />
+            ))
+          : products.map((p) => (
+              <ProductCard key={p._id} product={toCard(p)} />
+            ))}
       </div>
     </section>
   );

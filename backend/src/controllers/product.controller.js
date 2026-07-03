@@ -41,7 +41,7 @@ export const createProduct = async (req, res, next) => {
     const {
       name, brand, category, price, originalPrice,
       badge, inStock, trending, newArrival,
-      description, colors, features, specifications, status,
+      description, colors, features, specifications, status, quantity,
     } = req.body;
 
     if (!name || !price || !category) {
@@ -53,6 +53,9 @@ export const createProduct = async (req, res, next) => {
     const image         = req.files?.image?.[0]?.path         ?? "";
     const variantImages = (req.files?.variantImages ?? []).map((f) => f.path);
 
+    const qty      = quantity !== undefined ? Number(quantity) : 0;
+    const stockVal = qty > 0 ? true : (inStock === "true" || inStock === true);
+
     const product = await Product.create({
       name:           name.trim(),
       slug,
@@ -63,7 +66,8 @@ export const createProduct = async (req, res, next) => {
       image,
       variantImages,
       badge:          badge && badge !== "None" ? badge : "",
-      inStock:        inStock === "true" || inStock === true,
+      quantity:       qty,
+      inStock:        stockVal,
       trending:       trending === "true" || trending === true,
       newArrival:     newArrival === "true" || newArrival === true,
       description:    description?.trim() ?? "",
@@ -165,19 +169,24 @@ export const updateProduct = async (req, res, next) => {
     const {
       name, brand, category, price, originalPrice,
       badge, inStock, trending, newArrival,
-      description, colors, features, specifications, status,
+      description, colors, features, specifications, status, quantity,
     } = req.body;
 
     if (name && name !== product.name) {
-      product.slug = await uniqueSlug(toSlug(name), product._id);
       product.name = name.trim();
+      // slug is intentionally NOT updated — it's the permanent URL identifier
     }
-    if (brand       !== undefined) product.brand         = brand.trim();
-    if (category    !== undefined) product.category      = category;
-    if (price       !== undefined) product.price         = Number(price);
+    if (brand         !== undefined) product.brand         = brand.trim();
+    if (category      !== undefined) product.category      = category;
+    if (price         !== undefined) product.price         = Number(price);
     if (originalPrice !== undefined) product.originalPrice = originalPrice ? Number(originalPrice) : null;
-    if (badge       !== undefined) product.badge         = badge === "None" ? "" : badge;
-    if (inStock     !== undefined) product.inStock       = inStock === "true" || inStock === true;
+    if (badge         !== undefined) product.badge         = badge === "None" ? "" : badge;
+    if (quantity !== undefined && quantity !== "") {
+      product.quantity = Number(quantity);
+    }
+    if (inStock !== undefined) {
+      product.inStock = inStock === "true" || inStock === true;
+    }
     if (trending    !== undefined) product.trending      = trending === "true" || trending === true;
     if (newArrival  !== undefined) product.newArrival    = newArrival === "true" || newArrival === true;
     if (description !== undefined) product.description   = description.trim();

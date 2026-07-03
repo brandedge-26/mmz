@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ShoppingBag, Search, Menu, X, ChevronDown, LogOut, User, LayoutDashboard, Package } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
+import { useCartStore } from "@/store/cartStore";
 import CartSidebar from "./CartSidebar";
 import SearchModal from "./SearchModal";
 
@@ -63,7 +64,7 @@ const deviceCategories = [
 const navItems = [
   {
     label: "Cases",
-    href: "/products?category=Cases",
+    href: "/cases",
     columns: [
       {
         heading: "Apple",
@@ -103,11 +104,11 @@ const navItems = [
   },
   {
     label: "Screen Protection",
-    href: "/products?category=Screen+Protection",
+    href: "/screen-protection",
     columns: [
       {
         heading: "Shop by device",
-        shopAll: "/products?category=Screen+Protection",
+        shopAll: "/screen-protection",
         links: [
           { label: "iPhone",    href: "/products?category=Screen+Protection&brand=iPhone" },
           { label: "Samsung",   href: "/products?category=Screen+Protection&brand=Samsung" },
@@ -120,28 +121,28 @@ const navItems = [
   },
   {
     label: "Power & Charging",
-    href: "/products?category=Power",
+    href: "/power-charging",
     columns: [
       {
         heading: "Shop by type",
-        shopAll: "/products?category=Power",
+        shopAll: "/power-charging",
         links: [
-          { label: "Cables & Adapters",   href: "/products?category=Power&q=Cable" },
-          { label: "Power Banks",         href: "/products?category=Power&q=Power+Bank" },
-          { label: "Wireless Charging",   href: "/products?category=Power&q=Wireless" },
-          { label: "Car Chargers",        href: "/products?category=Power&q=Car" },
-          { label: "Charging Stands",     href: "/products?category=Power&q=Stand" },
+          { label: "Cables & Adapters",   href: "/products?category=Power+%26+Charging&q=Cable" },
+          { label: "Power Banks",         href: "/products?category=Power+%26+Charging&q=Power+Bank" },
+          { label: "Wireless Charging",   href: "/products?category=Power+%26+Charging&q=Wireless" },
+          { label: "Car Chargers",        href: "/products?category=Power+%26+Charging&q=Car" },
+          { label: "Charging Stands",     href: "/products?category=Power+%26+Charging&q=Stand" },
         ],
       },
     ],
   },
   {
     label: "Audio",
-    href: "/products?category=Audio",
+    href: "/audio",
     columns: [
       {
         heading: "Shop by type",
-        shopAll: "/products?category=Audio",
+        shopAll: "/audio",
         links: [
           { label: "Earbuds & AirPods",  href: "/products?category=Audio&q=Earbuds" },
           { label: "Headphones",         href: "/products?category=Audio&q=Headphones" },
@@ -153,11 +154,11 @@ const navItems = [
   },
   {
     label: "Accessories",
-    href: "/products?category=Accessories",
+    href: "/accessories",
     columns: [
       {
         heading: "Shop by category",
-        shopAll: "/products?category=Accessories",
+        shopAll: "/accessories",
         links: [
           { label: "Phone Grips & Rings",   href: "/products?category=Accessories&q=Grip" },
           { label: "Mounts & Holders",      href: "/products?category=Accessories&q=Mount" },
@@ -187,6 +188,7 @@ export default function Header() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const isInitialized   = useAuthStore((s) => s.isInitialized);
   const logout          = useAuthStore((s) => s.logout);
+  const cartCount       = useCartStore((s) => s.totalItems)();
 
   const [openIndex, setOpenIndex]               = useState<number | null>(null);
   const [cartOpen, setCartOpen]                 = useState(false);
@@ -254,6 +256,13 @@ export default function Header() {
 
           {/* Nav */}
           <nav className="flex items-stretch h-full">
+
+            <Link
+              href="/products"
+              className="flex items-center px-3 text-sm font-medium text-gray-700 hover:text-violet-600 transition-colors"
+            >
+              All Products
+            </Link>
 
             <Link
               href="/panels"
@@ -440,6 +449,10 @@ export default function Header() {
                           className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-700 transition-colors font-medium">
                           My Orders
                         </Link>
+                        <Link href="/wishlist" onClick={() => setUserMenuOpen(false)}
+                          className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-700 transition-colors font-medium">
+                          Wishlist
+                        </Link>
                         {user.role === "admin" && (
                           <Link href="/admin" onClick={() => setUserMenuOpen(false)}
                             className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-700 transition-colors font-medium">
@@ -474,9 +487,11 @@ export default function Header() {
               className="relative p-2 rounded-xl text-gray-700 hover:text-violet-600 hover:bg-violet-50 transition-colors"
             >
               <ShoppingBag className="w-5 h-5" />
-              <span className="absolute top-0.5 right-0.5 min-w-[18px] h-[18px] bg-violet-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center px-1">
-                0
-              </span>
+              {cartCount > 0 && (
+                <span className="absolute top-0.5 right-0.5 min-w-[18px] h-[18px] bg-violet-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center px-1">
+                  {cartCount > 99 ? "99+" : cartCount}
+                </span>
+              )}
             </button>
           </div>
         </div>
@@ -498,9 +513,11 @@ export default function Header() {
             </button>
             <button onClick={() => setCartOpen(true)} className="relative p-2 rounded-xl text-gray-700 hover:text-violet-600 hover:bg-violet-50 transition-colors">
               <ShoppingBag className="w-5 h-5" />
-              <span className="absolute top-0.5 right-0.5 min-w-[16px] h-[16px] bg-violet-600 text-white text-[9px] font-bold rounded-full flex items-center justify-center px-0.5">
-                0
-              </span>
+              {cartCount > 0 && (
+                <span className="absolute top-0.5 right-0.5 min-w-[16px] h-[16px] bg-violet-600 text-white text-[9px] font-bold rounded-full flex items-center justify-center px-0.5">
+                  {cartCount > 99 ? "99+" : cartCount}
+                </span>
+              )}
             </button>
             <button onClick={() => mobileOpen ? closeMobile() : openMobile()}
               className="p-2 rounded-xl text-gray-700 hover:text-violet-600 hover:bg-violet-50 transition-colors">
@@ -578,6 +595,15 @@ export default function Header() {
 
               {/* Nav */}
               <nav className="px-4 py-2 divide-y divide-gray-100">
+                <Link
+                  href="/products"
+                  onClick={closeMobile}
+                  className="flex items-center justify-between py-3 text-sm font-semibold text-gray-800 hover:text-violet-600 transition-colors"
+                >
+                  All Products
+                  <Package className="w-4 h-4 text-gray-400" />
+                </Link>
+
                 {navItems.map((item, idx) => (
                   <div key={item.label}>
                     <button

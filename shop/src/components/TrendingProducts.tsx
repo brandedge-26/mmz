@@ -1,62 +1,67 @@
-import Link from "next/link";
-import ProductCard, { type Product } from "./ProductCard";
+"use client";
 
-const TRENDING: Product[] = [
-  {
-    id: "t1",
-    name: "iPhone 16 Clear Case with MagSafe — Military Grade Drop Protection",
-    brand: "Spigen",
-    price: 2499,
-    image: "/shop/category/Cases.webp",
-    badge: "Hot",
-    badgeColor: "red",
-    href: "/products/spigen-iphone-16-clear-case",
-  },
-  {
-    id: "t2",
-    name: "Universal Magnetic Wireless Charging Pad 15W",
-    brand: "Belkin",
-    price: 3499,
-    originalPrice: 4799,
-    image: "/shop/category/Charging.webp",
-    badge: "Sale",
-    badgeColor: "red",
-    href: "/products/belkin-wireless-pad",
-  },
-  {
-    id: "t3",
-    name: "Privacy Screen Protector for iPhone 16 Pro",
-    brand: "ZAGG",
-    price: 1999,
-    image: "/shop/category/Screen_Protectors.webp",
-    badge: "Trending",
-    badgeColor: "green",
-    href: "/products/zagg-privacy-screen",
-  },
-  {
-    id: "t4",
-    name: "Portable Bluetooth Speaker — 360° Surround Sound Waterproof",
-    brand: "JBL",
-    price: 5999,
-    originalPrice: 7999,
-    image: "/shop/category/Audio_Category_Tile.webp",
-    badge: "Hot",
-    badgeColor: "red",
-    href: "/products/jbl-bluetooth-speaker",
-  },
-];
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import ProductCard from "./ProductCard";
+
+const API = process.env.NEXT_PUBLIC_API_URL;
+
+interface ApiProduct {
+  _id: string;
+  name: string;
+  slug: string;
+  brand: string;
+  price: number;
+  originalPrice?: number;
+  image: string;
+  badge?: string;
+  inStock: boolean;
+}
+
+function toCard(p: ApiProduct) {
+  const badgeColor =
+    p.badge === "Hot" || p.badge === "Sale" ? "red"
+    : p.badge === "Trending" ? "green"
+    : "violet";
+  return {
+    id:            p._id,
+    slug:          p.slug,
+    name:          p.name,
+    brand:         p.brand,
+    price:         p.price,
+    originalPrice: p.originalPrice,
+    image:         p.image,
+    badge:         p.badge,
+    badgeColor:    badgeColor as "violet" | "red" | "green",
+    inStock:       p.inStock,
+    href:          `/products/${p.slug}`,
+  };
+}
 
 export default function TrendingProducts() {
+  const [products, setProducts] = useState<ApiProduct[]>([]);
+  const [loading,  setLoading]  = useState(true);
+
+  useEffect(() => {
+    fetch(`${API}/api/products?trending=true&status=Active&limit=4`)
+      .then((r) => r.json())
+      .then((data) => setProducts(data.products ?? []))
+      .catch(() => setProducts([]))
+      .finally(() => setLoading(false));
+  }, []);
+
+  // Don't render section if no trending products
+  if (!loading && products.length === 0) return null;
+
   return (
     <section className="px-3 sm:px-6 py-8">
-      {/* Header */}
       <div className="flex items-end justify-between mb-5">
         <div>
           <h2 className="text-xl sm:text-2xl font-extrabold text-gray-900">Trending Products</h2>
           <p className="text-sm text-gray-400 mt-1">What everyone is buying right now.</p>
         </div>
         <Link
-          href="/products"
+          href="/trending"
           className="text-sm font-semibold text-violet-600 hover:text-violet-700 transition-colors shrink-0 flex items-center gap-1"
         >
           View all
@@ -66,11 +71,14 @@ export default function TrendingProducts() {
         </Link>
       </div>
 
-      {/* 4-column grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        {TRENDING.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+        {loading
+          ? Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="rounded-2xl border border-gray-100 bg-gray-50 animate-pulse" style={{ height: 320 }} />
+            ))
+          : products.map((p) => (
+              <ProductCard key={p._id} product={toCard(p)} />
+            ))}
       </div>
     </section>
   );
