@@ -10,6 +10,7 @@ import { useAuthStore } from "@/store/authStore";
 import { useCartStore } from "@/store/cartStore";
 import CartSidebar from "./CartSidebar";
 import SearchModal from "./SearchModal";
+import TrackOrderModal from "./TrackOrderModal";
 
 // ─── Nav data ─────────────────────────────────────────────────────────────────
 
@@ -194,6 +195,7 @@ export default function Header() {
   const [cartOpen, setCartOpen]                 = useState(false);
   const [searchOpen, setSearchOpen]             = useState(false);
   const [userMenuOpen, setUserMenuOpen]         = useState(false);
+  const [trackOrderOpen, setTrackOrderOpen]     = useState(false);
   const [mobileOpen, setMobileOpen]             = useState(false);
   const [mobileVisible, setMobileVisible]       = useState(false);
   const [mobileExpandedIdx, setMobileExpandedIdx] = useState<number | null>(null);
@@ -453,6 +455,10 @@ export default function Header() {
                           className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-700 transition-colors font-medium">
                           Wishlist
                         </Link>
+                        <button onClick={() => { setUserMenuOpen(false); setTrackOrderOpen(true); }}
+                          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-700 transition-colors font-medium text-left">
+                          Track Order
+                        </button>
                         {user.role === "admin" && (
                           <Link href="/admin" onClick={() => setUserMenuOpen(false)}
                             className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-700 transition-colors font-medium">
@@ -475,6 +481,10 @@ export default function Header() {
                         className="flex items-center justify-center w-full py-2.5 border border-gray-200 text-gray-700 text-sm font-semibold rounded-xl hover:bg-gray-50 transition-colors">
                         Create account
                       </Link>
+                      <button onClick={() => { setUserMenuOpen(false); setTrackOrderOpen(true); }}
+                        className="flex items-center justify-center w-full py-2.5 border border-gray-200 text-gray-700 text-sm font-semibold rounded-xl hover:bg-gray-50 transition-colors">
+                        Track Order
+                      </button>
                     </div>
                   )}
                 </div>
@@ -533,6 +543,9 @@ export default function Header() {
       {/* Cart Sidebar */}
       <CartSidebar open={cartOpen} onClose={() => setCartOpen(false)} />
 
+      {/* Track Order Modal */}
+      {trackOrderOpen && <TrackOrderModal onClose={() => setTrackOrderOpen(false)} />}
+
       {/* ── Mobile drawer ── */}
       {mobileOpen && (
         <div className="lg:hidden fixed inset-0 z-40">
@@ -577,6 +590,10 @@ export default function Header() {
                         className="flex items-center justify-center gap-1.5 py-2 rounded-lg bg-gray-100 text-xs font-semibold text-gray-700 hover:bg-gray-200 transition-colors">
                         My Orders
                       </Link>
+                      <button onClick={() => { closeMobile(); setTrackOrderOpen(true); }}
+                        className="col-span-2 flex items-center justify-center gap-1.5 py-2 rounded-lg bg-gray-100 text-xs font-semibold text-gray-700 hover:bg-gray-200 transition-colors">
+                        Track Order
+                      </button>
                     </div>
                   </div>
                 ) : (
@@ -589,6 +606,10 @@ export default function Header() {
                       className="flex items-center justify-center py-2.5 border border-gray-200 text-gray-700 text-sm font-semibold rounded-xl hover:bg-gray-50 transition-colors">
                       Sign up
                     </Link>
+                    <button onClick={() => { closeMobile(); setTrackOrderOpen(true); }}
+                      className="col-span-2 flex items-center justify-center py-2.5 border border-gray-200 text-gray-700 text-sm font-semibold rounded-xl hover:bg-gray-50 transition-colors">
+                      Track Order
+                    </button>
                   </div>
                 )
               )}

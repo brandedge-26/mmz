@@ -5,12 +5,13 @@ import Link from "next/link";
 import { Search, X, Loader2 } from "lucide-react";
 
 const TABS = [
-  { id: "all",                label: "All" },
-  { id: "Cases",              label: "Cases" },
-  { id: "Screen Protection",  label: "Screen Protection" },
-  { id: "Power",              label: "Power & Charging" },
-  { id: "Audio",              label: "Audio" },
-  { id: "Accessories",        label: "Accessories" },
+  { id: "all",              label: "All" },
+  { id: "Cases",            label: "Cases" },
+  { id: "Screen Protection",label: "Screen Protection" },
+  { id: "Power & Charging", label: "Power & Charging" },
+  { id: "Audio",            label: "Audio" },
+  { id: "Accessories",      label: "Accessories" },
+  { id: "Panels",           label: "Panels" },
 ];
 
 interface Product {
@@ -55,7 +56,7 @@ export default function SearchModal({ open, onClose }: Props) {
     const timer = setTimeout(async () => {
       setLoading(true);
       try {
-        const params = new URLSearchParams({ search: query.trim(), limit: "12" });
+        const params = new URLSearchParams({ q: query.trim(), status: "Active", limit: "12" });
         if (activeTab !== "all") params.set("category", activeTab);
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/products?${params}`,
@@ -87,9 +88,7 @@ export default function SearchModal({ open, onClose }: Props) {
 
   if (!open && !visible) return null;
 
-  const filtered = activeTab === "all"
-    ? results
-    : results.filter((p) => p.category === activeTab);
+  const filtered = results;
 
   return (
     <div

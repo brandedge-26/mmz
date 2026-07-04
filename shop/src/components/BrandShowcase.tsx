@@ -36,7 +36,7 @@ export default function BrandShowcase() {
         </div>
 
         {/* Marquee */}
-        <div className="relative overflow-hidden">
+        <div className="relative overflow-hidden" style={{ transform: "translateZ(0)" }}>
           {/* Fade edges */}
           <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-r from-white to-transparent" />
           <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-l from-white to-transparent" />

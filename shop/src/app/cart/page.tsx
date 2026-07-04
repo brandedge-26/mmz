@@ -174,9 +174,12 @@ export default function CartPage() {
                     <span className="text-xl font-extrabold text-gray-900">PKR {subtotal.toLocaleString()}</span>
                   </div>
 
-                  <button className="w-full py-3.5 bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm rounded-full transition-colors">
+                  <Link
+                    href="/checkout"
+                    className="block w-full py-3.5 bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm rounded-full transition-colors text-center"
+                  >
                     Proceed to Checkout
-                  </button>
+                  </Link>
 
                   <p className="text-xs text-gray-400 text-center">
                     Secure checkout · Free returns

@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { publicAxios } from "@/lib/axios";
+import { syncCartOnLogin, useCartStore } from "@/store/cartStore";
 
 export interface AuthUser {
     id: string;
@@ -50,11 +51,13 @@ export const useAuthStore = create<AuthState>((set) => ({
     login: async (email, password) => {
         const res = await publicAxios.post("/auth/login", { email, password });
         set({ user: res.data.user, accessToken: res.data.accessToken, isAuthenticated: true });
+        await syncCartOnLogin();
     },
 
     register: async (name, email, password) => {
         const res = await publicAxios.post("/auth/register", { name, email, password });
         set({ user: res.data.user, accessToken: res.data.accessToken, isAuthenticated: true });
+        await syncCartOnLogin();
     },
 
     logout: async () => {
@@ -62,6 +65,7 @@ export const useAuthStore = create<AuthState>((set) => ({
             await publicAxios.post("/auth/logout");
         } finally {
             set({ user: null, accessToken: null, isAuthenticated: false });
+            useCartStore.getState().clearCart();
         }
     },
 }));
