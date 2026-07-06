@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ShoppingBag, ChevronRight, Package, Search } from "lucide-react";
+import { ShoppingBag, ChevronRight, Package, Search, XCircle, Trash2, AlertTriangle } from "lucide-react";
 import Header from "@/components/Header";
 import { useAuthStore } from "@/store/authStore";
 import { privateAxios } from "@/lib/axios";
@@ -65,6 +65,10 @@ export default function OrdersPage() {
   const [error, setError]         = useState("");
   const [trackOpen, setTrackOpen] = useState(false);
 
+  type ConfirmAction = { type: "cancel" | "delete"; orderId: string; orderNumber: string } | null;
+  const [confirm, setConfirm]     = useState<ConfirmAction>(null);
+  const [actionLoading, setActionLoading] = useState(false);
+
   useEffect(() => {
     if (!isInitialized) return;
     if (!isAuthenticated) {
@@ -83,6 +87,28 @@ export default function OrdersPage() {
       }
     })();
   }, [isInitialized, isAuthenticated, router]);
+
+  const handleConfirmAction = async () => {
+    if (!confirm) return;
+    setActionLoading(true);
+    try {
+      if (confirm.type === "cancel") {
+        await privateAxios.patch(`/orders/${confirm.orderId}/cancel`);
+        setOrders((prev) =>
+          prev.map((o) => o._id === confirm.orderId ? { ...o, status: "cancelled" } : o)
+        );
+      } else {
+        await privateAxios.patch(`/orders/${confirm.orderId}/hide`);
+        setOrders((prev) => prev.filter((o) => o._id !== confirm.orderId));
+      }
+      setConfirm(null);
+    } catch {
+      // silently close — errors are edge cases
+      setConfirm(null);
+    } finally {
+      setActionLoading(false);
+    }
+  };
 
   return (
     <>
@@ -178,13 +204,29 @@ export default function OrdersPage() {
                       </p>
                     </div>
 
-                    <div className="mt-4 pt-3 border-t border-gray-100">
+                    <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between gap-2 flex-wrap">
                       <Link
                         href={`/orders/${order._id}`}
                         className="text-sm font-bold text-violet-600 hover:text-violet-700 transition-colors"
                       >
                         View Details →
                       </Link>
+                      <div className="flex items-center gap-2">
+                        {["pending", "processing"].includes(order.status) && (
+                          <button
+                            onClick={() => setConfirm({ type: "cancel", orderId: order._id, orderNumber: order.orderNumber })}
+                            className="flex items-center gap-1.5 text-xs font-semibold text-red-500 hover:text-red-600 border border-red-200 hover:border-red-400 px-3 py-1.5 rounded-full transition-colors"
+                          >
+                            <XCircle className="w-3.5 h-3.5" /> Cancel
+                          </button>
+                        )}
+                        <button
+                          onClick={() => setConfirm({ type: "delete", orderId: order._id, orderNumber: order.orderNumber })}
+                          className="flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-gray-600 border border-gray-200 hover:border-gray-400 px-3 py-1.5 rounded-full transition-colors"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" /> Remove
+                        </button>
+                      </div>
                     </div>
                   </div>
                 );
@@ -194,6 +236,54 @@ export default function OrdersPage() {
 
         </div>
       </main>
+
+      {/* Confirm dialog */}
+      {confirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/40 backdrop-blur-sm">
+          <div className="w-full max-w-sm bg-white rounded-3xl shadow-2xl p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${confirm.type === "cancel" ? "bg-red-50" : "bg-gray-100"}`}>
+                {confirm.type === "cancel"
+                  ? <AlertTriangle className="w-5 h-5 text-red-500" />
+                  : <Trash2 className="w-5 h-5 text-gray-500" />}
+              </div>
+              <div>
+                <h3 className="text-sm font-extrabold text-gray-900">
+                  {confirm.type === "cancel" ? "Cancel Order?" : "Remove Order?"}
+                </h3>
+                <p className="text-xs text-gray-400 mt-0.5">
+                  {confirm.type === "cancel" ? "This cannot be undone." : "It will be hidden from your list."}
+                </p>
+              </div>
+            </div>
+            <p className="text-sm text-gray-600 mb-5">
+              {confirm.type === "cancel"
+                ? <>Are you sure you want to cancel order <span className="font-bold text-gray-900">{confirm.orderNumber}</span>?</>
+                : <>Remove <span className="font-bold text-gray-900">{confirm.orderNumber}</span> from your orders list?</>}
+            </p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setConfirm(null)}
+                disabled={actionLoading}
+                className="flex-1 py-2.5 rounded-full border border-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-50 transition-colors"
+              >
+                Keep
+              </button>
+              <button
+                onClick={handleConfirmAction}
+                disabled={actionLoading}
+                className={`flex-1 py-2.5 rounded-full text-white text-sm font-bold transition-colors disabled:opacity-60 ${
+                  confirm.type === "cancel" ? "bg-red-500 hover:bg-red-600" : "bg-gray-700 hover:bg-gray-800"
+                }`}
+              >
+                {actionLoading
+                  ? (confirm.type === "cancel" ? "Cancelling..." : "Removing...")
+                  : (confirm.type === "cancel" ? "Yes, Cancel" : "Yes, Remove")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

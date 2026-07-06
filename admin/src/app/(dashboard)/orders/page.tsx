@@ -6,6 +6,7 @@ import { privateAxios } from "@/lib/axios";
 import {
   Search, Eye, ChevronLeft, ChevronRight,
   RefreshCw, Package, X, Trash2, Phone, Mail, MapPin,
+  Clock, Loader2, Truck, CheckCircle, XCircle, ShoppingBag,
 } from "lucide-react";
 
 type OrderStatus = "pending" | "processing" | "shipped" | "delivered" | "cancelled";
@@ -349,8 +350,20 @@ function Pagination({ page, pages, onPage }: { page: number; pages: number; onPa
   );
 }
 
+// ── Stats card ────────────────────────────────────────────────────────────────
+interface OrderStats { total: number; pending: number; processing: number; shipped: number; delivered: number; cancelled: number }
+
+const STAT_CARDS = [
+  { key: "total",      label: "Total",      Icon: ShoppingBag,  bg: "bg-violet-50",  text: "text-violet-600",  num: "text-violet-700" },
+  { key: "pending",    label: "Pending",    Icon: Clock,        bg: "bg-yellow-50",  text: "text-yellow-600",  num: "text-yellow-700" },
+  { key: "processing", label: "Processing", Icon: Loader2,      bg: "bg-blue-50",    text: "text-blue-600",    num: "text-blue-700" },
+  { key: "shipped",    label: "Shipped",    Icon: Truck,        bg: "bg-indigo-50",  text: "text-indigo-600",  num: "text-indigo-700" },
+  { key: "delivered",  label: "Delivered",  Icon: CheckCircle,  bg: "bg-green-50",   text: "text-green-600",   num: "text-green-700" },
+  { key: "cancelled",  label: "Cancelled",  Icon: XCircle,      bg: "bg-red-50",     text: "text-red-500",     num: "text-red-600" },
+] as const;
+
 // ── Main Page ─────────────────────────────────────────────────────────────────
-const PER_PAGE = 15;
+const PER_PAGE = 10;
 
 export default function OrdersPage() {
   const [orders,       setOrders]       = useState<Order[]>([]);
@@ -365,6 +378,11 @@ export default function OrdersPage() {
   const [viewOrder,    setViewOrder]    = useState<Order | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Order | null>(null);
   const [deleting,     setDeleting]     = useState(false);
+  const [stats,        setStats]        = useState<OrderStats | null>(null);
+
+  useEffect(() => {
+    privateAxios.get("/orders/stats").then(({ data }) => setStats(data.stats)).catch(() => {});
+  }, []);
 
   useEffect(() => {
     const t = setTimeout(() => { setDebouncedQ(search); setPage(1); }, 350);
@@ -428,6 +446,23 @@ export default function OrdersPage() {
           >
             <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} /> Refresh
           </button>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-3 mb-6">
+          {STAT_CARDS.map(({ key, label, Icon, bg, text, num }) => (
+            <div key={key} className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 flex flex-col gap-2">
+              <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${bg}`}>
+                <Icon className={`w-4 h-4 ${text}`} />
+              </div>
+              <div>
+                <p className={`text-xl font-bold ${num}`}>
+                  {stats ? stats[key].toLocaleString() : <span className="inline-block h-6 w-10 bg-gray-100 rounded animate-pulse" />}
+                </p>
+                <p className="text-xs text-gray-400 mt-0.5">{label}</p>
+              </div>
+            </div>
+          ))}
         </div>
 
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">

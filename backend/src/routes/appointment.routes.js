@@ -6,6 +6,7 @@ import {
   updateAppointmentStatus,
   deleteAppointment,
   trackAppointment,
+  getAppointmentStats,
 } from "../controllers/appointment.controller.js";
 
 const router = Router();
@@ -15,6 +16,7 @@ router.post("/",                    createAppointment);
 router.get("/track/:trackingId",    trackAppointment);   // must be before /:id
 
 // Admin
+router.get("/stats",                getAppointmentStats);
 router.get("/",                     getAllAppointments);
 router.get("/:id",                  getAppointmentById);
 router.patch("/:id/status",         updateAppointmentStatus);

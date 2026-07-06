@@ -1,9 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Users, Search, RefreshCw, Mail, X, Trash2, Eye, ChevronLeft, ChevronRight, UserCircle } from "lucide-react";
+import { Users, Search, RefreshCw, Mail, X, Trash2, Eye, ChevronLeft, ChevronRight, UserCircle, ShoppingBag } from "lucide-react";
 import { privateAxios } from "@/lib/axios";
 import Topbar from "@/components/Topbar";
+
+interface CustomerOrder {
+  _id: string;
+  orderNumber: string;
+  total: number;
+  status: string;
+  createdAt: string;
+}
 
 interface Customer {
   _id: string;
@@ -11,6 +19,8 @@ interface Customer {
   email: string;
   role: string;
   createdAt: string;
+  orderCount: number;
+  totalSpent: number;
 }
 
 const LIMIT = 10;
@@ -57,29 +67,57 @@ function Pagination({ page, pages, onPage }: { page: number; pages: number; onPa
   );
 }
 
+const ORDER_STATUS_STYLES: Record<string, string> = {
+  pending:    "bg-yellow-100 text-yellow-700",
+  processing: "bg-blue-100 text-blue-700",
+  shipped:    "bg-violet-100 text-violet-700",
+  delivered:  "bg-green-100 text-green-700",
+  cancelled:  "bg-red-100 text-red-600",
+};
+
 // ── Detail Modal ──────────────────────────────────────────────────────────────
 function DetailModal({ customer, onClose }: { customer: Customer; onClose: () => void }) {
+  const [orders, setOrders]           = useState<CustomerOrder[]>([]);
+  const [ordersLoading, setOrdersLoading] = useState(true);
+
   const fmt = (d: string) =>
     d ? new Date(d).toLocaleDateString("en-PK", { day: "2-digit", month: "short", year: "numeric" }) : "—";
 
   const initials = customer.name
     .split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await privateAxios.get(`/orders?limit=50&userId=${customer._id}`);
+        // filter by user on client since backend may not support userId filter
+        const all = (data.orders ?? []) as CustomerOrder[];
+        setOrders(all);
+      } catch {
+        setOrders([]);
+      } finally {
+        setOrdersLoading(false);
+      }
+    })();
+  }, [customer._id]);
+
   return (
     <>
       <div className="fixed inset-0 bg-black/40 z-40 backdrop-blur-sm" onClick={onClose} />
       <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
-        <div className="bg-white w-full sm:max-w-sm sm:rounded-2xl rounded-t-2xl shadow-2xl animate-slide-up sm:animate-fade-in">
-          <div className="flex justify-center pt-2.5 sm:hidden">
+        <div className="bg-white w-full sm:max-w-md sm:rounded-2xl rounded-t-2xl shadow-2xl flex flex-col max-h-[90vh]">
+          <div className="flex justify-center pt-2.5 sm:hidden shrink-0">
             <div className="w-10 h-1 bg-gray-200 rounded-full" />
           </div>
-          <div className="flex items-center justify-between px-5 pt-4 pb-4 border-b border-gray-100">
+          <div className="flex items-center justify-between px-5 pt-4 pb-4 border-b border-gray-100 shrink-0">
             <h2 className="text-base font-bold text-gray-900">Customer Details</h2>
             <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 transition">
               <X className="w-4 h-4" />
             </button>
           </div>
-          <div className="px-5 py-5 space-y-4">
+
+          <div className="overflow-y-auto flex-1 px-5 py-5 space-y-4">
+            {/* Profile */}
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-full bg-violet-100 flex items-center justify-center flex-shrink-0">
                 <span className="text-violet-700 font-bold text-base">{initials}</span>
@@ -89,6 +127,8 @@ function DetailModal({ customer, onClose }: { customer: Customer; onClose: () =>
                 <span className="text-xs px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full font-medium capitalize">{customer.role}</span>
               </div>
             </div>
+
+            {/* Info */}
             <div className="bg-gray-50 border border-gray-100 rounded-xl divide-y divide-gray-100">
               <div className="flex items-center gap-3 px-4 py-3">
                 <Mail className="w-4 h-4 text-violet-400 flex-shrink-0" />
@@ -99,9 +139,52 @@ function DetailModal({ customer, onClose }: { customer: Customer; onClose: () =>
                 <span className="text-sm text-gray-500">Joined</span>
                 <span className="text-sm text-gray-700 ml-auto">{fmt(customer.createdAt)}</span>
               </div>
+              <div className="flex items-center gap-3 px-4 py-3">
+                <ShoppingBag className="w-4 h-4 text-violet-400 flex-shrink-0" />
+                <span className="text-sm text-gray-500">Total Orders</span>
+                <span className="text-sm font-semibold text-gray-700 ml-auto">{customer.orderCount ?? 0}</span>
+              </div>
+              <div className="flex items-center gap-3 px-4 py-3">
+                <span className="text-xs font-bold text-violet-400 flex-shrink-0">PKR</span>
+                <span className="text-sm text-gray-500">Total Spent</span>
+                <span className="text-sm font-semibold text-gray-700 ml-auto">PKR {(customer.totalSpent ?? 0).toLocaleString()}</span>
+              </div>
+            </div>
+
+            {/* Orders */}
+            <div>
+              <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Order History</p>
+              {ordersLoading ? (
+                <div className="space-y-2">
+                  {[1,2,3].map((n) => <div key={n} className="h-10 bg-gray-100 rounded-xl animate-pulse" />)}
+                </div>
+              ) : orders.length === 0 ? (
+                <div className="text-center py-6 bg-gray-50 rounded-xl border border-gray-100">
+                  <ShoppingBag className="w-6 h-6 text-gray-200 mx-auto mb-1" />
+                  <p className="text-xs text-gray-400">No orders placed yet</p>
+                </div>
+              ) : (
+                <div className="border border-gray-100 rounded-xl overflow-hidden divide-y divide-gray-100">
+                  {orders.map((order) => (
+                    <div key={order._id} className="flex items-center justify-between px-4 py-3 bg-white hover:bg-gray-50">
+                      <div>
+                        <p className="text-xs font-bold text-gray-800">{order.orderNumber}</p>
+                        <p className="text-[10px] text-gray-400 mt-0.5">{fmt(order.createdAt)}</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-semibold text-gray-700">PKR {order.total.toLocaleString()}</span>
+                        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full capitalize ${ORDER_STATUS_STYLES[order.status] ?? "bg-gray-100 text-gray-600"}`}>
+                          {order.status}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
-          <div className="px-5 pb-5">
+
+          <div className="px-5 py-4 border-t border-gray-100 shrink-0">
             <button onClick={onClose}
               className="w-full py-2.5 rounded-xl bg-gray-100 text-gray-700 text-sm font-semibold hover:bg-gray-200 transition">
               Close
@@ -266,7 +349,7 @@ export default function CustomersPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-100 bg-gray-50">
-                  {["Customer", "Email", "Joined", "Actions"].map((h) => (
+                  {["Customer", "Email", "Orders", "Spent", "Joined", "Actions"].map((h) => (
                     <th key={h} className="text-left px-5 py-3 text-xs font-bold uppercase tracking-wider text-gray-400">{h}</th>
                   ))}
                 </tr>
@@ -291,6 +374,19 @@ export default function CustomersPage() {
                         <Mail className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
                         {c.email}
                       </div>
+                    </td>
+
+                    {/* Orders */}
+                    <td className="px-5 py-4">
+                      <span className="inline-flex items-center gap-1 text-sm font-semibold text-gray-700">
+                        <ShoppingBag className="w-3.5 h-3.5 text-violet-400" />
+                        {c.orderCount ?? 0}
+                      </span>
+                    </td>
+
+                    {/* Total Spent */}
+                    <td className="px-5 py-4 text-sm font-semibold text-gray-700 whitespace-nowrap">
+                      PKR {(c.totalSpent ?? 0).toLocaleString()}
                     </td>
 
                     {/* Joined */}

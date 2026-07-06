@@ -3,7 +3,7 @@
 import { useEffect, useState, use } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { ChevronRight, Package, CheckCircle2, ShoppingBag } from "lucide-react";
+import { ChevronRight, Package, CheckCircle2, ShoppingBag, XCircle, AlertTriangle } from "lucide-react";
 import Header from "@/components/Header";
 import { publicAxios } from "@/lib/axios";
 
@@ -73,9 +73,12 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
   const searchParams = useSearchParams();
   const isNew       = searchParams.get("new") === "1";
 
-  const [order,   setOrder]   = useState<Order | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error,   setError]   = useState("");
+  const [order,          setOrder]          = useState<Order | null>(null);
+  const [loading,        setLoading]        = useState(true);
+  const [error,          setError]          = useState("");
+  const [cancelConfirm,  setCancelConfirm]  = useState(false);
+  const [cancelLoading,  setCancelLoading]  = useState(false);
+  const [cancelError,    setCancelError]    = useState("");
 
   useEffect(() => {
     if (!id) return;
@@ -90,6 +93,22 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
       }
     })();
   }, [id]);
+
+  const handleCancel = async () => {
+    if (!order) return;
+    setCancelLoading(true);
+    setCancelError("");
+    try {
+      const { data } = await publicAxios.patch(`/orders/${order._id}/cancel`);
+      setOrder(data.order);
+      setCancelConfirm(false);
+    } catch (err: unknown) {
+      const msg = (err as { response?: { data?: { message?: string } } })?.response?.data?.message;
+      setCancelError(msg || "Failed to cancel order. Please try again.");
+    } finally {
+      setCancelLoading(false);
+    }
+  };
 
   return (
     <>
@@ -281,7 +300,54 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                 >
                   My Orders
                 </Link>
+                {["pending", "processing"].includes(order.status) && (
+                  <button
+                    onClick={() => { setCancelConfirm(true); setCancelError(""); }}
+                    className="inline-flex items-center gap-2 px-6 py-3 border border-red-200 hover:border-red-400 text-red-500 hover:text-red-600 font-semibold text-sm rounded-full transition-colors"
+                  >
+                    <XCircle className="w-4 h-4" /> Cancel Order
+                  </button>
+                )}
               </div>
+
+              {/* Cancel confirmation dialog */}
+              {cancelConfirm && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/40 backdrop-blur-sm">
+                  <div className="w-full max-w-sm bg-white rounded-3xl shadow-2xl p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center shrink-0">
+                        <AlertTriangle className="w-5 h-5 text-red-500" />
+                      </div>
+                      <div>
+                        <h3 className="text-sm font-extrabold text-gray-900">Cancel Order?</h3>
+                        <p className="text-xs text-gray-400 mt-0.5">This action cannot be undone.</p>
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-600 mb-5">
+                      Are you sure you want to cancel order <span className="font-bold text-gray-900">{order.orderNumber}</span>?
+                    </p>
+                    {cancelError && (
+                      <p className="text-xs text-red-500 bg-red-50 border border-red-100 rounded-xl px-3 py-2 mb-4">{cancelError}</p>
+                    )}
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setCancelConfirm(false)}
+                        disabled={cancelLoading}
+                        className="flex-1 py-2.5 rounded-full border border-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-50 transition-colors"
+                      >
+                        Keep Order
+                      </button>
+                      <button
+                        onClick={handleCancel}
+                        disabled={cancelLoading}
+                        className="flex-1 py-2.5 rounded-full bg-red-500 hover:bg-red-600 text-white text-sm font-bold transition-colors disabled:opacity-60"
+                      >
+                        {cancelLoading ? "Cancelling..." : "Yes, Cancel"}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
 
             </div>
           )}

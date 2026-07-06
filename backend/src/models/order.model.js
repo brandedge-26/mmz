@@ -60,6 +60,7 @@ const orderSchema = new mongoose.Schema(
       enum:    ["pending", "processing", "shipped", "delivered", "cancelled"],
       default: "pending",
     },
+    hiddenByUser: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

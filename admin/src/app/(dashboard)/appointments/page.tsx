@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import {
   CalendarCheck, Search, RefreshCw, Phone, Mail, MapPin, Clock,
   Eye, Trash2, X, ChevronLeft, ChevronRight, Reply, Wrench,
+  CheckCircle, XCircle, Loader2, List,
 } from "lucide-react";
 import { privateAxios, publicAxios } from "@/lib/axios";
 import Topbar from "@/components/Topbar";
@@ -575,6 +576,18 @@ function DeleteModal({ appt, onConfirm, onClose, deleting }: {
   );
 }
 
+// ── Stats ─────────────────────────────────────────────────────────────────────
+interface ApptStats { total: number; pending: number; confirmed: number; "in-progress": number; completed: number; cancelled: number }
+
+const APPT_STAT_CARDS = [
+  { key: "total",       label: "Total",       Icon: List,          bg: "bg-violet-50",  text: "text-violet-600",  num: "text-violet-700" },
+  { key: "pending",     label: "Pending",     Icon: Clock,         bg: "bg-yellow-50",  text: "text-yellow-600",  num: "text-yellow-700" },
+  { key: "confirmed",   label: "Confirmed",   Icon: CalendarCheck, bg: "bg-blue-50",    text: "text-blue-600",    num: "text-blue-700" },
+  { key: "in-progress", label: "In Progress", Icon: Loader2,       bg: "bg-indigo-50",  text: "text-indigo-600",  num: "text-indigo-700" },
+  { key: "completed",   label: "Completed",   Icon: CheckCircle,   bg: "bg-green-50",   text: "text-green-600",   num: "text-green-700" },
+  { key: "cancelled",   label: "Cancelled",   Icon: XCircle,       bg: "bg-red-50",     text: "text-red-500",     num: "text-red-600" },
+] as const;
+
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function AppointmentsPage() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
@@ -584,11 +597,16 @@ export default function AppointmentsPage() {
   const [page, setPage]                 = useState(1);
   const [total, setTotal]               = useState(0);
   const [pages, setPages]               = useState(1);
+  const [stats, setStats]               = useState<ApptStats | null>(null);
 
   const [viewAppt, setViewAppt]         = useState<Appointment | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Appointment | null>(null);
   const [deleting, setDeleting]         = useState(false);
   const [trackOpen, setTrackOpen]       = useState(false);
+
+  useEffect(() => {
+    privateAxios.get("/appointments/stats").then(({ data }) => setStats(data.stats)).catch(() => {});
+  }, []);
 
   const fetchAppointments = async (p = page) => {
     setLoading(true);
@@ -672,6 +690,23 @@ export default function AppointmentsPage() {
               <RefreshCw className="w-4 h-4" /> Refresh
             </button>
           </div>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-3 mb-6">
+          {APPT_STAT_CARDS.map(({ key, label, Icon, bg, text, num }) => (
+            <div key={key} className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 flex flex-col gap-2">
+              <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${bg}`}>
+                <Icon className={`w-4 h-4 ${text}`} />
+              </div>
+              <div>
+                <p className={`text-xl font-bold ${num}`}>
+                  {stats ? (stats as Record<string, number>)[key].toLocaleString() : <span className="inline-block h-6 w-10 bg-gray-100 rounded animate-pulse" />}
+                </p>
+                <p className="text-xs text-gray-400 mt-0.5">{label}</p>
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Card */}

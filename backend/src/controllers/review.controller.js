@@ -1,5 +1,6 @@
 import { Review } from "../models/review.model.js";
 import { Product } from "../models/product.model.js";
+import { notify } from "../utils/notify.js";
 
 // Recalculate and save product rating + review count
 const syncProductRating = async (productId) => {
@@ -44,6 +45,13 @@ export const createReview = async (req, res, next) => {
 
     await syncProductRating(product._id);
 
+    notify({
+      type:   "review",
+      title:  "New Product Review",
+      message: `${req.user.name} left a ${rating}★ review on "${product.name}"`,
+      refId:  review._id.toString(),
+    });
+
     return res.status(201).json({ success: true, data: review });
   } catch (err) {
     // Mongoose duplicate key
@@ -81,6 +89,32 @@ export const getProductReviews = async (req, res, next) => {
       pages:   Math.ceil(total / Number(limit)),
       reviews,
     });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// ── GET /api/reviews/all  (admin) ────────────────────────────────────────────
+export const getAllReviews = async (req, res, next) => {
+  try {
+    const { page = 1, limit = 15, q } = req.query;
+    const skip = (Number(page) - 1) * Number(limit);
+
+    const filter = q
+      ? { $or: [{ userName: new RegExp(q, "i") }, { body: new RegExp(q, "i") }] }
+      : {};
+
+    const [reviews, total] = await Promise.all([
+      Review.find(filter)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(Number(limit))
+        .populate("product", "name image category")
+        .lean(),
+      Review.countDocuments(filter),
+    ]);
+
+    return res.status(200).json({ success: true, reviews, total, pages: Math.ceil(total / Number(limit)) });
   } catch (err) {
     next(err);
   }

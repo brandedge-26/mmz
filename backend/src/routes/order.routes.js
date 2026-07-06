@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/auth.middleware.js";
-import { createOrder, getUserOrders, getOrderById, getAllOrders, updateOrderStatus, deleteOrder, trackOrder } from "../controllers/order.controller.js";
+import { createOrder, getUserOrders, getOrderById, getAllOrders, updateOrderStatus, deleteOrder, trackOrder, cancelOrder, hideOrder, getOrderStats } from "../controllers/order.controller.js";
 import { adminMiddleware } from "../middlewares/auth.middleware.js";
 
 const router = Router();
@@ -14,9 +14,12 @@ const optionalAuth = (req, res, next) => {
 };
 
 router.post("/",                    optionalAuth,                    createOrder);
+router.get("/stats",                authMiddleware, adminMiddleware, getOrderStats);
 router.get("/my",                   authMiddleware,                  getUserOrders);
 router.get("/",                     authMiddleware, adminMiddleware, getAllOrders);
 router.get("/track/:orderNumber",                                    trackOrder);
+router.patch("/:id/cancel",         optionalAuth,                    cancelOrder);
+router.patch("/:id/hide",           authMiddleware,                  hideOrder);
 router.patch("/:id/status",         authMiddleware, adminMiddleware, updateOrderStatus);
 router.delete("/:id",               authMiddleware, adminMiddleware, deleteOrder);
 router.get("/:id",                                                   getOrderById);

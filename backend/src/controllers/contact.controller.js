@@ -1,4 +1,5 @@
 import { Contact } from "../models/contact.model.js";
+import { notify } from "../utils/notify.js";
 
 // POST /api/contact
 export const createContact = async (req, res, next) => {
@@ -20,6 +21,13 @@ export const createContact = async (req, res, next) => {
     }
 
     const contact = await Contact.create({ name, email, phone, subject, message });
+
+    await notify({
+      type: "contact",
+      title: "New Contact Message",
+      message: `${name} sent a message: "${(subject || message).slice(0, 60)}..."`,
+      refId: contact._id.toString(),
+    });
 
     return res.status(201).json({
       success: true,
@@ -51,6 +59,23 @@ export const getAllContacts = async (req, res, next) => {
       pages: Math.ceil(total / Number(limit)),
       data: contacts,
     });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// GET /api/contact/stats  (admin)
+export const getContactStats = async (req, res, next) => {
+  try {
+    const counts = await Contact.aggregate([
+      { $group: { _id: "$status", count: { $sum: 1 } } },
+    ]);
+    const stats = { total: 0, new: 0, read: 0, replied: 0 };
+    for (const { _id, count } of counts) {
+      if (_id in stats) stats[_id] = count;
+      stats.total += count;
+    }
+    return res.json({ success: true, stats });
   } catch (err) {
     next(err);
   }

@@ -9,7 +9,7 @@ import { useCartStore } from "@/store/cartStore";
 import { useWishlistStore } from "@/store/wishlistStore";
 import {
   ShoppingCart, Heart, Share2, ChevronRight, Check,
-  Truck, RotateCcw, ShieldCheck, Star, Minus, Plus,
+  Truck, RotateCcw, ShieldCheck, Star, Minus, Plus, LogIn, X,
 } from "lucide-react";
 
 // ─── Amazon-style image zoom ──────────────────────────────────────────────────
@@ -595,10 +595,17 @@ export default function ProductDetail({ product, related }: Props) {
     : null;
 
   const features = product.features ?? [];
-  const addToCart = useCartStore((s) => s.addItem);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const isInitialized   = useAuthStore((s) => s.isInitialized);
+  const addToCart       = useCartStore((s) => s.addItem);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
   function handleAdd() {
     if (!product.inStock || added) return;
+    if (isInitialized && !isAuthenticated) {
+      setShowLoginPrompt(true);
+      return;
+    }
     addToCart({
       id:            product.id,
       slug:          product.slug,
@@ -987,6 +994,40 @@ export default function ProductDetail({ product, related }: Props) {
           )}
         </div>
       </main>
+
+      {/* Login prompt modal */}
+      {showLoginPrompt && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/40 backdrop-blur-sm">
+          <div className="w-full max-w-sm bg-white rounded-3xl shadow-2xl p-6">
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-12 h-12 rounded-2xl bg-violet-50 flex items-center justify-center shrink-0">
+                <LogIn className="w-6 h-6 text-violet-600" />
+              </div>
+              <button onClick={() => setShowLoginPrompt(false)} className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 transition">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <h3 className="text-lg font-extrabold text-gray-900 mb-1">Sign in to continue</h3>
+            <p className="text-sm text-gray-500 mb-6">
+              Create a free account or sign in to add items to your cart and place orders.
+            </p>
+            <div className="space-y-2">
+              <Link
+                href="/login"
+                className="flex items-center justify-center w-full py-3 rounded-full bg-violet-600 hover:bg-violet-700 text-white text-sm font-bold transition-colors"
+              >
+                Sign in
+              </Link>
+              <Link
+                href="/signup"
+                className="flex items-center justify-center w-full py-3 rounded-full border border-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-50 transition-colors"
+              >
+                Create account
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

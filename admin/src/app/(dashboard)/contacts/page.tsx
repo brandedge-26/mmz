@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MessageSquare, Search, RefreshCw, Phone, Mail, Eye, Trash2, X, Reply, ChevronLeft, ChevronRight } from "lucide-react";
+import { MessageSquare, Search, RefreshCw, Phone, Mail, Eye, Trash2, X, Reply, ChevronLeft, ChevronRight, CheckCircle, List, BookOpen } from "lucide-react";
 import { privateAxios } from "@/lib/axios";
 import Topbar from "@/components/Topbar";
 
@@ -290,6 +290,16 @@ function DeleteModal({ contact, onConfirm, onClose, deleting }: {
   );
 }
 
+// ── Stats ─────────────────────────────────────────────────────────────────────
+interface ContactStats { total: number; new: number; read: number; replied: number }
+
+const CONTACT_STAT_CARDS = [
+  { key: "total",   label: "Total",   Icon: List,         bg: "bg-violet-50", text: "text-violet-600", num: "text-violet-700" },
+  { key: "new",     label: "New",     Icon: MessageSquare,bg: "bg-blue-50",   text: "text-blue-600",   num: "text-blue-700" },
+  { key: "read",    label: "Read",    Icon: BookOpen,     bg: "bg-gray-100",  text: "text-gray-500",   num: "text-gray-700" },
+  { key: "replied", label: "Replied", Icon: CheckCircle,  bg: "bg-green-50",  text: "text-green-600",  num: "text-green-700" },
+] as const;
+
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function ContactsPage() {
   const [contacts, setContacts]   = useState<Contact[]>([]);
@@ -299,10 +309,15 @@ export default function ContactsPage() {
   const [page, setPage]           = useState(1);
   const [total, setTotal]         = useState(0);
   const [pages, setPages]         = useState(1);
+  const [stats, setStats]         = useState<ContactStats | null>(null);
 
   const [viewContact, setViewContact]   = useState<Contact | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Contact | null>(null);
   const [deleting, setDeleting]         = useState(false);
+
+  useEffect(() => {
+    privateAxios.get("/contact/stats").then(({ data }) => setStats(data.stats)).catch(() => {});
+  }, []);
 
   const fetchContacts = async (p = page) => {
     setLoading(true);
@@ -398,6 +413,23 @@ export default function ContactsPage() {
           >
             <RefreshCw className="w-4 h-4" /> Refresh
           </button>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+          {CONTACT_STAT_CARDS.map(({ key, label, Icon, bg, text, num }) => (
+            <div key={key} className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 flex flex-col gap-2">
+              <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${bg}`}>
+                <Icon className={`w-4 h-4 ${text}`} />
+              </div>
+              <div>
+                <p className={`text-xl font-bold ${num}`}>
+                  {stats ? (stats as Record<string, number>)[key].toLocaleString() : <span className="inline-block h-6 w-10 bg-gray-100 rounded animate-pulse" />}
+                </p>
+                <p className="text-xs text-gray-400 mt-0.5">{label}</p>
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Card */}

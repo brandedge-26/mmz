@@ -1,4 +1,5 @@
 import { Appointment } from "../models/appointment.model.js";
+import { notify } from "../utils/notify.js";
 
 const genTrackingId = () => {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -54,6 +55,13 @@ export const createAppointment = async (req, res, next) => {
       date, time,
       name, phone, email,
       trackingId,
+    });
+
+    await notify({
+      type: "appointment",
+      title: "New Repair Booking",
+      message: `${name} booked a repair for ${brand} ${model || ""} (${issues.slice(0, 2).join(", ")})`,
+      refId: appointment._id.toString(),
     });
 
     return res.status(201).json({
@@ -139,6 +147,23 @@ export const trackAppointment = async (req, res, next) => {
       return res.status(404).json({ success: false, message: "Appointment not found. Please check your tracking ID." });
     }
     return res.status(200).json({ success: true, data: appointment });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// GET /api/appointments/stats  (admin)
+export const getAppointmentStats = async (req, res, next) => {
+  try {
+    const counts = await Appointment.aggregate([
+      { $group: { _id: "$status", count: { $sum: 1 } } },
+    ]);
+    const stats = { total: 0, pending: 0, confirmed: 0, "in-progress": 0, completed: 0, cancelled: 0 };
+    for (const { _id, count } of counts) {
+      if (_id in stats) stats[_id] = count;
+      stats.total += count;
+    }
+    return res.json({ success: true, stats });
   } catch (err) {
     next(err);
   }

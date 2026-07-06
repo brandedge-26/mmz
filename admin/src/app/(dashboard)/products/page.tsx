@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Topbar from "@/components/Topbar";
 import { privateAxios } from "@/lib/axios";
-import { Search, Plus, Pencil, Trash2, Package, RefreshCw } from "lucide-react";
+import { Search, Plus, Pencil, Trash2, Package, RefreshCw, AlertTriangle } from "lucide-react";
 import EditProductModal, { type FullProduct } from "./EditProductModal";
 import DeleteModal from "./DeleteModal";
 
@@ -20,6 +20,7 @@ interface Product {
   originalPrice?: number;
   image: string;
   inStock: boolean;
+  quantity: number;
   status: "Active" | "Draft";
   badge?: string;
   trending: boolean;
@@ -87,6 +88,7 @@ export default function ProductsPage() {
               originalPrice: updated.originalPrice ?? undefined,
               image:         updated.image,
               inStock:       updated.inStock,
+              quantity:      updated.quantity,
               status:        updated.status,
               badge:         updated.badge,
               trending:      updated.trending,
@@ -235,9 +237,18 @@ export default function ProductsPage() {
                         )}
                       </td>
                       <td className="px-4 py-3.5">
-                        <span className={`text-xs font-medium ${product.inStock ? "text-emerald-600" : "text-red-500"}`}>
-                          {product.inStock ? "In Stock" : "Out of Stock"}
-                        </span>
+                        {!product.inStock || product.quantity === 0 ? (
+                          <span className="text-xs font-semibold text-red-500">Out of Stock</span>
+                        ) : product.quantity < 10 ? (
+                          <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-600 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
+                            <AlertTriangle className="w-3 h-3" />
+                            Low — {product.quantity} left
+                          </span>
+                        ) : (
+                          <span className="text-xs font-semibold text-emerald-600">
+                            {product.quantity} in stock
+                          </span>
+                        )}
                       </td>
                       <td className="px-4 py-3.5">
                         <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${statusConfig[product.status]}`}>

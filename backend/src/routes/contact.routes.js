@@ -5,11 +5,13 @@ import {
   getContactById,
   updateContactStatus,
   deleteContact,
+  getContactStats,
 } from "../controllers/contact.controller.js";
 
 const router = Router();
 
 router.post("/",            createContact);
+router.get("/stats",        getContactStats);
 router.get("/",             getAllContacts);
 router.get("/:id",          getContactById);
 router.patch("/:id/status", updateContactStatus);

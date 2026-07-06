@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import { User } from "../models/user.model.js";
+import { Order } from "../models/order.model.js";
 
 // GET /api/users  (admin)
 export const getAllUsers = async (req, res, next) => {
@@ -7,13 +8,33 @@ export const getAllUsers = async (req, res, next) => {
     const { page = 1, limit = 10, search } = req.query;
     const skip = (Number(page) - 1) * Number(limit);
 
-    const filter = search
+    const matchFilter = search
       ? { role: "user", $or: [{ name: { $regex: search, $options: "i" } }, { email: { $regex: search, $options: "i" } }] }
       : { role: "user" };
 
     const [users, total] = await Promise.all([
-      User.find(filter).select("-password").sort({ createdAt: -1 }).skip(skip).limit(Number(limit)),
-      User.countDocuments(filter),
+      User.aggregate([
+        { $match: matchFilter },
+        { $sort: { createdAt: -1 } },
+        { $skip: skip },
+        { $limit: Number(limit) },
+        {
+          $lookup: {
+            from: "orders",
+            localField: "_id",
+            foreignField: "user",
+            as: "orders",
+          },
+        },
+        {
+          $addFields: {
+            orderCount: { $size: "$orders" },
+            totalSpent: { $sum: "$orders.total" },
+          },
+        },
+        { $project: { password: 0, orders: 0 } },
+      ]),
+      User.countDocuments(matchFilter),
     ]);
 
     return res.status(200).json({

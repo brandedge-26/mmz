@@ -11,7 +11,9 @@ import userRoutes from "./routes/user.routes.js";
 import productRoutes from "./routes/product.routes.js";
 import reviewRoutes  from "./routes/review.routes.js";
 import cartRoutes    from "./routes/cart.routes.js";
-import orderRoutes   from "./routes/order.routes.js";
+import orderRoutes        from "./routes/order.routes.js";
+import dashboardRoutes    from "./routes/dashboard.routes.js";
+import notificationRoutes from "./routes/notification.routes.js";
 
 
 
@@ -79,6 +81,8 @@ app.use("/api/products",     productRoutes);
 app.use("/api/reviews",      reviewRoutes);
 app.use("/api/cart",         cartRoutes);
 app.use("/api/orders",       orderRoutes);
+app.use("/api/dashboard",    dashboardRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 // GLOBAL ERROR HANDLER
 app.use(globalErrorHandler);

@@ -33,3 +33,27 @@ body {
 .animate-fade-in {
   animation: fade-in 0.2s ease both;
 }
+
+/* ── Custom scrollbar ─────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #374151;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6d28d9;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #374151 transparent;
+}
