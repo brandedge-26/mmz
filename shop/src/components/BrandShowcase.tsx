@@ -45,7 +45,7 @@ export default function BrandShowcase() {
             {MARQUEE.map((brand, i) => (
               <div
                 key={`${brand.name}-${i}`}
-                className="flex items-center justify-center w-36 h-24 rounded-2xl border border-gray-100 bg-gray-50 hover:border-violet-200 hover:bg-violet-50 transition-all duration-300 shrink-0 overflow-hidden px-5 py-4"
+                className="flex items-center justify-center w-44 h-28 rounded-2xl border border-gray-200 bg-white hover:border-violet-300 hover:shadow-md transition-all duration-300 shrink-0 overflow-hidden px-6 py-5"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img

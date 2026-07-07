@@ -6,7 +6,7 @@ import { privateAxios } from "@/lib/axios";
 import {
   Search, Eye, ChevronLeft, ChevronRight,
   RefreshCw, Package, X, Trash2, Phone, Mail, MapPin,
-  Clock, Loader2, Truck, CheckCircle, XCircle, ShoppingBag,
+  Clock, Loader2, Truck, CheckCircle, XCircle, ShoppingBag, Tag,
 } from "lucide-react";
 
 type OrderStatus = "pending" | "processing" | "shipped" | "delivered" | "cancelled";
@@ -40,6 +40,8 @@ interface Order {
   shipping:      Shipping;
   subtotal:      number;
   shippingFee:   number;
+  discount:      number;
+  promoCode:     string;
   total:         number;
   createdAt:     string;
 }
@@ -216,6 +218,19 @@ function DetailModal({
                     {order.shippingFee === 0 ? "Free" : `PKR ${order.shippingFee.toLocaleString()}`}
                   </span>
                 </div>
+                {order.discount > 0 && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-green-600 font-medium flex items-center gap-1">
+                      <Tag className="w-3 h-3" /> Promo
+                      {order.promoCode && (
+                        <span className="font-mono text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded ml-1">
+                          {order.promoCode}
+                        </span>
+                      )}
+                    </span>
+                    <span className="text-green-600 font-semibold">− PKR {order.discount.toLocaleString()}</span>
+                  </div>
+                )}
                 <div className="flex justify-between text-sm border-t border-gray-200 pt-1.5">
                   <span className="font-bold text-gray-900">Total</span>
                   <span className="font-extrabold text-gray-900">PKR {order.total.toLocaleString()}</span>

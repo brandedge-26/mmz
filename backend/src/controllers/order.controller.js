@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import { Order } from "../models/order.model.js";
 import { Product } from "../models/product.model.js";
 import { notify } from "../utils/notify.js";
+import { Promo } from "../models/promo.model.js";
+import { findValidPromo, calcDiscount } from "./promo.controller.js";
 
 // ── Stock helpers ─────────────────────────────────────────────────────────────
 
@@ -60,7 +62,7 @@ async function restoreStock(items) {
 // If req.user exists (optionalAuth ran), attach userId.
 export const createOrder = async (req, res, next) => {
   try {
-    const { items, shipping, subtotal, shippingFee = 0, total, paymentMethod = "cod" } = req.body;
+    const { items, shipping, subtotal, shippingFee = 0, total, paymentMethod = "cod", promoCode } = req.body;
 
     // Validate items
     if (!Array.isArray(items) || items.length === 0) {
@@ -75,12 +77,30 @@ export const createOrder = async (req, res, next) => {
       }
     }
 
+    // Apply promo code if provided
+    let discount = 0;
+    let appliedPromoCode = "";
+    let promoDoc = null;
+    if (promoCode) {
+      try {
+        promoDoc = await findValidPromo(promoCode, subtotal);
+        discount = parseFloat(calcDiscount(promoDoc, subtotal).toFixed(2));
+        appliedPromoCode = promoDoc.code;
+      } catch {
+        // Invalid promo — silently ignore, place order without discount
+      }
+    }
+
+    const finalTotal = Math.max(0, subtotal + shippingFee - discount);
+
     const orderData = {
       items,
       shipping,
       subtotal,
       shippingFee,
-      total,
+      discount,
+      promoCode: appliedPromoCode,
+      total: finalTotal,
       paymentMethod,
     };
 
@@ -90,6 +110,11 @@ export const createOrder = async (req, res, next) => {
     }
 
     const order = await Order.create(orderData);
+
+    // Increment promo usage count
+    if (promoDoc) {
+      Promo.findByIdAndUpdate(promoDoc._id, { $inc: { usedCount: 1 } }).catch(() => {});
+    }
 
     // Decrease product stock (fire & forget — never fail the order)
     decrementStock(items).catch(() => {});

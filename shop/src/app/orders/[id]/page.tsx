@@ -3,7 +3,7 @@
 import { useEffect, useState, use } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { ChevronRight, Package, CheckCircle2, ShoppingBag, XCircle, AlertTriangle } from "lucide-react";
+import { ChevronRight, Package, CheckCircle2, ShoppingBag, XCircle, AlertTriangle, Tag } from "lucide-react";
 import Header from "@/components/Header";
 import { publicAxios } from "@/lib/axios";
 
@@ -38,6 +38,8 @@ interface Order {
   shipping:      Shipping;
   subtotal:      number;
   shippingFee:   number;
+  discount:      number;
+  promoCode:     string;
   total:         number;
   createdAt:     string;
 }
@@ -278,6 +280,20 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                         {order.shippingFee === 0 ? "Free" : `PKR ${order.shippingFee.toLocaleString()}`}
                       </span>
                     </div>
+                    {order.discount > 0 && (
+                      <div className="flex items-center justify-between">
+                        <span className="text-green-600 font-medium flex items-center gap-1">
+                          <Tag className="w-3 h-3" />
+                          Promo
+                          {order.promoCode && (
+                            <span className="font-mono text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded-md ml-1">
+                              {order.promoCode}
+                            </span>
+                          )}
+                        </span>
+                        <span className="text-green-600 font-semibold">− PKR {order.discount.toLocaleString()}</span>
+                      </div>
+                    )}
                     <div className="border-t border-gray-100 pt-2 flex items-center justify-between">
                       <span className="font-bold text-gray-900">Total</span>
                       <span className="text-lg font-extrabold text-gray-900">PKR {order.total.toLocaleString()}</span>

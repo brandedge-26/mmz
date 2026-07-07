@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import HeroBanner from "@/components/HeroBanner";
 import CategoryCards from "@/components/CategoryCards";
+import ShopByDevice from "@/components/ShopByDevice";
 import NewArrivals from "@/components/NewArrivals";
 import WhyMMZ from "@/components/WhyMMZ";
 import TrendingProducts from "@/components/TrendingProducts";
@@ -17,6 +18,7 @@ export default function Home() {
           <HeroBanner />
         </div>
         <CategoryCards />
+        <ShopByDevice />
         <NewArrivals />
         <WhyMMZ />
         <TrendingProducts />

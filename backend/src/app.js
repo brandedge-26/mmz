@@ -14,6 +14,8 @@ import cartRoutes    from "./routes/cart.routes.js";
 import orderRoutes        from "./routes/order.routes.js";
 import dashboardRoutes    from "./routes/dashboard.routes.js";
 import notificationRoutes from "./routes/notification.routes.js";
+import promoRoutes        from "./routes/promo.routes.js";
+import analyticsRoutes    from "./routes/analytics.routes.js";
 
 
 
@@ -83,6 +85,8 @@ app.use("/api/cart",         cartRoutes);
 app.use("/api/orders",       orderRoutes);
 app.use("/api/dashboard",    dashboardRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/promos",       promoRoutes);
+app.use("/api/analytics",   analyticsRoutes);
 
 // GLOBAL ERROR HANDLER
 app.use(globalErrorHandler);

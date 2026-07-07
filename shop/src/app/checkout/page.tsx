@@ -3,11 +3,18 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ShoppingBag, ChevronRight, Truck, AlertCircle, CheckCircle2, Package } from "lucide-react";
+import { ShoppingBag, ChevronRight, Truck, AlertCircle, CheckCircle2, Package, Tag, X, Loader2 } from "lucide-react";
 import Header from "@/components/Header";
 import { useCartStore } from "@/store/cartStore";
 import { useAuthStore } from "@/store/authStore";
 import { privateAxios, publicAxios } from "@/lib/axios";
+
+interface PromoData {
+  code: string;
+  discountType: "percentage" | "fixed";
+  discountValue: number;
+  discountAmount: number;
+}
 
 interface ShippingForm {
   fullName: string;
@@ -31,7 +38,14 @@ export default function CheckoutPage() {
 
   const subtotal    = totalPrice();
   const shippingFee = 0;
-  const total       = subtotal + shippingFee;
+
+  const [promoInput,   setPromoInput]   = useState("");
+  const [promoData,    setPromoData]    = useState<PromoData | null>(null);
+  const [promoLoading, setPromoLoading] = useState(false);
+  const [promoError,   setPromoError]   = useState("");
+
+  const discount = promoData?.discountAmount ?? 0;
+  const total    = Math.max(0, subtotal + shippingFee - discount);
 
   const [form, setForm] = useState<ShippingForm>({
     fullName: "",
@@ -60,6 +74,30 @@ export default function CheckoutPage() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const applyPromo = async () => {
+    const code = promoInput.trim().toUpperCase();
+    if (!code) return;
+    setPromoError("");
+    setPromoLoading(true);
+    try {
+      const { data } = await privateAxios.post("/promos/validate", { code, subtotal });
+      setPromoData(data.promo);
+      setPromoError("");
+    } catch (err: unknown) {
+      const msg = (err as { response?: { data?: { message?: string } } })?.response?.data?.message;
+      setPromoError(msg || "Invalid promo code.");
+      setPromoData(null);
+    } finally {
+      setPromoLoading(false);
+    }
+  };
+
+  const removePromo = () => {
+    setPromoData(null);
+    setPromoInput("");
+    setPromoError("");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -93,6 +131,7 @@ export default function CheckoutPage() {
         shippingFee,
         total,
         paymentMethod: "cod",
+        promoCode:     promoData?.code ?? "",
       });
 
       setSuccess({ orderId: data.order._id, orderNumber: data.order.orderNumber });
@@ -364,7 +403,59 @@ export default function CheckoutPage() {
                     ))}
                   </div>
 
-                  <div className="border-t border-gray-100 pt-4 space-y-2">
+                  {/* Promo code */}
+                  <div className="border-t border-gray-100 pt-4">
+                    {promoData ? (
+                      <div className="flex items-center justify-between px-3 py-2.5 bg-green-50 border border-green-200 rounded-xl">
+                        <div className="flex items-center gap-2">
+                          <Tag className="w-4 h-4 text-green-600 shrink-0" />
+                          <div>
+                            <p className="text-xs font-bold text-green-700 font-mono tracking-widest">{promoData.code}</p>
+                            <p className="text-[10px] text-green-600">
+                              {promoData.discountType === "percentage" ? `${promoData.discountValue}% off` : `PKR ${promoData.discountValue} off`}
+                            </p>
+                          </div>
+                        </div>
+                        <button onClick={removePromo} className="p-1 rounded-lg hover:bg-green-100 text-green-500 transition">
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="space-y-1.5">
+                        <div className="flex gap-2">
+                          <div className="relative flex-1">
+                            <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+                            <input
+                              type="text"
+                              value={promoInput}
+                              onChange={(e) => { setPromoInput(e.target.value.toUpperCase()); setPromoError(""); }}
+                              onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), applyPromo())}
+                              placeholder="Promo code"
+                              className="w-full pl-8 pr-3 py-2 text-sm border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-violet-300 focus:border-violet-400 transition font-mono tracking-widest uppercase"
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            onClick={applyPromo}
+                            disabled={promoLoading || !promoInput.trim() || !isAuthenticated}
+                            className="px-4 py-2 bg-gray-900 hover:bg-gray-700 text-white text-sm font-semibold rounded-xl transition disabled:opacity-40"
+                          >
+                            {promoLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Apply"}
+                          </button>
+                        </div>
+                        {!isAuthenticated && (
+                          <p className="text-[11px] text-gray-400">Sign in to apply a promo code.</p>
+                        )}
+                        {promoError && (
+                          <p className="text-[11px] text-red-500 flex items-center gap-1">
+                            <AlertCircle className="w-3 h-3" /> {promoError}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-gray-500">Subtotal</span>
                       <span className="font-semibold text-gray-800">PKR {subtotal.toLocaleString()}</span>
@@ -373,6 +464,14 @@ export default function CheckoutPage() {
                       <span className="text-gray-500">Shipping</span>
                       <span className="text-emerald-600 font-semibold">Free</span>
                     </div>
+                    {discount > 0 && (
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-green-600 font-medium flex items-center gap-1">
+                          <Tag className="w-3.5 h-3.5" /> Discount
+                        </span>
+                        <span className="text-green-600 font-semibold">− PKR {discount.toLocaleString()}</span>
+                      </div>
+                    )}
                   </div>
 
                   <div className="border-t border-gray-100 pt-4 flex items-center justify-between">
