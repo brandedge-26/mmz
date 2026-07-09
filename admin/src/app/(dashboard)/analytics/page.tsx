@@ -119,7 +119,7 @@ function RevenueTooltip({ active, payload, label }: { active?: boolean; payload?
       <p className="font-bold text-gray-700 mb-1">{label}</p>
       {payload.map((p, i) => (
         <p key={i} className="text-gray-500">
-          Revenue: <span className="font-semibold text-violet-600">PKR {p.value.toLocaleString()}</span>
+          Sales: <span className="font-semibold text-violet-600">PKR {p.value.toLocaleString()}</span>
         </p>
       ))}
     </div>
@@ -212,7 +212,7 @@ export default function AnalyticsPage() {
 
         {/* KPI cards */}
         <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-4">
-          <KpiCard label="Total Revenue"   value={kpis ? pkr(kpis.totalRevenue)   : "—"} Icon={TrendingUp}  bg="bg-violet-50"  text="text-violet-600" sub={kpis ? `${pkr(kpis.periodRevenue)} this period` : undefined} />
+          <KpiCard label="Total Sales"   value={kpis ? pkr(kpis.totalRevenue)   : "—"} Icon={TrendingUp}  bg="bg-violet-50"  text="text-violet-600" sub={kpis ? `${pkr(kpis.periodRevenue)} this period` : undefined} />
           <KpiCard label="Total Orders"    value={kpis ? kpis.totalOrders.toLocaleString()    : "—"} Icon={ShoppingBag} bg="bg-blue-50"    text="text-blue-600"   sub={kpis ? `${kpis.periodOrders} this period` : undefined} />
           <KpiCard label="Customers"       value={kpis ? kpis.totalCustomers.toLocaleString() : "—"} Icon={Users}       bg="bg-green-50"   text="text-green-600" />
           <KpiCard label="Active Products" value={kpis ? kpis.totalProducts.toLocaleString()  : "—"} Icon={Package}     bg="bg-amber-50"   text="text-amber-500" />
@@ -220,7 +220,7 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Revenue chart (full width) */}
-        <ChartCard title="Revenue Over Time" sub={`Last ${range} days — cancelled orders excluded`}>
+        <ChartCard title="Sales Over Time" sub={`Last ${range} days — cancelled orders excluded`}>
           {loading ? <ChartSkeleton h={280} /> : (
             <ResponsiveContainer width="100%" height={280}>
               <AreaChart data={data?.daily} margin={{ top: 4, right: 4, left: 0, bottom: 0 }}>
