@@ -192,20 +192,15 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
         </ul>
       </nav>
 
-      {/* User info + logout */}
+      {/* Logout */}
       <div className="border-t border-gray-800 p-3">
-        <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl">
-          <div className="w-8 h-8 rounded-full bg-violet-600 flex items-center justify-center flex-shrink-0">
-            <span className="text-white text-xs font-semibold">{initials}</span>
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-white text-sm font-medium truncate">{user?.name || "Admin"}</p>
-            <p className="text-gray-500 text-xs truncate">{user?.email || "admin@mmz.com"}</p>
-          </div>
-          <button onClick={handleLogout} title="Logout" className="text-gray-500 hover:text-red-400 transition flex-shrink-0">
-            <LogOut className="w-4 h-4" />
-          </button>
-        </div>
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-400 hover:text-red-400 hover:bg-gray-800 transition-all"
+        >
+          <LogOut className="w-[18px] h-[18px] flex-shrink-0" />
+          Logout
+        </button>
       </div>
     </div>
   );

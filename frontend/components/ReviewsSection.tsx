@@ -8,7 +8,7 @@ const reviews = [
     text: "Screen cracked badly after a fall. Fixed it within 2 hours, display looks completely brand new. Super professional and gave a warranty too.",
     initials: "MA",
     color: "from-violet-600 to-violet-800",
-    image: "/home/same-day-repair.jpg",
+    image: "/home/man-repair.png",
     time: "2 days ago",
   },
   {

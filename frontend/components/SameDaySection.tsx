@@ -7,50 +7,14 @@ export default function SameDaySection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-10 items-center">
 
-          {/* LEFT — image grid */}
-          <div className="grid grid-cols-2 gap-3">
-            {/* Top — full width large image */}
-            <div className="col-span-2 relative rounded-2xl overflow-hidden h-64 group">
-              <Image
-                src="/home/same-day-repair.jpg"
-                alt="Same-day repairs"
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-500"
-              />
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-              <span className="absolute bottom-4 left-5 text-white font-bold text-xl leading-tight drop-shadow">
-                Same-day<br />repairs
-              </span>
-            </div>
-
-            {/* Bottom-left */}
-            <div className="relative rounded-2xl overflow-hidden h-44 group">
-              <Image
-                src="/home/technician-1.png"
-                alt="Expert technicians"
-                fill
-                className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-              <span className="absolute bottom-3 left-4 text-white font-bold text-sm leading-snug drop-shadow">
-                2 Branches<br />in Karachi
-              </span>
-            </div>
-
-            {/* Bottom-right */}
-            <div className="relative rounded-2xl overflow-hidden h-44 group bg-violet-50">
-              <Image
-                src="/home/accessories.jpg"
-                alt="Low price guarantee"
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-              <span className="absolute bottom-3 left-4 text-white font-bold text-sm leading-snug drop-shadow">
-                Low price<br />guarantee
-              </span>
-            </div>
+          {/* LEFT — single image */}
+          <div className="relative rounded-2xl overflow-hidden h-[420px] group">
+            <Image
+              src="/home/man-repair.png"
+              alt="Expert repair technician"
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
+            />
           </div>
 
           {/* RIGHT — content */}

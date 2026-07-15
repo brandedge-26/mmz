@@ -274,12 +274,6 @@ export default function Header() {
                 </div>
               )}
 
-              {/* Track Repair — always visible on desktop */}
-              <button onClick={() => setTrackOpen(true)}
-                className="text-sm text-gray-600 hover:text-violet-700 px-4 py-2 rounded-full border border-gray-200 hover:border-violet-300 hover:bg-violet-50 transition-colors font-medium">
-                Track Repair
-              </button>
-
               {/* Not logged in */}
               {!authLoading && !user && (
                 <Link href="/login" className="text-sm text-gray-600 hover:text-gray-900 px-4 py-2 rounded-full border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-colors font-medium">

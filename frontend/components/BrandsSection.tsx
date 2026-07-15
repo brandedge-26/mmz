@@ -9,6 +9,10 @@ const brands = [
   { label: "Start a Vivo repair", image: "/home/brand-small-banner/vivo-new.jpg", href: "/repairs/vivo" },
 ];
 
+const mobileOnlyBrands = [
+  { label: "Start an Infinix repair", image: "/home/brand-small-banner/infinix.png", href: "/repairs/infinix" },
+];
+
 export default function BrandsSection() {
   return (
     <section className="bg-white py-10">
@@ -26,11 +30,11 @@ export default function BrandsSection() {
 
         {/* Brand cards */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-          {brands.map((brand) => (
+          {[...brands, ...mobileOnlyBrands.map((b) => ({ ...b, mobileOnly: true }))].map((brand) => (
             <Link
               key={brand.label}
               href={brand.href}
-              className="group flex flex-col rounded-xl border border-gray-200 overflow-hidden hover:border-violet-300 hover:shadow-md transition-all duration-200"
+              className={`group flex flex-col rounded-xl border border-gray-200 overflow-hidden hover:border-violet-300 hover:shadow-md transition-all duration-200 ${"mobileOnly" in brand && brand.mobileOnly ? "lg:hidden" : ""}`}
             >
               {/* Image */}
               <div className="relative w-full aspect-[3/2] bg-gray-50 overflow-hidden">
