@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-const CATEGORIES = ["Cases", "Screen Protection", "Power & Charging", "Audio", "Accessories", "Panels"];
+const CATEGORIES = ["Cases", "Screen Protection", "Power & Charging", "Audio", "Accessories", "Back Glass", "Panels"];
 const BADGES     = ["None", "New", "Hot", "Sale", "Trending", "Best Seller"];
 const BRANDS     = ["Apple", "Samsung", "Anker", "JBL", "Spigen", "ZAGG", "Belkin", "OnePlus", "Oppo", "Vivo", "Xiaomi", "Realme", "Other"];
 

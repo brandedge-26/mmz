@@ -43,7 +43,7 @@ export default function NavDropdown({ panel }: NavDropdownProps) {
 
       {/* Right — grid */}
       <div className="flex-1">
-        <div className="grid grid-cols-3 gap-3">
+        <div className={`grid gap-3 ${panel.items.length > 6 ? "grid-cols-4" : "grid-cols-3"}`}>
           {gridItems.map((item) => (
             <Link
               key={item.label}

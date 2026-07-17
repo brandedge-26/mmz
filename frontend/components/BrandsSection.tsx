@@ -1,16 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 
+// Desktop: first 5 shown (lg:grid-cols-5), last one mobile-only (lg:hidden)
 const brands = [
-  { label: "Start a Samsung repair", image: "/home/brand-small-banner/samsung-ipad-new2.jpg", href: "/repairs/samsung" },
-  { label: "Start an Apple repair", image: "/home/brand-small-banner/apple-new2.jpg", href: "/repairs/iphone" },
-  { label: "Start a Google repair", image: "/home/brand-small-banner/google-new.jpg", href: "/repairs/google-pixel" },
-  { label: "Start an Oppo repair", image: "/home/brand-small-banner/oppo.jpg", href: "/repairs/oppo" },
-  { label: "Start a Vivo repair", image: "/home/brand-small-banner/vivo-new.jpg", href: "/repairs/vivo" },
-];
-
-const mobileOnlyBrands = [
-  { label: "Start an Infinix repair", image: "/home/brand-small-banner/infinix.png", href: "/repairs/infinix" },
+  { label: "Start a Samsung repair",   image: "/home/brand-small-banner/samsung.png",     href: "/repairs/samsung",      mobileOnly: false },
+  { label: "Start an Apple repair",    image: "/home/brand-small-banner/iphone.png",      href: "/repairs/iphone",       mobileOnly: false },
+  { label: "Start a Google repair",    image: "/home/brand-small-banner/google-pixel.png",href: "/repairs/google-pixel", mobileOnly: false },
+  { label: "Start an Oppo repair",     image: "/home/brand-small-banner/oppo.png",        href: "/repairs/oppo",         mobileOnly: false },
+  { label: "Start a OnePlus repair",   image: "/home/brand-small-banner/one-plus.png",    href: "/repairs/oneplus",      mobileOnly: false },
+  { label: "Start a Realme repair",    image: "/home/brand-small-banner/realme.png",      href: "/repairs/realme",       mobileOnly: true  },
 ];
 
 export default function BrandsSection() {
@@ -29,12 +27,12 @@ export default function BrandsSection() {
         </div>
 
         {/* Brand cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-          {[...brands, ...mobileOnlyBrands.map((b) => ({ ...b, mobileOnly: true }))].map((brand) => (
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
+          {brands.map((brand) => (
             <Link
               key={brand.label}
               href={brand.href}
-              className={`group flex flex-col rounded-xl border border-gray-200 overflow-hidden hover:border-violet-300 hover:shadow-md transition-all duration-200 ${"mobileOnly" in brand && brand.mobileOnly ? "lg:hidden" : ""}`}
+              className={`group flex flex-col rounded-xl border border-gray-200 overflow-hidden hover:border-violet-300 hover:shadow-md transition-all duration-200 ${brand.mobileOnly ? "lg:hidden" : ""}`}
             >
               {/* Image */}
               <div className="relative w-full aspect-[3/2] bg-gray-50 overflow-hidden">

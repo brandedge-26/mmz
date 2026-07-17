@@ -170,6 +170,24 @@ const navItems = [
       },
     ],
   },
+  {
+    label: "Back Glass",
+    href: "/products?category=Back+Glass",
+    columns: [
+      {
+        heading: "Shop by device",
+        shopAll: "/products?category=Back+Glass",
+        links: [
+          { label: "iPhone",       href: "/products?category=Back+Glass&brand=iPhone" },
+          { label: "Samsung",      href: "/products?category=Back+Glass&brand=Samsung" },
+          { label: "Google Pixel", href: "/products?category=Back+Glass&brand=Pixel" },
+          { label: "OnePlus",      href: "/products?category=Back+Glass&brand=OnePlus" },
+          { label: "Oppo",         href: "/products?category=Back+Glass&brand=Oppo" },
+          { label: "Vivo",         href: "/products?category=Back+Glass&brand=Vivo" },
+        ],
+      },
+    ],
+  },
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────

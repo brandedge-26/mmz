@@ -14,7 +14,7 @@ import {
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-type Category = "Phone" | "iPad" | "Tablet" | "Accessories";
+type Category = "Phone" | "iPad" | "Tablet" | "SmartWatches" | "Headphones" | "PowerBank" | "AudioSpeakers" | "Earbuds";
 
 // ─── Brand image map ─────────────────────────────────────────────────────────
 
@@ -37,10 +37,14 @@ const BRAND_IMAGES: Record<string, string> = {
 // ─── Device & model data ─────────────────────────────────────────────────────
 
 const DEVICES: { cat: Category; label: string; image: string; desc: string }[] = [
-  { cat: "Phone",       label: "Phone",       image: "/appoinments/device-select/iphone.webp",    desc: "Smartphones" },
-  { cat: "iPad",        label: "iPad",        image: "/appoinments/device-select/ipad.webp",      desc: "Apple iPad" },
-  { cat: "Tablet",      label: "Tablet",      image: "/header-images/tech-repair/tablet.png",     desc: "Android / Windows" },
-  { cat: "Accessories", label: "Accessories", image: "/home/services/earbuds-service.jpg",        desc: "Earbuds & more" },
+  { cat: "Phone",         label: "Phone",          image: "/appoinments/device-select/iphone.webp",                desc: "Smartphones" },
+  { cat: "iPad",          label: "iPad",           image: "/appoinments/device-select/ipad.webp",                  desc: "Apple iPad" },
+  { cat: "Tablet",        label: "Tablet",         image: "/header-images/tech-repair/tablet.png",                 desc: "Android / Windows" },
+  { cat: "SmartWatches",  label: "Smart Watches",  image: "/home/services/smartwatch-service.png",                 desc: "Smartwatches" },
+  { cat: "Headphones",    label: "Headphones",     image: "/header-images/shop-accessories/audio.png",             desc: "Headphones" },
+  { cat: "PowerBank",     label: "Power Bank",     image: "/header-images/shop-accessories/power-accessories.png", desc: "Power Banks" },
+  { cat: "AudioSpeakers", label: "Audio Speakers", image: "/header-images/Audio.webp",                             desc: "Speakers" },
+  { cat: "Earbuds",       label: "Earbuds",        image: "/home/services/earbuds-service.jpg",                    desc: "Earbuds" },
 ];
 
 type DeviceData = { brands: string[]; models: Record<string, string[]> };
@@ -158,33 +162,67 @@ const DEVICE_DATA: Record<Category, DeviceData> = {
       ],
     },
   },
-  Accessories: {
-    brands: ["Earbuds","SmartWatches","Headphones","Audio Speakers"],
+  SmartWatches: {
+    brands: ["Apple","Samsung","Huawei","Xiaomi","Oppo","OnePlus","Noise","Other"],
     models: {
-      Earbuds: [
-        "AirPods Pro (2nd Gen)","AirPods (3rd Gen)","AirPods (2nd Gen)",
-        "Samsung Galaxy Buds 2 Pro","Samsung Galaxy Buds 2","Samsung Galaxy Buds FE",
-        "OnePlus Buds Pro 2","OnePlus Buds 3",
-        "Xiaomi Buds 4 Pro","Oppo Enco X2","Oppo Enco Air 3 Pro",
-        "JBL Live Pro 2 TWS","JBL Tune Flex","Sony WF-1000XM5",
-      ],
-      SmartWatches: [
-        "Apple Watch Ultra 2","Apple Watch Series 9","Apple Watch SE (2nd Gen)","Apple Watch Series 8",
-        "Samsung Galaxy Watch 6 Classic","Samsung Galaxy Watch 6",
-        "Samsung Galaxy Watch 5 Pro","Samsung Galaxy Watch 5",
-        "Xiaomi Watch S3","Huawei Watch GT 4","Oppo Watch 4 Pro","OnePlus Watch 2",
-      ],
-      Headphones: [
-        "Sony WH-1000XM5","Sony WH-1000XM4","Samsung Galaxy Buds Live",
-        "JBL Tune 770NC","JBL Club One","Beats Studio Pro","Beats Studio 3",
-        "Bose QuietComfort 45","Bose 700","Xiaomi Headphones 2 Pro",
-      ],
-      "Audio Speakers": [
-        "JBL Flip 6","JBL Charge 5","JBL Go 3","JBL Xtreme 3",
-        "Sony SRS-XB43","Sony SRS-XB33",
-        "Marshall Emberton III","Marshall Emberton II",
-        "Xiaomi Mi Portable Bluetooth Speaker 2","Anker Soundcore Motion+",
-      ],
+      Apple:   ["Apple Watch Ultra 2","Apple Watch Series 9","Apple Watch Series 8","Apple Watch SE (2nd Gen)","Apple Watch Series 7","Apple Watch Series 6"],
+      Samsung: ["Galaxy Watch 6 Classic","Galaxy Watch 6","Galaxy Watch 5 Pro","Galaxy Watch 5","Galaxy Watch 4 Classic","Galaxy Watch 4"],
+      Huawei:  ["Watch GT 4","Watch GT 3 Pro","Watch GT 3","Watch Fit 3","Watch Fit 2","Band 8"],
+      Xiaomi:  ["Watch S3","Watch S2","Watch S1 Pro","Redmi Watch 4","Redmi Watch 3 Active","Mi Band 8 Pro"],
+      Oppo:    ["Watch 4 Pro","Watch 3 Pro","Watch 3","Band 2"],
+      OnePlus: ["Watch 2","Watch Nord","Watch 2R"],
+      Noise:   ["ColorFit Pro 5","ColorFit Ultra 2","ColorFit Icon 2","Pulse 4 Max"],
+      Other:   [],
+    },
+  },
+  Headphones: {
+    brands: ["Sony","JBL","Beats","Bose","Xiaomi","Sennheiser","Other"],
+    models: {
+      Sony:       ["WH-1000XM5","WH-1000XM4","WH-XB910N","WH-CH720N","WH-CH520"],
+      JBL:        ["Tune 770NC","Tune 660NC","Club One","Live 660NC","Tune 510BT","Tune 720BT"],
+      Beats:      ["Studio Pro","Studio 3","Solo 3","Fit Pro","PowerBeats Pro"],
+      Bose:       ["QuietComfort 45","QuietComfort 35 II","700","QuietComfort Ultra"],
+      Xiaomi:     ["Headphones 2 Pro","Redmi Buds 5 Pro","Mi Headphones Comfort"],
+      Sennheiser: ["HD 450BT","Momentum 4 Wireless","Accentum Plus"],
+      Other:      [],
+    },
+  },
+  PowerBank: {
+    brands: ["Anker","Xiaomi","Baseus","Samsung","ROMOSS","Veger","Realme","Other"],
+    models: {
+      Anker:   ["PowerCore 20000","PowerCore 10000","737 Power Bank (24K)","548 Power Bank","PowerCore Slim 10000","Prime 27650mAh"],
+      Xiaomi:  ["Power Bank 3 Pro 20000","Power Bank 3 10000","Power Bank 40000","Redmi Power Bank 20000","Redmi Power Bank 10000"],
+      Baseus:  ["65W Power Bank 30000mAh","Blade 100W","20000mAh Fast Charge","Adaman 2 65W","Elf 20000mAh"],
+      Samsung: ["25W Super Fast Charging Battery Pack","10000mAh Battery Pack","20000mAh Battery Pack"],
+      ROMOSS:  ["Sense 8+ 30000mAh","Sense 6 20000mAh","PEA20 20000mAh"],
+      Veger:   ["20000mAh","10000mAh","VP-Q10 10000mAh"],
+      Realme:  ["65W Power Bank","33W Power Bank 20000mAh"],
+      Other:   [],
+    },
+  },
+  AudioSpeakers: {
+    brands: ["JBL","Sony","Marshall","Xiaomi","Anker","Other"],
+    models: {
+      JBL:      ["Flip 6","Flip 5","Charge 5","Charge 4","Go 3","Xtreme 3","Boombox 3","Pulse 5","Partybox 310"],
+      Sony:     ["SRS-XB43","SRS-XB33","SRS-XB23","SRS-XG300","SRS-XE300"],
+      Marshall:  ["Emberton III","Emberton II","Stockwell II","Kilburn II","Tufton"],
+      Xiaomi:   ["Mi Portable Bluetooth Speaker 2","Mi Smart Speaker","Redmi Speaker"],
+      Anker:    ["Soundcore Motion+","Soundcore Motion 300","Soundcore 3","Soundcore Boom 2","Soundcore Rave Neo"],
+      Other:    [],
+    },
+  },
+  Earbuds: {
+    brands: ["Apple","Samsung","Sony","JBL","OnePlus","Xiaomi","Oppo","Realme","Other"],
+    models: {
+      Apple:   ["AirPods Pro (2nd Gen)","AirPods (3rd Gen)","AirPods (2nd Gen)","AirPods Max"],
+      Samsung: ["Galaxy Buds 2 Pro","Galaxy Buds 2","Galaxy Buds FE","Galaxy Buds Live","Galaxy Buds Pro"],
+      Sony:    ["WF-1000XM5","WF-1000XM4","WF-C700N","LinkBuds S","WI-C100"],
+      JBL:     ["Live Pro 2 TWS","Tune Flex","Tour Pro 2","Tune 230NC TWS","Vibe Beam"],
+      OnePlus: ["Buds Pro 2","Buds 3","Buds 2R","Nord Buds 2","Nord Buds CE"],
+      Xiaomi:  ["Buds 4 Pro","Redmi Buds 5 Pro","Redmi Buds 5","Redmi Buds 4 Pro"],
+      Oppo:    ["Enco X2","Enco Air 3 Pro","Enco Air 3","Enco Buds 2"],
+      Realme:  ["Buds Air 5 Pro","Buds Air 5","Buds Air 3 Neo","Buds T110"],
+      Other:   [],
     },
   },
 };
@@ -324,9 +362,9 @@ export default function AppointmentPage() {
 
   const availableDates = getAvailableDates();
   const data           = category ? DEVICE_DATA[category] : null;
-  const brandList      = data ? [...data.brands, "Other"] : [];
+  const brandList      = data ? (data.brands.includes("Other") ? data.brands : [...data.brands, "Other"]) : [];
   const models         = data && brand && brand !== "Other" ? (data.models[brand] ?? []) : [];
-  const isAccessories  = category === "Accessories";
+  const isAccessories  = false;
 
   const step1Ready = !!category && !!brand && (brand === "Other" ? !!otherBrandText.trim() : !!model);
   const step2Ready = !!serviceType && (
@@ -573,7 +611,7 @@ export default function AppointmentPage() {
                   {DEVICES.map(({ cat, label, image }) => {
                     const active = category === cat;
                     return (
-                      <button key={cat}
+                      <button key={label}
                         onClick={() => { setCategory(cat); setBrand(""); setModel(""); setOtherBrandText(""); setOtherModelText(""); }}
                         className={`group flex flex-col items-center gap-3 py-6 px-3 rounded-2xl border-2 bg-white transition-all duration-200 focus:outline-none ${
                           active
@@ -598,18 +636,18 @@ export default function AppointmentPage() {
                       {isAccessories ? "Select type" : "Select brand"}
                     </p>
                     <div className="flex flex-wrap gap-2">
-                      {brandList.map((b) => {
+                      {brandList.map((b, bi) => {
                         const active  = brand === b;
-                        const hasImg  = !isAccessories && BRAND_IMAGES[b];
+                        const showImg = ["Phone","iPad","Tablet"].includes(category ?? "") && !!BRAND_IMAGES[b];
                         return (
-                          <button key={b}
+                          <button key={`${category}-${b}-${bi}`}
                             onClick={() => { setBrand(b); setModel(""); setOtherBrandText(""); setOtherModelText(""); }}
                             className={`flex items-center gap-2.5 px-5 py-3 rounded-full text-sm font-semibold border-2 transition-all duration-150 ${
                               active
                                 ? "border-violet-600 bg-violet-600 text-white"
                                 : "border-gray-200 bg-white text-gray-700 hover:border-gray-400 hover:shadow-sm"
                             }`}>
-                            {hasImg && (
+                            {showImg && (
                               <img src={BRAND_IMAGES[b]} alt={b} className={`w-5 h-5 object-contain flex-shrink-0 ${active ? "brightness-0 invert" : ""}`} />
                             )}
                             {b === "Other" && <HelpCircle className="w-4 h-4" />}

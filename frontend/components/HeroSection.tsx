@@ -2,10 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 
 const deviceCards = [
-  { label: "Phone",       image: "/home/phone-repair/iphone.png",          href: "/appointment" },
-  { label: "Tablet",      image: "/header-images/tech-repair/tablet.png",  href: "/appointment" },
-  { label: "Earbuds",     image: "/home/services/earbuds-service.jpg",     href: "/appointment" },
-  { label: "Smart Watch", image: "/home/services/smartwatch-service.png",  href: "/appointment" },
+  { label: "Phone",           image: "/home/phone-repair/iphone.png",                    href: "/appointment" },
+  { label: "Tablet",          image: "/header-images/tech-repair/tablet.png",            href: "/appointment" },
+  { label: "iPad",            image: "/header-images/tech-repair/ipad.png",              href: "/appointment" },
+  { label: "Smart Watches",   image: "/home/services/smartwatch-service.png",            href: "/appointment" },
+  { label: "Headphones",      image: "/header-images/shop-accessories/audio.png",        href: "/appointment" },
+  { label: "Power Bank",      image: "/header-images/shop-accessories/power-accessories.png", href: "/appointment" },
+  { label: "Audio Speakers",  image: "/header-images/Audio.webp",                        href: "/appointment", imgClass: "w-20 h-16" },
+  { label: "Earbuds",         image: "/home/services/earbuds-service.jpg",               href: "/appointment" },
 ];
 
 export default function HeroSection() {
@@ -35,7 +39,7 @@ export default function HeroSection() {
                   href={card.href}
                   className="flex flex-col items-center gap-2 p-4 rounded-2xl border border-gray-200 hover:border-violet-300 hover:bg-violet-50 transition-all group"
                 >
-                  <div className="relative w-14 h-12">
+                  <div className={`relative ${"imgClass" in card && card.imgClass ? card.imgClass : "w-14 h-12"}`}>
                     <Image
                       src={card.image}
                       alt={card.label}
