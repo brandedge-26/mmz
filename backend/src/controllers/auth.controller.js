@@ -70,6 +70,10 @@ export const login = async (req, res, next) => {
       throw new Error("Invalid email or password", { cause: { statusCode: 401 } });
     }
 
+    if (!user.password) {
+      throw new Error("This account uses Google Sign-In. Please sign in with Google.", { cause: { statusCode: 401 } });
+    }
+
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
       throw new Error("Invalid email or password", { cause: { statusCode: 401 } });

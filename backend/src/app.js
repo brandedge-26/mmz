@@ -1,6 +1,7 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import passport from "./passport/auth.passport.js";
 import { connectDB } from "./config/db.js";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler.js";
 import { ENV } from "./config/envs.js";
@@ -34,6 +35,9 @@ export const app = express();
 
 // COOKIE PARSING
 app.use(cookieParser());
+
+// PASSPORT
+app.use(passport.initialize());
 
 
 

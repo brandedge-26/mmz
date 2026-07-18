@@ -16,13 +16,18 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
+      default: null,
     },
     role: {
       type: String,
       enum: ["user", "admin"],
       default: "user",
     },
+    // OAuth fields
+    provider:        { type: String, default: "local" },
+    providerId:      { type: String, default: null },
+    profilePicture:  { type: String, default: null },
+    isEmailVerified: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
