@@ -8,6 +8,12 @@ const connectionOptions = {
     socketTimeoutMS: 45000,
 };
 
+// Cached connection for serverless environments (Vercel)
+let cached = global._mongoose;
+if (!cached) {
+    cached = global._mongoose = { conn: null, promise: null };
+}
+
 
 
 export const connectDB = async () => {
@@ -15,26 +21,26 @@ export const connectDB = async () => {
     const DB_URL = ENV.DB_URL;
 
     if (!DB_URL) {
-        console.error("Error: DB_URL environment variable is missing!");
-        process.exit(1);
+        throw new Error("DB_URL environment variable is missing!");
+    }
+
+    if (cached.conn) {
+        return cached.conn;
+    }
+
+    if (!cached.promise) {
+        cached.promise = mongoose.connect(DB_URL, connectionOptions).then((mongooseInstance) => {
+            console.log(`MongoDB Connected`);
+            return mongooseInstance;
+        });
     }
 
     try {
-
-        await mongoose.connect(DB_URL, connectionOptions);
-
-        console.log(`MongoDB Connected`);
-
-        mongoose.connection.on("error", (err) => {
-            console.error(`Database connection error: ${err}`);
-        });
-
-        mongoose.connection.on("disconnected", () => {
-            console.warn("MongoDB disconnected. Attempting to reconnect...");
-        });
-
+        cached.conn = await cached.promise;
     } catch (err) {
-        console.error(`Connection Failed: ${err.message}`);
-        process.exit(1);
+        cached.promise = null;
+        throw err;
     }
+
+    return cached.conn;
 };

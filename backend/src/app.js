@@ -22,7 +22,11 @@ import analyticsRoutes    from "./routes/analytics.routes.js";
 
 
 // DB CONNECTION
-await connectDB();
+try {
+    await connectDB();
+} catch (err) {
+    console.error("DB Connection Failed:", err.message);
+}
 
 
 
