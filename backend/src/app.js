@@ -55,8 +55,11 @@ app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 // CORS CONFIGURATION
 const PRODUCTION_ORIGINS = [
   "https://memonmobilezone122.pk",
+  "https://www.memonmobilezone122.pk",
   "https://shop.memonmobilezone122.pk",
-  "https://admin.memonmobilezone.pk",
+  "https://www.shop.memonmobilezone122.pk",
+  "https://admin.memonmobilezone122.pk",
+  "https://www.admin.memonmobilezone122.pk",
 ];
 
 const ALLOWED_ORIGINS = [
