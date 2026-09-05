@@ -17,6 +17,7 @@ import dashboardRoutes    from "./routes/dashboard.routes.js";
 import notificationRoutes from "./routes/notification.routes.js";
 import promoRoutes        from "./routes/promo.routes.js";
 import analyticsRoutes    from "./routes/analytics.routes.js";
+import cloudinaryRoutes   from "./routes/cloudinary.routes.js";
 
 
 
@@ -100,6 +101,7 @@ app.use("/api/dashboard",    dashboardRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/promos",       promoRoutes);
 app.use("/api/analytics",   analyticsRoutes);
+app.use("/api/cloudinary",  cloudinaryRoutes);
 
 // GLOBAL ERROR HANDLER
 app.use(globalErrorHandler);

@@ -6,6 +6,20 @@ import {
   X, Plus, Upload, ImagePlus, CheckCircle2, AlertCircle, Loader2,
 } from "lucide-react";
 
+async function uploadToCloudinary(file: File, folder = "mmz/products"): Promise<string> {
+  const { data } = await privateAxios.get(`/cloudinary/sign?folder=${encodeURIComponent(folder)}`);
+  const form = new FormData();
+  form.append("file",      file);
+  form.append("timestamp", String(data.timestamp));
+  form.append("signature", data.signature);
+  form.append("api_key",   data.apiKey);
+  form.append("folder",    data.folder);
+  const res    = await fetch(`https://api.cloudinary.com/v1_1/${data.cloudName}/image/upload`, { method: "POST", body: form });
+  const result = await res.json();
+  if (!result.secure_url) throw new Error(result.error?.message || "Cloudinary upload failed");
+  return result.secure_url;
+}
+
 const CATEGORIES = ["Cases", "Screen Protection", "Power & Charging", "Audio", "Accessories", "Panels"];
 const BADGES     = ["None", "New", "Hot", "Sale", "Trending", "Best Seller"];
 const BRANDS     = ["Apple", "Samsung", "Anker", "JBL", "Spigen", "ZAGG", "Belkin", "OnePlus", "Oppo", "Vivo", "Xiaomi", "Realme", "Other"];
@@ -209,28 +223,31 @@ export default function EditProductModal({ productId, onClose, onSaved }: Props)
 
     setSubmitting(true);
     try {
-      const formData = new FormData();
-      formData.append("name",          name.trim());
-      formData.append("brand",         brand.trim());
-      formData.append("category",      category);
-      formData.append("badge",         badge === "None" ? "" : badge);
-      formData.append("status",        status);
-      formData.append("price",         price);
-      formData.append("originalPrice", strikePrice);
-      formData.append("quantity",      quantity);
-      formData.append("inStock",       String(inStock));
-      formData.append("trending",      String(trending));
-      formData.append("newArrival",    String(newArrival));
-      formData.append("description",   description.trim());
-      formData.append("colors",        JSON.stringify(colors));
-      formData.append("features",      JSON.stringify(features.filter((f) => f.trim())));
-      formData.append("specifications", JSON.stringify(specs.filter((s) => s.key.trim() && s.value.trim())));
-      if (newMainFile) formData.append("image", newMainFile);
-      newVariantFiles.forEach((f) => formData.append("variantImages", f));
-      if (removedVariants.length) formData.append("removeVariants", JSON.stringify(removedVariants));
+      // Upload new images directly to Cloudinary if changed
+      const imageUrl = newMainFile ? await uploadToCloudinary(newMainFile) : undefined;
+      const variantImageUrls = newVariantFiles.length
+        ? await Promise.all(newVariantFiles.map((f) => uploadToCloudinary(f)))
+        : [];
 
-      const res = await privateAxios.patch(`/products/${productId}`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+      const res = await privateAxios.patch(`/products/${productId}`, {
+        name:             name.trim(),
+        brand:            brand.trim(),
+        category,
+        badge:            badge === "None" ? "" : badge,
+        status,
+        price,
+        originalPrice:    strikePrice,
+        quantity,
+        inStock:          String(inStock),
+        trending:         String(trending),
+        newArrival:       String(newArrival),
+        description:      description.trim(),
+        colors:           JSON.stringify(colors),
+        features:         JSON.stringify(features.filter((f) => f.trim())),
+        specifications:   JSON.stringify(specs.filter((s) => s.key.trim() && s.value.trim())),
+        ...(imageUrl && { imageUrl }),
+        ...(variantImageUrls.length && { variantImageUrls: JSON.stringify(variantImageUrls) }),
+        ...(removedVariants.length  && { removeVariants:   JSON.stringify(removedVariants) }),
       });
 
       showToast("success", "Product updated successfully!");

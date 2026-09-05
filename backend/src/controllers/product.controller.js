@@ -50,8 +50,11 @@ export const createProduct = async (req, res, next) => {
 
     const slug = await uniqueSlug(toSlug(name));
 
-    const image         = req.files?.image?.[0]?.path         ?? "";
-    const variantImages = (req.files?.variantImages ?? []).map((f) => f.path);
+    // Accept either a direct Cloudinary URL (from browser upload) or a multer-uploaded file
+    const image         = req.body.imageUrl              || req.files?.image?.[0]?.path         || "";
+    const variantImages = req.body.variantImageUrls
+      ? (typeof req.body.variantImageUrls === "string" ? JSON.parse(req.body.variantImageUrls) : req.body.variantImageUrls)
+      : (req.files?.variantImages ?? []).map((f) => f.path);
 
     const qty      = quantity !== undefined ? Number(quantity) : 0;
     const stockVal = qty > 0 ? true : (inStock === "true" || inStock === true);
@@ -195,14 +198,23 @@ export const updateProduct = async (req, res, next) => {
     if (features    !== undefined) product.features      = typeof features === "string" ? JSON.parse(features) : features;
     if (specifications !== undefined) product.specifications = typeof specifications === "string" ? JSON.parse(specifications) : specifications;
 
-    // New main image
-    if (req.files?.image?.[0]) {
+    // New main image — accept URL (browser→Cloudinary) or multer file
+    if (req.body.imageUrl) {
+      await deleteFromCloudinary(product.image);
+      product.image = req.body.imageUrl;
+    } else if (req.files?.image?.[0]) {
       await deleteFromCloudinary(product.image);
       product.image = req.files.image[0].path;
     }
 
-    // Append new variant images
-    if (req.files?.variantImages?.length) {
+    // Append new variant images — accept URLs array or multer files
+    const newVariantUrls = req.body.variantImageUrls
+      ? (typeof req.body.variantImageUrls === "string" ? JSON.parse(req.body.variantImageUrls) : req.body.variantImageUrls)
+      : null;
+
+    if (newVariantUrls?.length) {
+      product.variantImages = [...product.variantImages, ...newVariantUrls];
+    } else if (req.files?.variantImages?.length) {
       product.variantImages = [
         ...product.variantImages,
         ...req.files.variantImages.map((f) => f.path),

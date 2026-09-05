@@ -6,6 +6,21 @@ import { privateAxios } from "@/lib/axios";
 import {
   Plus, X, Upload, ImagePlus, Trash2, CheckCircle2, AlertCircle,
 } from "lucide-react";
+
+// Upload a file directly to Cloudinary (bypasses Vercel body limit)
+async function uploadToCloudinary(file: File, folder = "mmz/products"): Promise<string> {
+  const { data } = await privateAxios.get(`/cloudinary/sign?folder=${encodeURIComponent(folder)}`);
+  const form = new FormData();
+  form.append("file",      file);
+  form.append("timestamp", String(data.timestamp));
+  form.append("signature", data.signature);
+  form.append("api_key",   data.apiKey);
+  form.append("folder",    data.folder);
+  const res    = await fetch(`https://api.cloudinary.com/v1_1/${data.cloudName}/image/upload`, { method: "POST", body: form });
+  const result = await res.json();
+  if (!result.secure_url) throw new Error(result.error?.message || "Cloudinary upload failed");
+  return result.secure_url;
+}
 import Link from "next/link";
 
 const CATEGORIES = ["Cases", "Screen Protection", "Power & Charging", "Audio", "Accessories", "Back Glass", "Panels"];
@@ -133,28 +148,29 @@ export default function AddProductPage() {
 
     setSubmitting(true);
     try {
-      const formData = new FormData();
-      formData.append("name",        name.trim());
-      formData.append("brand",       brand.trim());
-      formData.append("category",    category);
-      formData.append("badge",       badge === "None" ? "" : badge);
-      formData.append("price",         price);
-      formData.append("originalPrice", strikePrice);
-      formData.append("quantity",      quantity);
-      formData.append("inStock",     String(inStock));
-      formData.append("trending",    String(trending));
-      formData.append("newArrival",  String(newArrival));
-      formData.append("description", description.trim());
-      formData.append("colors",      JSON.stringify(colors));
-      formData.append("features",    JSON.stringify(features.filter((f) => f.trim())));
-      formData.append("specifications", JSON.stringify(
-        specs.filter((s) => s.key.trim() && s.value.trim())
-      ));
-      formData.append("image", mainFile);
-      variantFiles.forEach((f) => formData.append("variantImages", f));
+      // Upload images directly to Cloudinary (bypasses Vercel 4.5MB limit)
+      const imageUrl = await uploadToCloudinary(mainFile);
+      const variantImageUrls = variantFiles.length
+        ? await Promise.all(variantFiles.map((f) => uploadToCloudinary(f)))
+        : [];
 
-      await privateAxios.post("/products", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+      await privateAxios.post("/products", {
+        name:           name.trim(),
+        brand:          brand.trim(),
+        category,
+        badge:          badge === "None" ? "" : badge,
+        price,
+        originalPrice:  strikePrice,
+        quantity,
+        inStock:        String(inStock),
+        trending:       String(trending),
+        newArrival:     String(newArrival),
+        description:    description.trim(),
+        colors:         JSON.stringify(colors),
+        features:       JSON.stringify(features.filter((f) => f.trim())),
+        specifications: JSON.stringify(specs.filter((s) => s.key.trim() && s.value.trim())),
+        imageUrl,
+        variantImageUrls: JSON.stringify(variantImageUrls),
       });
 
       showToast("success", "Product added successfully!");
