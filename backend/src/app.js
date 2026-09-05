@@ -53,16 +53,18 @@ app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
 
 // CORS CONFIGURATION
-const ALLOWED_ORIGINS = (ENV.CLIENT_URL || "http://localhost:3000")
-  .split(",")
-  .map((o) => o.trim());
+const PRODUCTION_ORIGINS = [
+  "https://memonmobilezone122.pk",
+  "https://shop.memonmobilezone122.pk",
+  "https://admin.memonmobilezone.pk",
+];
 
-if (!ALLOWED_ORIGINS.includes("http://localhost:3002")) {
-  ALLOWED_ORIGINS.push("http://localhost:3002");
-}
-if (!ALLOWED_ORIGINS.includes("http://localhost:3001")) {
-  ALLOWED_ORIGINS.push("http://localhost:3001");
-}
+const ALLOWED_ORIGINS = [
+  ...PRODUCTION_ORIGINS,
+  "http://localhost:3000",
+  "http://localhost:3001",
+  "http://localhost:3002",
+];
 
 app.use(cors({
     origin: (origin, cb) => {
