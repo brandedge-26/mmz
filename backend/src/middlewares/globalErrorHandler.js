@@ -1,8 +1,29 @@
 import { ZodError } from "zod";
 
-export const globalErrorHandler = (err, req, res, next) => {
-    if (err instanceof ZodError) {
+const ALLOWED_ORIGINS = [
+    "https://memonmobilezone122.pk",
+    "https://www.memonmobilezone122.pk",
+    "https://shop.memonmobilezone122.pk",
+    "https://www.shop.memonmobilezone122.pk",
+    "https://admin.memonmobilezone122.pk",
+    "https://www.admin.memonmobilezone122.pk",
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "http://localhost:3002",
+];
 
+export const globalErrorHandler = (err, req, res, next) => {
+
+    // Always set CORS headers so errors don't show as CORS issues in browser
+    const origin = req.headers.origin;
+    if (!origin || ALLOWED_ORIGINS.includes(origin)) {
+        res.setHeader("Access-Control-Allow-Origin", origin || "*");
+        res.setHeader("Access-Control-Allow-Credentials", "true");
+        res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
+        res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    }
+
+    if (err instanceof ZodError) {
         const issues = err.issues || [];
         const details = issues.map((issue) => {
             const path = issue.path && issue.path.length ? issue.path.join(".") : "field";

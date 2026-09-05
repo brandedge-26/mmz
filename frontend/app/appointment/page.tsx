@@ -370,7 +370,7 @@ export default function AppointmentPage() {
   const step2Ready = !!serviceType && (
     serviceType === "mail-in"
       ? !!(zipCode.trim() || locationDisplay)
-      : !!streetAddress.trim()
+      : true
   );
   const step3Ready = selectedIssues.length > 0 && (!selectedIssues.includes("Other") || !!otherIssueText.trim());
 
@@ -556,7 +556,7 @@ export default function AppointmentPage() {
           <div className="bg-gray-50 rounded-2xl p-5 text-left mb-8 space-y-2.5 text-sm border border-gray-100">
             {[
               { label: "Device",   value: `${category} › ${brand === "Other" ? otherBrandText || "Other" : brand}${(brand === "Other" ? otherModelText : model === "Other / Not Listed" ? otherModelText : model) ? " › " + (brand === "Other" ? otherModelText : model === "Other / Not Listed" ? otherModelText : model) : ""}` },
-              { label: "Service",  value: serviceType === "mail-in" ? `Mail In — ${locationDisplay || zipCode}` : `Visit Store — ${streetAddress}` },
+              { label: "Service",  value: serviceType === "mail-in" ? `Mail In — ${locationDisplay || zipCode}` : "Visit Store" },
               selectedIssues.length > 0 && { label: "Issues",   value: selectedIssues.join(", ") + (otherIssueText ? ` — ${otherIssueText}` : "") },
               date && { label: "Date",     value: date },
               time && { label: "Time",     value: time },
@@ -900,26 +900,6 @@ export default function AppointmentPage() {
                   </div>
                 )}
 
-                {/* Visit Store fields */}
-                {serviceType === "visit-store" && (
-                  <div>
-                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-2">
-                      Your Street Address
-                    </label>
-                    <input
-                      type="text"
-                      value={streetAddress}
-                      onChange={(e) => setStreetAddress(e.target.value)}
-                      placeholder="e.g. House 12, Street 5, Block A, North Karachi..."
-                      className={`w-full px-4 py-3.5 rounded-xl border-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-violet-200 focus:border-violet-400 transition bg-white ${
-                        streetAddress ? "border-violet-600 text-gray-900" : "border-gray-200 text-gray-400"
-                      }`}
-                    />
-                    <p className="text-xs text-gray-400 mt-2">
-                      We&apos;ll use this to estimate travel time and send reminders.
-                    </p>
-                  </div>
-                )}
 
                 <BottomNav onBack={() => setStep(2)} onContinue={() => serviceType === "visit-store" ? setStep(4) : setStep(5)} disabled={!step2Ready} />
               </div>
@@ -1027,7 +1007,7 @@ export default function AppointmentPage() {
                   <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Booking Recap</p>
                   {[
                     { label: "Device",   value: `${category} › ${brand === "Other" ? otherBrandText || "Other" : brand}${(brand === "Other" ? otherModelText : model === "Other / Not Listed" ? otherModelText : model) ? " › " + (brand === "Other" ? otherModelText : model === "Other / Not Listed" ? otherModelText : model) : ""}` },
-                    { label: "Service",  value: serviceType === "mail-in" ? `Mail In — ${locationDisplay || zipCode}` : `Visit Store — ${streetAddress}` },
+                    { label: "Service",  value: serviceType === "mail-in" ? `Mail In — ${locationDisplay || zipCode}` : "Visit Store" },
                     selectedIssues.length > 0 && { label: "Issues",   value: selectedIssues.join(", ") + (otherIssueText ? ` — ${otherIssueText}` : "") },
                     date && { label: "Date",     value: `${date}${time ? " at " + time : ""}` },
                   ].filter(Boolean).map((r) => {
