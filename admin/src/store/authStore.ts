@@ -31,7 +31,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
   initAuth: async () => {
     try {
-      const response = await axios.get("http://localhost:5510/api/auth/refresh", {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`, {
         withCredentials: true,
       });
       const { user, accessToken } = response.data;
@@ -53,7 +53,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
   login: async (email: string, password: string) => {
     const response = await axios.post(
-      "http://localhost:5510/api/auth/login",
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
       { email, password },
       { withCredentials: true }
     );
@@ -68,7 +68,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
   logout: async () => {
     try {
       await axios.post(
-        "http://localhost:5510/api/auth/logout",
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`,
         {},
         { withCredentials: true }
       );

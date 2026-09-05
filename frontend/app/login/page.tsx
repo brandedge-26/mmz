@@ -19,7 +19,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -76,7 +76,7 @@ export default function LoginPage() {
 
           {/* Google */}
           <a
-            href={`${process.env.NEXT_PUBLIC_API_URL}/api/auth/google?app=frontend`}
+            href={`${process.env.NEXT_PUBLIC_API_URL}/auth/google?app=frontend`}
             className="w-full flex items-center justify-center gap-3 border border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-700 font-medium py-3 rounded-full transition-all text-sm"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">

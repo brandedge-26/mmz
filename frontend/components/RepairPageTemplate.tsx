@@ -110,7 +110,7 @@ export default function RepairPageTemplate({
                 {/* CTA buttons */}
                 <div className="flex flex-wrap gap-3 pt-1">
                   <Link
-                    href="/contact"
+                    href="/appointment"
                     className="inline-flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white font-bold px-7 py-3.5 rounded-full transition-colors text-sm shadow-md shadow-violet-200"
                   >
                     Book a Repair
@@ -257,7 +257,7 @@ export default function RepairPageTemplate({
                 {/* Buttons */}
                 <div className="flex flex-col sm:flex-row gap-3 justify-center pt-1">
                   <Link
-                    href="/contact"
+                    href="/appointment"
                     className="inline-flex items-center justify-center gap-2 bg-violet-600 hover:bg-violet-700 text-white font-bold px-8 py-4 rounded-full transition-colors text-sm shadow-md shadow-violet-200"
                   >
                     Book a Repair

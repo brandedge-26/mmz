@@ -17,7 +17,8 @@
       "Bash(cp /c/Users/User/Documents/Projects/mmz/frontend/public/home/services/earbuds-service.jpg /c/Users/User/Documents/Projects/mmz/frontend/public/header-images/shop-accessories/earbuds.jpg)",
       "Bash(cp /c/Users/User/Documents/Projects/mmz/frontend/public/home/services/smartwatch-service.png /c/Users/User/Documents/Projects/mmz/frontend/public/header-images/shop-accessories/smartwatch.png)",
       "WebSearch",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(npm run:*)"
     ]
   }
 }

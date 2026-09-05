@@ -56,7 +56,7 @@ export default function TrackOrderModal({ onClose }: Props) {
     setError("");
     setResult(null);
     try {
-      const res  = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/track/${id}`);
+      const res  = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/track/${id}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Order not found.");
       setResult(data.order);

@@ -424,7 +424,7 @@ export default function ContactsPage() {
               </div>
               <div>
                 <p className={`text-xl font-bold ${num}`}>
-                  {stats ? (stats as Record<string, number>)[key].toLocaleString() : <span className="inline-block h-6 w-10 bg-gray-100 rounded animate-pulse" />}
+                  {stats ? (stats as unknown as Record<string, number>)[key].toLocaleString() : <span className="inline-block h-6 w-10 bg-gray-100 rounded animate-pulse" />}
                 </p>
                 <p className="text-xs text-gray-400 mt-0.5">{label}</p>
               </div>

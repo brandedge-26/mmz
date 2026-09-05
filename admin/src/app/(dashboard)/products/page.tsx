@@ -88,7 +88,7 @@ export default function ProductsPage() {
               originalPrice: updated.originalPrice ?? undefined,
               image:         updated.image,
               inStock:       updated.inStock,
-              quantity:      updated.quantity,
+              quantity:      updated.quantity ?? 0,
               status:        updated.status,
               badge:         updated.badge,
               trending:      updated.trending,

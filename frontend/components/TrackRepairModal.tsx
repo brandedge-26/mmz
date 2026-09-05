@@ -42,7 +42,7 @@ export default function TrackRepairModal({ onClose }: Props) {
     setError("");
     setResult(null);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/appointments/track/${id}`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/appointments/track/${id}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Not found.");
       setResult(data.data);

@@ -265,12 +265,10 @@ export default function Header() {
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
-            <div className="w-8 h-8 rounded-lg bg-violet-600 flex items-center justify-center">
-              <ShoppingBag className="w-4 h-4 text-white" />
-            </div>
+            <Image src="/logo_icon.png" alt="MMZ Logo" width={36} height={36} className="rounded-lg" />
             <div className="leading-tight">
-              <span className="text-gray-900 font-bold text-base tracking-tight">MMZ </span>
-              <span className="text-violet-600 font-bold text-base">Shop</span>
+              <span className="text-gray-900 font-bold text-base tracking-tight">Memon Mobile </span>
+              <span className="text-violet-600 font-bold text-base">Zone 122</span>
             </div>
           </Link>
 
@@ -527,11 +525,9 @@ export default function Header() {
         {/* ── Mobile bar ── */}
         <div className="lg:hidden flex items-center justify-between px-4 h-14">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-violet-600 flex items-center justify-center">
-              <ShoppingBag className="w-3.5 h-3.5 text-white" />
-            </div>
+            <Image src="/logo_icon.png" alt="MMZ Logo" width={30} height={30} className="rounded-lg" />
             <span className="text-gray-900 font-bold text-sm tracking-tight">
-              MMZ <span className="text-violet-600">Shop</span>
+              Memon Mobile <span className="text-violet-600">Zone 122</span>
             </span>
           </Link>
 

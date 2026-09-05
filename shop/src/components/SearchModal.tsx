@@ -59,7 +59,7 @@ export default function SearchModal({ open, onClose }: Props) {
         const params = new URLSearchParams({ q: query.trim(), status: "Active", limit: "12" });
         if (activeTab !== "all") params.set("category", activeTab);
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/products?${params}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/products?${params}`,
           { signal: controller.signal }
         );
         if (res.ok) {

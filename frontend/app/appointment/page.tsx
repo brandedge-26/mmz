@@ -308,7 +308,7 @@ export default function AppointmentPage() {
     setSubmitting(true);
     setSubmitError("");
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/appointments`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/appointments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

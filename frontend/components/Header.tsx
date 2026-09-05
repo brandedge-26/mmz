@@ -11,7 +11,7 @@ type NavLink = {
   label: string;
   href?: string;
   dropdown?: DropdownPanel;
-  mobileChildren?: { label: string; image: string; href: string }[];
+  mobileChildren?: { label: string; image: string; href: string; newTab?: boolean }[];
 };
 
 const navLinks: NavLink[] = [
@@ -73,26 +73,26 @@ const navLinks: NavLink[] = [
       heading: "Accessories for your device",
       subtext: "Earbuds, smartwatches, chargers & more.",
       items: [
-        { label: "Earbuds", image: "/header-images/shop-accessories/earbuds.jpg", desc: "Wireless & wired", href: "#" },
-        { label: "Smart Watch", image: "/header-images/shop-accessories/smartwatch.png", desc: "Fitness & smart bands", href: "#" },
-        { label: "Chargers & Cables", image: "/header-images/shop-accessories/power-accessories.png", desc: "Fast charge & wireless", href: "#" },
-        { label: "All iPhone", image: "/header-images/shop-accessories/iphone.png", desc: "iPhone accessories", href: "#" },
-        { label: "All Samsung", image: "/header-images/shop-accessories/samsung.png", desc: "Samsung accessories", href: "#" },
-        { label: "All Google", image: "/header-images/shop-accessories/pixel.png", desc: "Google accessories", href: "#" },
-        { label: "Audio", image: "/header-images/shop-accessories/audio.png", desc: "Earphones & speakers", href: "#" },
-        { label: "Tablet & Laptop", image: "/header-images/shop-accessories/tablet-and-laptop.png", desc: "Covers & stands", href: "#" },
-        { label: "All accessories", desc: "", href: "#", isAll: true },
+        { label: "Earbuds",          image: "/header-images/shop-accessories/earbuds.jpg",          desc: "Wireless & wired",     href: "https://shop.memonmobilezone122.pk/products?q=earbuds",                    newTab: true },
+        { label: "Smart Watch",      image: "/header-images/shop-accessories/smartwatch.png",        desc: "Fitness & smart bands", href: "https://shop.memonmobilezone122.pk/products?q=smart+watch",               newTab: true },
+        { label: "Chargers & Cables",image: "/header-images/shop-accessories/power-accessories.png", desc: "Fast charge & wireless",href: "https://shop.memonmobilezone122.pk/products?category=Power+%26+Charging", newTab: true },
+        { label: "All iPhone",       image: "/header-images/shop-accessories/iphone.png",            desc: "iPhone accessories",    href: "https://shop.memonmobilezone122.pk/products?q=iphone",                    newTab: true },
+        { label: "All Samsung",      image: "/header-images/shop-accessories/samsung.png",           desc: "Samsung accessories",   href: "https://shop.memonmobilezone122.pk/products?q=samsung",                   newTab: true },
+        { label: "All Google",       image: "/header-images/shop-accessories/pixel.png",             desc: "Google accessories",    href: "https://shop.memonmobilezone122.pk/products?q=google",                    newTab: true },
+        { label: "Audio",            image: "/header-images/shop-accessories/audio.png",             desc: "Earphones & speakers",  href: "https://shop.memonmobilezone122.pk/products?category=Audio",              newTab: true },
+        { label: "Tablet & Laptop",  image: "/header-images/shop-accessories/tablet-and-laptop.png", desc: "Covers & stands",      href: "https://shop.memonmobilezone122.pk/products?q=tablet",                    newTab: true },
+        { label: "All accessories",  desc: "", href: "https://shop.memonmobilezone122.pk/products", isAll: true, newTab: true },
       ],
     },
     mobileChildren: [
-      { label: "Earbuds", image: "/header-images/shop-accessories/earbuds.jpg", href: "#" },
-      { label: "Smart Watch", image: "/header-images/shop-accessories/smartwatch.png", href: "#" },
-      { label: "Chargers & Cables", image: "/header-images/shop-accessories/power-accessories.png", href: "#" },
-      { label: "All iPhone", image: "/header-images/shop-accessories/iphone.png", href: "#" },
-      { label: "All Samsung", image: "/header-images/shop-accessories/samsung.png", href: "#" },
-      { label: "All Google", image: "/header-images/shop-accessories/pixel.png", href: "#" },
-      { label: "Audio", image: "/header-images/shop-accessories/audio.png", href: "#" },
-      { label: "Tablet & Laptop", image: "/header-images/shop-accessories/tablet-and-laptop.png", href: "#" },
+      { label: "Earbuds",          image: "/header-images/shop-accessories/earbuds.jpg",           href: "https://shop.memonmobilezone122.pk/products?q=earbuds",                    newTab: true },
+      { label: "Smart Watch",      image: "/header-images/shop-accessories/smartwatch.png",         href: "https://shop.memonmobilezone122.pk/products?q=smart+watch",               newTab: true },
+      { label: "Chargers & Cables",image: "/header-images/shop-accessories/power-accessories.png",  href: "https://shop.memonmobilezone122.pk/products?category=Power+%26+Charging", newTab: true },
+      { label: "All iPhone",       image: "/header-images/shop-accessories/iphone.png",             href: "https://shop.memonmobilezone122.pk/products?q=iphone",                    newTab: true },
+      { label: "All Samsung",      image: "/header-images/shop-accessories/samsung.png",            href: "https://shop.memonmobilezone122.pk/products?q=samsung",                   newTab: true },
+      { label: "All Google",       image: "/header-images/shop-accessories/pixel.png",              href: "https://shop.memonmobilezone122.pk/products?q=google",                    newTab: true },
+      { label: "Audio",            image: "/header-images/shop-accessories/audio.png",              href: "https://shop.memonmobilezone122.pk/products?category=Audio",              newTab: true },
+      { label: "Tablet & Laptop",  image: "/header-images/shop-accessories/tablet-and-laptop.png",  href: "https://shop.memonmobilezone122.pk/products?q=tablet",                    newTab: true },
     ],
   },
   { label: "Contact", href: "/contact" },
@@ -126,7 +126,7 @@ export default function Header() {
         if (stored) setUser(JSON.parse(stored)); // show immediately
 
         // Use refresh endpoint — returns fresh user + new token (works even if access token expired)
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/refresh`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`, {
           credentials: "include",
         });
         if (res.ok) {
@@ -161,7 +161,7 @@ export default function Header() {
 
   const handleLogout = async () => {
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
         method: "POST",
         credentials: "include",
       });
@@ -186,13 +186,9 @@ export default function Header() {
 
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 shrink-0" onClick={() => setMobileOpen(false)}>
-              <div className="w-8 h-8 rounded-lg bg-violet-600 flex items-center justify-center">
-                <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                </svg>
-              </div>
+              <Image src="/logo_icon.png" alt="MMZ Logo" width={36} height={36} className="rounded-lg" />
               <span className="text-gray-900 font-bold text-lg tracking-tight">
-                Memon <span className="text-violet-600">Mobile Zone</span>
+                Memon Mobile <span className="text-violet-600">Zone 122</span>
               </span>
             </Link>
 
@@ -347,7 +343,7 @@ export default function Header() {
             {/* Drawer header */}
             <div className="flex items-center justify-between px-5 h-16 border-b border-gray-100 shrink-0">
               <span className="text-gray-900 font-bold text-base tracking-tight">
-                Memon <span className="text-violet-600">Mobile Zone</span>
+                Memon Mobile <span className="text-violet-600">Zone 122</span>
               </span>
               <button onClick={() => setMobileOpen(false)} className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -380,6 +376,8 @@ export default function Header() {
                               <Link
                                 key={child.label}
                                 href={child.href}
+                                target={child.newTab ? "_blank" : undefined}
+                                rel={child.newTab ? "noopener noreferrer" : undefined}
                                 onClick={() => setMobileOpen(false)}
                                 className="flex flex-col items-center gap-1.5 p-2 rounded-xl border border-gray-100 hover:border-violet-200 hover:bg-violet-50 transition-all group"
                               >

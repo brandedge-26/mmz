@@ -264,7 +264,7 @@ export default function AnalyticsPage() {
                   <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
                   <XAxis dataKey="label" ticks={xLabels} tick={{ fontSize: 10, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
                   <YAxis allowDecimals={false} tick={{ fontSize: 10, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
-                  <Tooltip formatter={(v: number) => [v, "New customers"]} contentStyle={{ borderRadius: 12, fontSize: 12 }} />
+                  <Tooltip formatter={(v) => [v ?? 0, "New customers"]} contentStyle={{ borderRadius: 12, fontSize: 12 }} />
                   <Line type="monotone" dataKey="count" stroke="#34d399" strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
                 </LineChart>
               </ResponsiveContainer>
@@ -280,13 +280,13 @@ export default function AnalyticsPage() {
               <ResponsiveContainer width="100%" height={240}>
                 <PieChart>
                   <Pie data={data?.statusData} cx="50%" cy="50%" innerRadius={60} outerRadius={90}
-                    paddingAngle={3} dataKey="value" label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    paddingAngle={3} dataKey="value" label={({ name, percent }: { name?: string; percent?: number }) => `${name ?? ""} ${((percent ?? 0) * 100).toFixed(0)}%`}
                     labelLine={false} fontSize={11}>
                     {data?.statusData.map((entry, i) => (
                       <Cell key={i} fill={STATUS_COLORS[entry.name] ?? PIE_FALLBACK[i % PIE_FALLBACK.length]} />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(v: number) => [v, "Orders"]} contentStyle={{ borderRadius: 12, fontSize: 12 }} />
+                  <Tooltip formatter={(v) => [v ?? 0, "Orders"]} contentStyle={{ borderRadius: 12, fontSize: 12 }} />
                   <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 11 }} />
                 </PieChart>
               </ResponsiveContainer>
@@ -298,13 +298,13 @@ export default function AnalyticsPage() {
               <ResponsiveContainer width="100%" height={240}>
                 <PieChart>
                   <Pie data={data?.apptData} cx="50%" cy="50%" innerRadius={60} outerRadius={90}
-                    paddingAngle={3} dataKey="value" label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    paddingAngle={3} dataKey="value" label={({ name, percent }: { name?: string; percent?: number }) => `${name ?? ""} ${((percent ?? 0) * 100).toFixed(0)}%`}
                     labelLine={false} fontSize={11}>
                     {data?.apptData.map((entry, i) => (
                       <Cell key={i} fill={APPT_COLORS[entry.name] ?? PIE_FALLBACK[i % PIE_FALLBACK.length]} />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(v: number) => [v, "Appointments"]} contentStyle={{ borderRadius: 12, fontSize: 12 }} />
+                  <Tooltip formatter={(v) => [v ?? 0, "Appointments"]} contentStyle={{ borderRadius: 12, fontSize: 12 }} />
                   <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 11 }} />
                 </PieChart>
               </ResponsiveContainer>

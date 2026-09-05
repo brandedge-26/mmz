@@ -9,6 +9,7 @@ export type DropdownItem = {
   desc: string;
   href: string;
   isAll?: boolean;
+  newTab?: boolean;
 };
 
 export type DropdownPanel = {
@@ -48,6 +49,8 @@ export default function NavDropdown({ panel }: NavDropdownProps) {
             <Link
               key={item.label}
               href={item.href}
+              target={item.newTab ? "_blank" : undefined}
+              rel={item.newTab ? "noopener noreferrer" : undefined}
               className="flex flex-col items-center gap-3 p-4 rounded-2xl border border-gray-200 bg-white hover:border-violet-200 hover:bg-violet-50 transition-all group"
             >
               <div className="relative w-full h-24 flex items-center justify-center">
@@ -70,6 +73,8 @@ export default function NavDropdown({ panel }: NavDropdownProps) {
           {allItem && (
             <Link
               href={allItem.href}
+              target={allItem.newTab ? "_blank" : undefined}
+              rel={allItem.newTab ? "noopener noreferrer" : undefined}
               className="flex flex-col items-center justify-center gap-3 p-4 rounded-2xl border border-gray-200 bg-white hover:border-violet-200 hover:bg-violet-50 transition-all group"
             >
               <div className="w-14 h-14 rounded-full border-2 border-gray-200 group-hover:border-violet-400 flex items-center justify-center transition-colors">

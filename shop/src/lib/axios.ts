@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL + "/api";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 // PUBLIC — no token (login, register, refresh)
 export const publicAxios = axios.create({
