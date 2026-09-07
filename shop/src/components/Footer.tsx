@@ -1,11 +1,11 @@
 import Link from "next/link";
 
 const repairLinks = [
-  { label: "iPhone Repair", href: "http://localhost:3000/repairs/iphone" },
-  { label: "Samsung Repair", href: "http://localhost:3000/repairs/samsung" },
-  { label: "Google Pixel Repair", href: "http://localhost:3000/repairs/google-pixel" },
-  { label: "Motorola Repair", href: "http://localhost:3000/repairs/motorola" },
-  { label: "LG Repair", href: "http://localhost:3000/repairs/lg" },
+  { label: "iPhone Repair" },
+  { label: "Samsung Repair" },
+  { label: "Google Pixel Repair" },
+  { label: "Motorola Repair" },
+  { label: "LG Repair" },
 ];
 
 const shopLinks = [
@@ -149,7 +149,7 @@ export default function Footer() {
               <ul className="space-y-3">
                 {repairLinks.map((item) => (
                   <li key={item.label}>
-                    <a href={item.href} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-violet-600 text-sm transition-colors">
+                    <a href="https://memonmobilezone122.pk/appointment" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-violet-600 text-sm transition-colors">
                       {item.label}
                     </a>
                   </li>
@@ -205,7 +205,7 @@ export default function Footer() {
                 Chat on WhatsApp
               </a>
               <a
-                href="http://localhost:3000/appointment"
+                href="https://memonmobilezone122.pk/appointment"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 mt-2 bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold px-5 py-2.5 rounded-full transition-colors"

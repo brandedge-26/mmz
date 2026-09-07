@@ -13,6 +13,7 @@ const jakartaSans = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "Memon Mobile Zone",
   description: "Expert device repairs done right. Cracked screen, dead battery, water damage — we fix it fast with genuine parts and a 90-day warranty.",
+  icons: { icon: "/favicon.svg" },
 };
 
 export default function RootLayout({

@@ -14,6 +14,7 @@ const jakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "MMZ Shop — Memon Mobile Zone",
   description: "Shop accessories, parts, and devices at Memon Mobile Zone.",
+  icons: { icon: "/favicon.svg" },
 };
 
 export default function RootLayout({
