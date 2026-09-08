@@ -112,7 +112,7 @@ export default function TrendingPage() {
       if (category !== "All") params.set("category", category);
       if (debouncedQ)         params.set("q", debouncedQ);
 
-      const res  = await fetch(`${API}/api/products?${params}`);
+      const res  = await fetch(`${API}/products?${params}`);
       const data = await res.json();
 
       let list: ApiProduct[] = data.products ?? [];

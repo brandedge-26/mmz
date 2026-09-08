@@ -34,10 +34,10 @@ export const createAppointment = async (req, res, next) => {
       });
     }
 
-    if (serviceType === "visit-store" && (!streetAddress || !date || !time)) {
+    if (serviceType === "visit-store" && (!date || !time)) {
       return res.status(400).json({
         success: false,
-        message: "streetAddress, date and time are required for visit-store service.",
+        message: "date and time are required for visit-store service.",
       });
     }
 

@@ -14,18 +14,18 @@ import {
 
 // ─── Amazon-style image zoom ──────────────────────────────────────────────────
 const ZOOM_FACTOR = 2.5;
-const LENS_SIZE   = 120;
+const LENS_SIZE = 120;
 
 function ImageZoom({ src, alt }: { src: string; alt: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [pos, setPos]     = useState({ x: 0.5, y: 0.5 });
+  const [pos, setPos] = useState({ x: 0.5, y: 0.5 });
   const [active, setActive] = useState(false);
 
   const handleMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const rect = containerRef.current?.getBoundingClientRect();
     if (!rect) return;
-    const x = Math.min(1, Math.max(0, (e.clientX - rect.left)  / rect.width));
-    const y = Math.min(1, Math.max(0, (e.clientY - rect.top)   / rect.height));
+    const x = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width));
+    const y = Math.min(1, Math.max(0, (e.clientY - rect.top) / rect.height));
     setPos({ x, y });
   }, []);
 
@@ -53,10 +53,10 @@ function ImageZoom({ src, alt }: { src: string; alt: string }) {
           <div
             className="absolute border-2 border-violet-400/60 bg-violet-100/20 backdrop-blur-[1px] rounded-md pointer-events-none"
             style={{
-              width:  LENS_SIZE,
+              width: LENS_SIZE,
               height: LENS_SIZE,
-              left:   `calc(${pos.x * 100}% - ${LENS_SIZE / 2}px)`,
-              top:    `calc(${pos.y * 100}% - ${LENS_SIZE / 2}px)`,
+              left: `calc(${pos.x * 100}% - ${LENS_SIZE / 2}px)`,
+              top: `calc(${pos.y * 100}% - ${LENS_SIZE / 2}px)`,
               boxShadow: "0 0 0 9999px rgba(0,0,0,0.04)",
             }}
           />
@@ -68,10 +68,10 @@ function ImageZoom({ src, alt }: { src: string; alt: string }) {
         <div
           className="hidden lg:block absolute top-0 left-[calc(100%+16px)] w-full h-full rounded-2xl overflow-hidden border border-gray-200 shadow-2xl z-30 pointer-events-none"
           style={{
-            backgroundImage:    `url(${src})`,
-            backgroundSize:     `${ZOOM_FACTOR * 100}% ${ZOOM_FACTOR * 100}%`,
+            backgroundImage: `url(${src})`,
+            backgroundSize: `${ZOOM_FACTOR * 100}% ${ZOOM_FACTOR * 100}%`,
             backgroundPosition: `${bgX}% ${bgY}%`,
-            backgroundRepeat:   "no-repeat",
+            backgroundRepeat: "no-repeat",
           }}
         />
       )}
@@ -80,32 +80,32 @@ function ImageZoom({ src, alt }: { src: string; alt: string }) {
 }
 
 const COLOR_MAP: Record<string, string> = {
-  black:        "bg-gray-900",
-  white:        "bg-gray-100 border-2 border-gray-300",
-  red:          "bg-red-500",
-  blue:         "bg-blue-500",
-  "navy blue":  "bg-blue-900",
-  green:        "bg-green-500",
-  silver:       "bg-slate-300 border-2 border-slate-400",
-  gold:         "bg-yellow-400",
-  clear:        "bg-sky-100 border-2 border-sky-300",
-  "matte clear":"bg-slate-200 border-2 border-slate-400",
-  purple:       "bg-purple-500",
-  pink:         "bg-pink-400",
-  orange:       "bg-orange-500",
-  yellow:       "bg-yellow-300",
-  gray:         "bg-gray-400",
-  brown:        "bg-amber-800",
+  black: "bg-gray-900",
+  white: "bg-gray-100 border-2 border-gray-300",
+  red: "bg-red-500",
+  blue: "bg-blue-500",
+  "navy blue": "bg-blue-900",
+  green: "bg-green-500",
+  silver: "bg-slate-300 border-2 border-slate-400",
+  gold: "bg-yellow-400",
+  clear: "bg-sky-100 border-2 border-sky-300",
+  "matte clear": "bg-slate-200 border-2 border-slate-400",
+  purple: "bg-purple-500",
+  pink: "bg-pink-400",
+  orange: "bg-orange-500",
+  yellow: "bg-yellow-300",
+  gray: "bg-gray-400",
+  brown: "bg-amber-800",
 };
 
 const colorClass = (name: string) =>
   COLOR_MAP[name.toLowerCase()] ?? "bg-gray-400";
 
 const BADGE_STYLES: Record<string, string> = {
-  New:           "bg-violet-600 text-white",
-  Hot:           "bg-red-500 text-white",
-  Sale:          "bg-red-500 text-white",
-  Trending:      "bg-emerald-500 text-white",
+  New: "bg-violet-600 text-white",
+  Hot: "bg-red-500 text-white",
+  Sale: "bg-red-500 text-white",
+  Trending: "bg-emerald-500 text-white",
   "Best Seller": "bg-amber-500 text-white",
 };
 
@@ -148,7 +148,7 @@ function RelatedCard({ product }: { product: ShopProduct }) {
             {product.badge}
           </span>
         )}
-        {discount && (
+        {!!discount && (
           <span className="absolute top-2.5 right-2.5 bg-red-500 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full">
             -{discount}%
           </span>
@@ -168,7 +168,7 @@ function RelatedCard({ product }: { product: ShopProduct }) {
 
 // ─── Write Review Modal ───────────────────────────────────────────────────────
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5510";
+const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5510/api";
 
 interface ReviewItem {
   _id: string;
@@ -187,11 +187,11 @@ function WriteReviewModal({
   userName: string;
   onSubmitted: (review: ReviewItem) => void;
 }) {
-  const [hovered, setHovered]   = useState(0);
+  const [hovered, setHovered] = useState(0);
   const [selected, setSelected] = useState(0);
-  const [body, setBody]         = useState("");
-  const [loading, setLoading]   = useState(false);
-  const [error, setError]       = useState("");
+  const [body, setBody] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -204,7 +204,7 @@ function WriteReviewModal({
       const res = await privateAxios.post("/reviews", {
         productId,
         rating: selected,
-        body:   body.trim(),
+        body: body.trim(),
       });
       onSubmitted(res.data.data);
       setSubmitted(true);
@@ -266,11 +266,10 @@ function WriteReviewModal({
                     className="p-0.5 transition-transform hover:scale-110"
                   >
                     <Star
-                      className={`w-7 h-7 transition-colors ${
-                        s <= (hovered || selected)
-                          ? "fill-amber-400 text-amber-400"
-                          : "fill-gray-200 text-gray-200"
-                      }`}
+                      className={`w-7 h-7 transition-colors ${s <= (hovered || selected)
+                        ? "fill-amber-400 text-amber-400"
+                        : "fill-gray-200 text-gray-200"
+                        }`}
                     />
                   </button>
                 ))}
@@ -373,11 +372,11 @@ function ReviewsPanel({ productId, initialRating, initialCount, onStatsChange }:
   onStatsChange: (rating: number, count: number) => void;
 }) {
   const user = useAuthStore((s) => s.user);
-  const [modalOpen, setModalOpen]       = useState(false);
-  const [reviews, setReviews]           = useState<ReviewItem[]>([]);
-  const [total, setTotal]               = useState(initialCount);
-  const [rating, setRating]             = useState(initialRating);
-  const [fetched, setFetched]           = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [reviews, setReviews] = useState<ReviewItem[]>([]);
+  const [total, setTotal] = useState(initialCount);
+  const [rating, setRating] = useState(initialRating);
+  const [fetched, setFetched] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(false);
   const [alreadyReviewed, setAlreadyReviewed] = useState(false);
 
@@ -389,7 +388,7 @@ function ReviewsPanel({ productId, initialRating, initialCount, onStatsChange }:
       const res = await fetch(`${API}/api/reviews?productId=${productId}&limit=20`);
       const json = await res.json();
       const fetchedReviews = json.reviews ?? [];
-      const fetchedTotal   = json.total   ?? 0;
+      const fetchedTotal = json.total ?? 0;
       setReviews(fetchedReviews);
       setTotal(fetchedTotal);
       // Check if current user already reviewed
@@ -417,7 +416,7 @@ function ReviewsPanel({ productId, initialRating, initialCount, onStatsChange }:
 
   function handleNewReview(review: ReviewItem) {
     setReviews((prev) => [review, ...prev]);
-    const newTotal  = total + 1;
+    const newTotal = total + 1;
     const newRating = Math.round(
       ((rating * total + review.rating) / newTotal) * 10
     ) / 10;
@@ -472,7 +471,7 @@ function ReviewsPanel({ productId, initialRating, initialCount, onStatsChange }:
           <div className="flex-1 space-y-2.5">
             {[5, 4, 3, 2, 1].map((star, idx) => {
               const count = dist[idx];
-              const pct   = total > 0 ? Math.round((count / total) * 100) : 0;
+              const pct = total > 0 ? Math.round((count / total) * 100) : 0;
               return (
                 <div key={star} className="flex items-center gap-3">
                   <span className="text-xs font-semibold text-gray-500 w-3">{star}</span>
@@ -571,16 +570,16 @@ interface Props {
 }
 
 export default function ProductDetail({ product, related }: Props) {
-  const [activeImage, setActiveImage]   = useState(product.image);
+  const [activeImage, setActiveImage] = useState(product.image);
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0] ?? "");
-  const [qty, setQty]                   = useState(1);
-  const [added, setAdded]   = useState(false);
+  const [qty, setQty] = useState(1);
+  const [added, setAdded] = useState(false);
   const [copied, setCopied] = useState(false);
   const wishlistToggle = useWishlistStore((s) => s.toggle);
-  const wished         = useWishlistStore((s) => s.has(product.id));
-  const [activeTab, setActiveTab]       = useState<"features" | "specs" | "reviews">("features");
-  const [liveRating, setLiveRating]     = useState(product.rating);
-  const [liveCount,  setLiveCount]      = useState(product.reviews);
+  const wished = useWishlistStore((s) => s.has(product.id));
+  const [activeTab, setActiveTab] = useState<"features" | "specs" | "reviews">("features");
+  const [liveRating, setLiveRating] = useState(product.rating);
+  const [liveCount, setLiveCount] = useState(product.reviews);
   const handleStatsChange = useCallback((r: number, c: number) => {
     setLiveRating(r);
     setLiveCount(c);
@@ -596,8 +595,8 @@ export default function ProductDetail({ product, related }: Props) {
 
   const features = product.features ?? [];
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
-  const isInitialized   = useAuthStore((s) => s.isInitialized);
-  const addToCart       = useCartStore((s) => s.addItem);
+  const isInitialized = useAuthStore((s) => s.isInitialized);
+  const addToCart = useCartStore((s) => s.addItem);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
   function handleAdd() {
@@ -607,15 +606,15 @@ export default function ProductDetail({ product, related }: Props) {
       return;
     }
     addToCart({
-      id:            product.id,
-      slug:          product.slug,
-      name:          product.name,
-      brand:         product.brand,
-      price:         product.price,
+      id: product.id,
+      slug: product.slug,
+      name: product.name,
+      brand: product.brand,
+      price: product.price,
       originalPrice: product.originalPrice,
-      image:         product.image,
-      color:         selectedColor || undefined,
-      quantity:      qty,
+      image: product.image,
+      color: selectedColor || undefined,
+      quantity: qty,
     });
     setAdded(true);
     setTimeout(() => setAdded(false), 2500);
@@ -667,7 +666,7 @@ export default function ProductDetail({ product, related }: Props) {
                       {product.badge}
                     </span>
                   )}
-                  {discount && (
+                  {!!discount && (
                     <span className="absolute top-4 right-4 bg-red-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">
                       -{discount}% OFF
                     </span>
@@ -676,18 +675,17 @@ export default function ProductDetail({ product, related }: Props) {
                 {/* Wishlist button */}
                 <button
                   onClick={() => wishlistToggle({
-                    id:            product.id,
-                    slug:          product.slug,
-                    name:          product.name,
-                    brand:         product.brand,
-                    price:         product.price,
+                    id: product.id,
+                    slug: product.slug,
+                    name: product.name,
+                    brand: product.brand,
+                    price: product.price,
                     originalPrice: product.originalPrice,
-                    image:         product.image,
-                    inStock:       product.inStock,
+                    image: product.image,
+                    inStock: product.inStock,
                   })}
-                  className={`absolute bottom-4 right-4 p-2.5 rounded-full shadow-md backdrop-blur-sm transition-all z-10 ${
-                    wished ? "bg-red-500 text-white" : "bg-white/90 text-gray-400 hover:text-red-500"
-                  }`}
+                  className={`absolute bottom-4 right-4 p-2.5 rounded-full shadow-md backdrop-blur-sm transition-all z-10 ${wished ? "bg-red-500 text-white" : "bg-white/90 text-gray-400 hover:text-red-500"
+                    }`}
                 >
                   <Heart className={`w-5 h-5 ${wished ? "fill-current" : ""}`} />
                 </button>
@@ -700,11 +698,10 @@ export default function ProductDetail({ product, related }: Props) {
                     <button
                       key={idx}
                       onClick={() => setActiveImage(src)}
-                      className={`relative flex-shrink-0 w-16 h-16 rounded-xl border-2 overflow-hidden bg-gray-50 transition-all ${
-                        activeImage === src
-                          ? "border-violet-600 shadow-md shadow-violet-100"
-                          : "border-gray-200 hover:border-gray-400"
-                      }`}
+                      className={`relative flex-shrink-0 w-16 h-16 rounded-xl border-2 overflow-hidden bg-gray-50 transition-all ${activeImage === src
+                        ? "border-violet-600 shadow-md shadow-violet-100"
+                        : "border-gray-200 hover:border-gray-400"
+                        }`}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={src} alt="" className="w-full h-full object-contain p-1.5" />
@@ -735,7 +732,7 @@ export default function ProductDetail({ product, related }: Props) {
                 <span className="text-3xl font-extrabold text-gray-900">
                   PKR {product.price.toLocaleString()}
                 </span>
-                {product.originalPrice && (
+                {!!discount && product.originalPrice && (
                   <>
                     <span className="text-lg text-gray-400 line-through mb-0.5">
                       PKR {product.originalPrice.toLocaleString()}
@@ -778,11 +775,10 @@ export default function ProductDetail({ product, related }: Props) {
                         key={color}
                         title={color}
                         onClick={() => setSelectedColor(color)}
-                        className={`w-9 h-9 transition-all ${colorClass(color)} ${
-                          selectedColor === color
-                            ? "ring-2 ring-offset-2 ring-violet-600 scale-110 shadow-md"
-                            : "hover:scale-105 hover:shadow-sm"
-                        }`}
+                        className={`w-9 h-9 transition-all ${colorClass(color)} ${selectedColor === color
+                          ? "ring-2 ring-offset-2 ring-violet-600 scale-110 shadow-md"
+                          : "hover:scale-105 hover:shadow-sm"
+                          }`}
                         style={{ borderRadius: "15px" }}
                       />
                     ))}
@@ -824,13 +820,12 @@ export default function ProductDetail({ product, related }: Props) {
                 <button
                   onClick={handleAdd}
                   disabled={!product.inStock}
-                  className={`flex-1 flex items-center justify-center gap-2 py-3.5 rounded-full text-sm font-bold transition-all shadow-sm ${
-                    added
-                      ? "bg-emerald-500 text-white"
-                      : product.inStock
-                        ? "bg-violet-600 hover:bg-violet-700 text-white active:scale-[0.98]"
-                        : "bg-gray-100 text-gray-400 cursor-not-allowed"
-                  }`}
+                  className={`flex-1 flex items-center justify-center gap-2 py-3.5 rounded-full text-sm font-bold transition-all shadow-sm ${added
+                    ? "bg-emerald-500 text-white"
+                    : product.inStock
+                      ? "bg-violet-600 hover:bg-violet-700 text-white active:scale-[0.98]"
+                      : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                    }`}
                 >
                   {added ? (
                     <><Check className="w-4 h-4" /> Added to Cart!</>
@@ -841,18 +836,17 @@ export default function ProductDetail({ product, related }: Props) {
 
                 <button
                   onClick={() => wishlistToggle({
-                    id:            product.id,
-                    slug:          product.slug,
-                    name:          product.name,
-                    brand:         product.brand,
-                    price:         product.price,
+                    id: product.id,
+                    slug: product.slug,
+                    name: product.name,
+                    brand: product.brand,
+                    price: product.price,
                     originalPrice: product.originalPrice,
-                    image:         product.image,
-                    inStock:       product.inStock,
+                    image: product.image,
+                    inStock: product.inStock,
                   })}
-                  className={`w-12 h-12 flex items-center justify-center rounded-full border-2 transition-all ${
-                    wished ? "border-red-200 bg-red-50 text-red-500" : "border-gray-200 text-gray-400 hover:border-red-200 hover:text-red-400"
-                  }`}
+                  className={`w-12 h-12 flex items-center justify-center rounded-full border-2 transition-all ${wished ? "border-red-200 bg-red-50 text-red-500" : "border-gray-200 text-gray-400 hover:border-red-200 hover:text-red-400"
+                    }`}
                 >
                   <Heart className={`w-5 h-5 ${wished ? "fill-current" : ""}`} />
                 </button>
@@ -869,8 +863,8 @@ export default function ProductDetail({ product, related }: Props) {
               {/* Trust chips */}
               <div className="flex flex-wrap gap-2 pt-1">
                 {[
-                  { icon: Truck,       label: "Fast Delivery" },
-                  { icon: RotateCcw,   label: "7-Day Return" },
+                  { icon: Truck, label: "Fast Delivery" },
+                  { icon: RotateCcw, label: "7-Day Return" },
                   { icon: ShieldCheck, label: "Genuine Product" },
                 ].map(({ icon: Icon, label }) => (
                   <div key={label} className="flex items-center gap-1.5 text-xs text-gray-500 bg-gray-50 rounded-full px-3 py-1.5 border border-gray-100">
@@ -887,17 +881,16 @@ export default function ProductDetail({ product, related }: Props) {
             <div className="flex gap-1 border-b border-gray-100 mb-8">
               {([
                 { key: "features", label: "Features & Details" },
-                { key: "specs",    label: "Specifications" },
-                { key: "reviews",  label: `Reviews (${liveCount})` },
+                { key: "specs", label: "Specifications" },
+                { key: "reviews", label: `Reviews (${liveCount})` },
               ] as const).map((tab) => (
                 <button
                   key={tab.key}
                   onClick={() => setActiveTab(tab.key)}
-                  className={`pb-3 px-1 mr-6 text-sm font-semibold border-b-2 transition-colors ${
-                    activeTab === tab.key
-                      ? "border-violet-600 text-violet-600"
-                      : "border-transparent text-gray-500 hover:text-gray-800"
-                  }`}
+                  className={`pb-3 px-1 mr-6 text-sm font-semibold border-b-2 transition-colors ${activeTab === tab.key
+                    ? "border-violet-600 text-violet-600"
+                    : "border-transparent text-gray-500 hover:text-gray-800"
+                    }`}
                 >
                   {tab.label}
                 </button>
@@ -923,8 +916,8 @@ export default function ProductDetail({ product, related }: Props) {
                   <h3 className="text-base font-bold text-gray-900 mb-4">Quick Info</h3>
                   <dl className="space-y-3">
                     {[
-                      { label: "Brand",        value: product.brand },
-                      { label: "Category",     value: product.category },
+                      { label: "Brand", value: product.brand },
+                      { label: "Category", value: product.category },
                       ...(product.colors && product.colors.length > 0 ? [{ label: "Colors", value: product.colors.join(", ") }] : []),
                       { label: "Availability", value: product.inStock ? "In Stock" : "Out of Stock" },
                     ].map((spec) => (
@@ -943,8 +936,8 @@ export default function ProductDetail({ product, related }: Props) {
                 <h3 className="text-base font-bold text-gray-900 mb-4">Full Specifications</h3>
                 <dl className="divide-y divide-gray-100 border border-gray-100 rounded-2xl overflow-hidden">
                   {[
-                    { label: "Brand",        value: product.brand },
-                    { label: "Category",     value: product.category },
+                    { label: "Brand", value: product.brand },
+                    { label: "Category", value: product.category },
                     ...(product.colors && product.colors.length > 0 ? [{ label: "Colors", value: product.colors.join(", ") }] : []),
                     { label: "Availability", value: product.inStock ? "✓ In Stock" : "✗ Out of Stock" },
                     ...(product.specifications ?? []).map((s) => ({ label: s.key, value: s.value })),

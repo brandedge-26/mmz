@@ -13,18 +13,18 @@ import {
 const API = process.env.NEXT_PUBLIC_API_URL;
 
 const PRICE_RANGES = [
-  { label: "All Prices",       min: 0,    max: Infinity },
-  { label: "Under PKR 1,000",  min: 0,    max: 999      },
-  { label: "PKR 1,000–3,000",  min: 1000, max: 3000     },
-  { label: "PKR 3,000–7,000",  min: 3001, max: 7000     },
-  { label: "PKR 7,000+",       min: 7001, max: Infinity  },
+  { label: "All Prices", min: 0, max: Infinity },
+  { label: "Under PKR 1,000", min: 0, max: 999 },
+  { label: "PKR 1,000–3,000", min: 1000, max: 3000 },
+  { label: "PKR 3,000–7,000", min: 3001, max: 7000 },
+  { label: "PKR 7,000+", min: 7001, max: Infinity },
 ];
 
 const SORT_OPTIONS = [
-  { label: "Newest First",       value: "newest"      },
-  { label: "Price: Low to High", value: "price-asc"   },
-  { label: "Price: High to Low", value: "price-desc"  },
-  { label: "Top Rated",          value: "rating-desc" },
+  { label: "Newest First", value: "newest" },
+  { label: "Price: Low to High", value: "price-asc" },
+  { label: "Price: High to Low", value: "price-desc" },
+  { label: "Top Rated", value: "rating-desc" },
 ];
 
 interface ApiProduct {
@@ -43,20 +43,20 @@ interface ApiProduct {
 function toCard(p: ApiProduct) {
   const badgeColor =
     p.badge === "Hot" || p.badge === "Sale" ? "red"
-    : p.badge === "Trending" ? "green"
-    : "violet";
+      : p.badge === "Trending" ? "green"
+        : "violet";
   return {
-    id:            p._id,
-    slug:          p.slug,
-    name:          p.name,
-    brand:         p.brand,
-    price:         p.price,
+    id: p._id,
+    slug: p.slug,
+    name: p.name,
+    brand: p.brand,
+    price: p.price,
     originalPrice: p.originalPrice,
-    image:         p.image,
-    badge:         p.badge,
-    badgeColor:    badgeColor as "violet" | "red" | "green",
-    inStock:       p.inStock,
-    href:          `/products/${p.slug}`,
+    image: p.image,
+    badge: p.badge,
+    badgeColor: badgeColor as "violet" | "red" | "green",
+    inStock: p.inStock,
+    href: `/products/${p.slug}`,
   };
 }
 
@@ -112,15 +112,13 @@ function SidebarFilters({ search, priceLabel, sort, hasFilters, setSearch, setPr
             <button
               key={r.label}
               onClick={() => setPriceLabel(r.label)}
-              className={`w-full text-left px-3 py-2 rounded-xl text-sm transition-colors flex items-center gap-2.5 ${
-                priceLabel === r.label
+              className={`w-full text-left px-3 py-2 rounded-xl text-sm transition-colors flex items-center gap-2.5 ${priceLabel === r.label
                   ? "bg-violet-50 text-violet-700 font-semibold"
                   : "text-gray-600 hover:bg-gray-100"
-              }`}
+                }`}
             >
-              <span className={`w-3.5 h-3.5 rounded-full border-2 flex-shrink-0 transition-colors ${
-                priceLabel === r.label ? "border-violet-600 bg-violet-600" : "border-gray-300"
-              }`} />
+              <span className={`w-3.5 h-3.5 rounded-full border-2 flex-shrink-0 transition-colors ${priceLabel === r.label ? "border-violet-600 bg-violet-600" : "border-gray-300"
+                }`} />
               {r.label}
             </button>
           ))}
@@ -133,15 +131,13 @@ function SidebarFilters({ search, priceLabel, sort, hasFilters, setSearch, setPr
             <button
               key={opt.value}
               onClick={() => setSort(opt.value)}
-              className={`w-full text-left px-3 py-2 rounded-xl text-sm transition-colors flex items-center gap-2.5 ${
-                sort === opt.value
+              className={`w-full text-left px-3 py-2 rounded-xl text-sm transition-colors flex items-center gap-2.5 ${sort === opt.value
                   ? "bg-violet-50 text-violet-700 font-semibold"
                   : "text-gray-600 hover:bg-gray-100"
-              }`}
+                }`}
             >
-              <span className={`w-3.5 h-3.5 rounded-full border-2 flex-shrink-0 ${
-                sort === opt.value ? "border-violet-600 bg-violet-600" : "border-gray-300"
-              }`} />
+              <span className={`w-3.5 h-3.5 rounded-full border-2 flex-shrink-0 ${sort === opt.value ? "border-violet-600 bg-violet-600" : "border-gray-300"
+                }`} />
               {opt.label}
             </button>
           ))}
@@ -168,18 +164,18 @@ interface Props {
 }
 
 export default function CategoryListing({ category, categorySlug }: Props) {
-  const [products,   setProducts]   = useState<ApiProduct[]>([]);
-  const [total,      setTotal]      = useState(0);
-  const [page,       setPage]       = useState(1);
-  const [pages,      setPages]      = useState(1);
-  const [loading,    setLoading]    = useState(true);
+  const [products, setProducts] = useState<ApiProduct[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [pages, setPages] = useState(1);
+  const [loading, setLoading] = useState(true);
 
-  const [search,     setSearch]     = useState("");
+  const [search, setSearch] = useState("");
   const [debouncedQ, setDebouncedQ] = useState("");
   const [priceLabel, setPriceLabel] = useState("All Prices");
-  const [sort,       setSort]       = useState("newest");
+  const [sort, setSort] = useState("newest");
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [drawerVis,  setDrawerVis]  = useState(false);
+  const [drawerVis, setDrawerVis] = useState(false);
 
   // Debounce search
   useEffect(() => {
@@ -195,15 +191,15 @@ export default function CategoryListing({ category, categorySlug }: Props) {
     setLoading(true);
     try {
       const params = new URLSearchParams({
-        page:     String(p),
-        limit:    String(LIMIT),
-        status:   "Active",
+        page: String(p),
+        limit: String(LIMIT),
+        status: "Active",
         category,
         sort,
       });
       if (debouncedQ) params.set("q", debouncedQ);
 
-      const res  = await fetch(`${API}/api/products?${params}`);
+      const res = await fetch(`${API}/products?${params}`);
       const data = await res.json();
 
       let list: ApiProduct[] = data.products ?? [];
@@ -226,7 +222,7 @@ export default function CategoryListing({ category, categorySlug }: Props) {
 
   const clearAll = () => { setSearch(""); setPriceLabel("All Prices"); setSort("newest"); };
 
-  const openDrawer  = () => { setDrawerOpen(true);  requestAnimationFrame(() => requestAnimationFrame(() => setDrawerVis(true))); };
+  const openDrawer = () => { setDrawerOpen(true); requestAnimationFrame(() => requestAnimationFrame(() => setDrawerVis(true))); };
   const closeDrawer = () => { setDrawerVis(false); setTimeout(() => setDrawerOpen(false), 300); };
 
   const sidebarProps: SidebarProps = { search, priceLabel, sort, hasFilters, setSearch, setPriceLabel, setSort, clearAll };
@@ -238,7 +234,7 @@ export default function CategoryListing({ category, categorySlug }: Props) {
       for (let i = 1; i <= pages; i++) nums.push(i);
     } else {
       nums.push(1);
-      if (page > 3)  nums.push("…");
+      if (page > 3) nums.push("…");
       for (let i = Math.max(2, page - 1); i <= Math.min(pages - 1, page + 1); i++) nums.push(i);
       if (page < pages - 2) nums.push("…");
       nums.push(pages);
@@ -306,9 +302,8 @@ export default function CategoryListing({ category, categorySlug }: Props) {
 
               <button
                 onClick={openDrawer}
-                className={`lg:hidden relative flex items-center gap-2 px-4 py-2.5 rounded-xl border text-sm font-semibold transition-colors ${
-                  hasFilters ? "border-violet-400 bg-violet-50 text-violet-700" : "border-gray-200 bg-white text-gray-600"
-                }`}
+                className={`lg:hidden relative flex items-center gap-2 px-4 py-2.5 rounded-xl border text-sm font-semibold transition-colors ${hasFilters ? "border-violet-400 bg-violet-50 text-violet-700" : "border-gray-200 bg-white text-gray-600"
+                  }`}
               >
                 <SlidersHorizontal className="w-4 h-4" />
                 Filters
@@ -393,11 +388,10 @@ export default function CategoryListing({ category, categorySlug }: Props) {
                         <button
                           key={n}
                           onClick={() => fetchProducts(n)}
-                          className={`w-9 h-9 flex items-center justify-center rounded-xl text-sm font-semibold transition ${
-                            page === n
+                          className={`w-9 h-9 flex items-center justify-center rounded-xl text-sm font-semibold transition ${page === n
                               ? "bg-violet-600 text-white shadow-sm"
                               : "border border-gray-200 text-gray-600 hover:bg-gray-50"
-                          }`}
+                            }`}
                         >
                           {n}
                         </button>

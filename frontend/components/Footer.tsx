@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const repairLinks = [
   { label: "iPhone Repair", href: "/repairs/iphone" },
@@ -67,13 +68,9 @@ export default function Footer() {
 
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-violet-600 flex items-center justify-center">
-                <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                </svg>
-              </div>
+              <Image src="/logo_icon.png" alt="MMZ Logo" width={36} height={36} className="rounded-lg" />
               <span className="text-gray-900 font-bold text-xl tracking-tight">
-                Memon <span className="text-violet-600">Mobile Zone</span>
+                Memon <span className="text-violet-600">Mobile Zone 122</span>
               </span>
             </Link>
 
@@ -226,7 +223,7 @@ export default function Footer() {
                 Chat on WhatsApp
               </a>
               <Link
-                href="/contact"
+                href="/appointment"
                 className="inline-flex items-center gap-2 mt-2 bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold px-5 py-2.5 rounded-full transition-colors"
               >
                 Book a Repair

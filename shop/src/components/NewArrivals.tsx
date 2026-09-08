@@ -21,29 +21,29 @@ interface ApiProduct {
 function toCard(p: ApiProduct) {
   const badgeColor =
     p.badge === "Hot" || p.badge === "Sale" ? "red"
-    : p.badge === "Trending" ? "green"
-    : "violet";
+      : p.badge === "Trending" ? "green"
+        : "violet";
   return {
-    id:            p._id,
-    slug:          p.slug,
-    name:          p.name,
-    brand:         p.brand,
-    price:         p.price,
+    id: p._id,
+    slug: p.slug,
+    name: p.name,
+    brand: p.brand,
+    price: p.price,
     originalPrice: p.originalPrice,
-    image:         p.image,
-    badge:         p.badge,
-    badgeColor:    badgeColor as "violet" | "red" | "green",
-    inStock:       p.inStock,
-    href:          `/products/${p.slug}`,
+    image: p.image,
+    badge: p.badge,
+    badgeColor: badgeColor as "violet" | "red" | "green",
+    inStock: p.inStock,
+    href: `/products/${p.slug}`,
   };
 }
 
 export default function NewArrivals() {
   const [products, setProducts] = useState<ApiProduct[]>([]);
-  const [loading,  setLoading]  = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${API}/api/products?sort=newest&status=Active&limit=4`)
+    fetch(`${API}/products?sort=newest&status=Active&limit=4`)
       .then((r) => r.json())
       .then((data) => setProducts(data.products ?? []))
       .catch(() => setProducts([]))
@@ -73,11 +73,11 @@ export default function NewArrivals() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {loading
           ? Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="rounded-2xl border border-gray-100 bg-gray-50 animate-pulse" style={{ height: 320 }} />
-            ))
+            <div key={i} className="rounded-2xl border border-gray-100 bg-gray-50 animate-pulse" style={{ height: 320 }} />
+          ))
           : products.map((p) => (
-              <ProductCard key={p._id} product={toCard(p)} />
-            ))}
+            <ProductCard key={p._id} product={toCard(p)} />
+          ))}
       </div>
     </section>
   );
