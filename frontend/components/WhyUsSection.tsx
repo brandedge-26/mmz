@@ -68,7 +68,7 @@ export default function WhyUsSection() {
             </p>
           </div>
           <Link
-            href="/contact"
+            href="/appointment"
             className="self-start lg:self-auto inline-flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white font-semibold px-6 py-3 rounded-full transition-colors text-sm shadow-md shadow-violet-200 shrink-0"
           >
             Book a Free Diagnosis

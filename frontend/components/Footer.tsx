@@ -69,9 +69,12 @@ export default function Footer() {
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2">
               <Image src="/logo_icon.png" alt="MMZ Logo" width={36} height={36} className="rounded-lg" />
-              <span className="text-gray-900 font-bold text-xl tracking-tight">
-                Memon <span className="text-violet-600">Mobile Zone 122</span>
-              </span>
+              <div className="leading-tight">
+                <span className="text-gray-900 font-bold text-xl tracking-tight">
+                  Memon <span className="text-violet-600">Mobile Zone 122</span>
+                </span>
+                <p className="-mt-1 text-[10px] text-gray-400 font-medium">Established 2007</p>
+              </div>
             </Link>
 
             <p className="text-gray-500 text-sm leading-relaxed max-w-xs">

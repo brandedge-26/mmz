@@ -86,7 +86,7 @@ export default function HowItWorksSection() {
 
             <div className="mt-10">
               <Link
-                href="/contact"
+                href="/appointment"
                 className="inline-flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white font-semibold px-7 py-3.5 rounded-full transition-colors text-sm shadow-md shadow-violet-200"
               >
                 Book a Repair

@@ -2,13 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 
 const deviceCards = [
-  { label: "Phone",           image: "/home/phone-repair/iphone.png",                    href: "/appointment" },
+  { label: "Phone",           image: "/hero_images/mobile_phone.png",                    href: "/appointment" },
   { label: "Tablet",          image: "/header-images/tech-repair/tablet.png",            href: "/appointment" },
   { label: "iPad",            image: "/header-images/tech-repair/ipad.png",              href: "/appointment" },
   { label: "Smart Watches",   image: "/home/services/smartwatch-service.png",            href: "/appointment" },
   { label: "Headphones",      image: "/header-images/shop-accessories/audio.png",        href: "/appointment" },
-  { label: "Power Bank",      image: "/header-images/shop-accessories/power-accessories.png", href: "/appointment" },
-  { label: "Audio Speakers",  image: "/header-images/Audio.webp",                        href: "/appointment", imgClass: "w-20 h-16" },
+  { label: "Power Bank",      image: "/hero_images/powerbank.png",                           href: "/appointment" },
+  { label: "Audio Speakers",  image: "/hero_images/audio.png",                           href: "/appointment" },
   { label: "Earbuds",         image: "/home/services/earbuds-service.jpg",               href: "/appointment" },
 ];
 
@@ -23,7 +23,7 @@ export default function HeroSection() {
 
             {/* Headline */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.08] tracking-tight">
-              Karachi's Most Trusted Mobile Repair Shop.
+              Karachi&apos;s Most Trusted Mobile Repair Shop <span className="text-violet-600">Since 2007.</span>
             </h1>
 
             {/* Subtext */}

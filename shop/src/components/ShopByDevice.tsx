@@ -29,8 +29,8 @@ const DEVICES = [
   {
     name:    "OnePlus",
     query:   "OnePlus",
-    image:   "/devices/oneplus.svg",
-    isLogo:  true,
+    image:   "/devices/oneplus.png",
+    isLogo:  false,
     color:   "group-hover:border-red-300",
     badge:   "bg-red-50 text-red-700",
   },
@@ -41,6 +41,14 @@ const DEVICES = [
     isLogo:  false,
     color:   "group-hover:border-violet-300",
     badge:   "bg-violet-50 text-violet-700",
+  },
+  {
+    name:    "Xiaomi",
+    query:   "Xiaomi",
+    image:   "/devices/xiaomi.png",
+    isLogo:  false,
+    color:   "group-hover:border-orange-300",
+    badge:   "bg-orange-50 text-orange-700",
   },
 ];
 
@@ -55,7 +63,7 @@ export default function ShopByDevice() {
       </div>
 
       {/* Cards grid — 2 on mobile, 3 on tablet, 5 on desktop */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
         {DEVICES.map((device) => (
           <Link
             key={device.name}

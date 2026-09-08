@@ -2,29 +2,39 @@ import Link from "next/link";
 
 const CATEGORIES = [
   {
-    label: "Cases",
-    image: "/shop/category/Cases.webp",
-    href:  "/cases",
+    label: "Panels",
+    image: "/shop/category/mobile_panels.jpg",
+    href:  "/products?category=Panels",
   },
   {
-    label: "Screen Protectors",
-    image: "/shop/category/Screen_Protectors.webp",
-    href:  "/screen-protection",
+    label: "Mobile Batteries",
+    image: "/shop/category/mobile_battery.jpg",
+    href:  "/products?category=Mobile+Batteries",
+  },
+  {
+    label: "Charging Jacks",
+    image: "/shop/category/charign_jacks.jpg",
+    href:  "/products?category=Charging+Jacks",
+  },
+  {
+    label: "Keypad Mobile Parts",
+    image: "/shop/category/keypad_mobile.jpg",
+    href:  "/products?category=Keypad+Mobile+Parts",
+  },
+  {
+    label: "Trending Accessories",
+    image: "/shop/category/trending_accessories.jpg",
+    href:  "/products?category=Trending+Accessories",
   },
   {
     label: "Power & Charging",
-    image: "/shop/category/Charging.webp",
-    href:  "/power-charging",
+    image: "/shop/category/power_charing.jpg",
+    href:  "/products?category=Power",
   },
   {
     label: "Audio",
-    image: "/shop/category/Audio_Category_Tile.webp",
-    href:  "/audio",
-  },
-  {
-    label: "Accessories",
-    image: "/shop/category/accessory.webp",
-    href:  "/accessories",
+    image: "/shop/category/audio.png",
+    href:  "/products?category=Audio",
   },
 ];
 
@@ -35,7 +45,7 @@ export default function CategoryCards() {
         Browse by Category
       </h2>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3">
         {CATEGORIES.map((cat) => (
           <Link
             key={cat.label}

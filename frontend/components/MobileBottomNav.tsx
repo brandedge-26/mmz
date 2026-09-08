@@ -168,7 +168,7 @@ export default function MobileBottomNav() {
 
           {/* Shop */}
           <Link
-            href="http://localhost:3001"
+            href="https://shop.memonmobilezone122.pk"
             target="_blank"
             rel="noopener noreferrer"
             onClick={close}

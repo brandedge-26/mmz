@@ -48,7 +48,7 @@ export default function CTASection() {
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 justify-center mb-10">
               <Link
-                href="/contact"
+                href="/appointment"
                 className="inline-flex items-center justify-center gap-2 bg-violet-600 hover:bg-violet-700 text-white font-bold px-8 py-3.5 rounded-full transition-colors text-sm shadow-md shadow-violet-200"
               >
                 Book a Repair

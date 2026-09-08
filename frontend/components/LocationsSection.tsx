@@ -203,7 +203,7 @@ export default function LocationsSection() {
           Two conveniently located branches — hover the pins to find the one closest to you.
         </p>
         <Link
-          href="/contact"
+          href="/appointment"
           className="inline-flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white font-semibold px-6 py-3 rounded-full transition-colors text-sm shadow-lg shadow-violet-300/40"
         >
           Get Directions

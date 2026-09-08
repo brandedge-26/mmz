@@ -187,9 +187,12 @@ export default function Header() {
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 shrink-0" onClick={() => setMobileOpen(false)}>
               <Image src="/logo_icon.png" alt="MMZ Logo" width={36} height={36} className="rounded-lg" />
-              <span className="text-gray-900 font-bold text-lg tracking-tight">
-                Memon Mobile <span className="text-violet-600">Zone 122</span>
-              </span>
+              <div className="leading-tight">
+                <span className="text-gray-900 font-bold text-lg tracking-tight">
+                  Memon Mobile <span className="text-violet-600">Zone 122</span>
+                </span>
+                <p className="-mt-1 text-[10px] text-gray-400 font-medium">Established 2007</p>
+              </div>
             </Link>
 
             {/* Desktop Nav */}

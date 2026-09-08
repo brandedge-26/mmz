@@ -267,8 +267,11 @@ export default function Header() {
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <Image src="/logo_icon.png" alt="MMZ Logo" width={36} height={36} className="rounded-lg" />
             <div className="leading-tight">
-              <span className="text-gray-900 font-bold text-base tracking-tight">Memon Mobile </span>
-              <span className="text-violet-600 font-bold text-base">Zone 122</span>
+              <div>
+                <span className="text-gray-900 font-bold text-base tracking-tight">Memon Mobile </span>
+                <span className="text-violet-600 font-bold text-base">Zone 122</span>
+              </div>
+              <p className="-mt-1 text-[10px] text-gray-400 font-medium">Established 2007</p>
             </div>
           </Link>
 
