@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${jakartaSans.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col pb-16 md:pb-0">
+      <body className="min-h-full flex flex-col pb-16 md:pb-0 pt-8 lg:pt-9">
         {children}
         <WhatsAppButton />
         <MobileBottomNav />

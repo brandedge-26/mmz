@@ -20,7 +20,7 @@ async function uploadToCloudinary(file: File, folder = "mmz/products"): Promise<
   return result.secure_url;
 }
 
-const CATEGORIES = ["Cases", "Screen Protection", "Power & Charging", "Audio", "Accessories", "Panels"];
+const CATEGORIES = ["Panels", "Mobile Batteries", "Charging Jacks", "Keypad Mobile Parts", "Trending Accessories", "Chargers", "Power Bank", "Casing Converter", "Smart Watches", "Car Accessories", "Audio"];
 const BADGES     = ["None", "New", "Hot", "Sale", "Trending", "Best Seller"];
 const BRANDS     = ["Apple", "Samsung", "Anker", "JBL", "Spigen", "ZAGG", "Belkin", "OnePlus", "Oppo", "Vivo", "Xiaomi", "Realme", "Other"];
 

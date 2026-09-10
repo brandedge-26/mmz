@@ -3,32 +3,32 @@ import Link from "next/link";
 const CATEGORIES = [
   {
     label: "Panels",
-    image: "/shop/category/mobile_panels.jpg",
+    image: "/shop/category/mobile_panels-removebg-preview.png",
     href:  "/products?category=Panels",
   },
   {
     label: "Mobile Batteries",
-    image: "/shop/category/mobile_battery.jpg",
+    image: "/shop/category/mobile_battery-removebg-preview.png",
     href:  "/products?category=Mobile+Batteries",
   },
   {
     label: "Charging Jacks",
-    image: "/shop/category/charign_jacks.jpg",
+    image: "/shop/category/charign_jacks-removebg-preview.png",
     href:  "/products?category=Charging+Jacks",
   },
   {
     label: "Keypad Mobile Parts",
-    image: "/shop/category/keypad_mobile.jpg",
+    image: "/shop/category/keypad_mobile-removebg-preview.png",
     href:  "/products?category=Keypad+Mobile+Parts",
   },
   {
     label: "Trending Accessories",
-    image: "/shop/category/trending_accessories.jpg",
+    image: "/shop/category/trending_accessories-removebg-preview.png",
     href:  "/products?category=Trending+Accessories",
   },
   {
     label: "Power & Charging",
-    image: "/shop/category/power_charing.jpg",
+    image: "/shop/category/power_charing-removebg-preview.png",
     href:  "/products?category=Power",
   },
   {

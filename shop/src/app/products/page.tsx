@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   Search, X, SlidersHorizontal, ChevronRight, PackageSearch, ChevronDown,
@@ -11,7 +11,7 @@ import ProductCard from "@/components/ProductCard";
 
 const API = process.env.NEXT_PUBLIC_API_URL;
 
-const CATEGORIES = ["All", "Cases", "Screen Protection", "Power & Charging", "Audio", "Accessories", "Panels"];
+const CATEGORIES = ["All", "Panels", "Mobile Batteries", "Charging Jacks", "Keypad Mobile Parts", "Trending Accessories", "Chargers", "Power Bank", "Casing Converter", "Smart Watches", "Car Accessories", "Audio"];
 const PRICE_RANGES = [
   { label: "All Prices", min: 0, max: Infinity },
   { label: "Under PKR 1,000", min: 0, max: 999 },
@@ -151,6 +151,7 @@ function SidebarFilters({
 
 function ProductsPageInner() {
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const [products, setProducts] = useState<ApiProduct[]>([]);
   const [total, setTotal] = useState(0);
@@ -166,6 +167,15 @@ function ProductsPageInner() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [drawerVis, setDrawerVis] = useState(false);
 
+  // Sync URL when filters change
+  const updateURL = useCallback((cat: string, q: string) => {
+    const params = new URLSearchParams();
+    if (cat && cat !== "All") params.set("category", cat);
+    if (q.trim()) params.set("q", q.trim());
+    const query = params.toString();
+    router.replace(`/products${query ? `?${query}` : ""}`, { scroll: false });
+  }, [router]);
+
   // Pre-apply ?category= and ?q= from URL
   useEffect(() => {
     const urlCat = searchParams.get("category");
@@ -179,6 +189,9 @@ function ProductsPageInner() {
       setDebouncedQ(urlQ);
     }
   }, [searchParams]);
+
+  // Update URL when category or search changes
+  useEffect(() => { updateURL(category, debouncedQ); }, [category, debouncedQ, updateURL]);
 
   // Debounce search
   useEffect(() => {

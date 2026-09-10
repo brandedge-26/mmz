@@ -12,7 +12,7 @@ import {
 
 const API = process.env.NEXT_PUBLIC_API_URL;
 
-const CATEGORIES = ["All", "Cases", "Screen Protection", "Power & Charging", "Audio", "Accessories", "Panels"];
+const CATEGORIES = ["All", "Panels", "Mobile Batteries", "Charging Jacks", "Keypad Mobile Parts", "Trending Accessories", "Chargers", "Power Bank", "Casing Converter", "Smart Watches", "Car Accessories", "Audio"];
 const PRICE_RANGES = [
   { label: "All Prices",       min: 0,    max: Infinity },
   { label: "Under PKR 1,000",  min: 0,    max: 999      },

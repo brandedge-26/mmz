@@ -6,53 +6,49 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const SLIDES = [
   {
-    tag:     "New Arrivals",
-    title:   "iPhone 16 Series Cases",
-    desc:    "Premium protection meets sleek design. Shop the latest cases for iPhone 16 Pro Max, Pro, Plus & standard.",
-    cta:     "Shop Now",
-    href:    "/products?category=Cases&q=iPhone+16",
-    bg:      "from-violet-600 to-violet-900",
-    accent:  "bg-violet-500",
-    pill:    "bg-violet-500/30 text-violet-100",
-    pattern: "violet",
+    tag:      "Premium Quality",
+    title:    "Mobile Panels",
+    desc:     "High-clarity LCD & OLED panels for iPhone, Samsung & more. Restore your screen to factory perfection.",
+    cta:      "Shop Panels",
+    href:     "/products?category=Panels",
+    image:    "/banners/panels.png",
+    imgBg:    "#1e2535",
+    pill:     "bg-blue-500/30 text-blue-200",
   },
   {
-    tag:     "Best Sellers",
-    title:   "Screen Protectors You Can Trust",
-    desc:    "Military-grade tempered glass for iPhone, Samsung & Pixel. Crystal clear. Bubble-free installation.",
-    cta:     "Browse Collection",
-    href:    "/products?category=Screen+Protection",
-    bg:      "from-slate-700 to-slate-900",
-    accent:  "bg-slate-600",
-    pill:    "bg-slate-500/30 text-slate-100",
-    pattern: "slate",
+    tag:      "Sound & Style",
+    title:    "Premium Audio\nCollection",
+    desc:     "Earbuds, headphones & Bluetooth speakers from top brands. Immersive sound for every moment.",
+    cta:      "Explore Audio",
+    href:     "/products?category=Audio",
+    image:    "/banners/audio.png",
+    imgBg:    "#1a0533",
+    pill:     "bg-purple-500/30 text-purple-200",
   },
   {
-    tag:     "Fast Charging",
-    title:   "Power Up Anywhere",
-    desc:    "USB-C cables, 65W fast chargers, wireless pads & power banks. Never run out of battery again.",
-    cta:     "Shop Power",
-    href:    "/products?category=Power",
-    bg:      "from-amber-500 to-orange-700",
-    accent:  "bg-amber-400",
-    pill:    "bg-amber-400/30 text-amber-100",
-    pattern: "amber",
+    tag:      "Stay Charged",
+    title:    "Power Banks",
+    desc:     "Never run out of battery. Compact, high-capacity power banks with fast charging for every device.",
+    cta:      "Shop Power Banks",
+    href:     "/products?category=Power+Bank",
+    image:    "/banners/powerbank.png",
+    imgBg:    "#052e16",
+    pill:     "bg-emerald-500/30 text-emerald-200",
   },
   {
-    tag:     "Sound & Style",
-    title:   "Premium Audio Collection",
-    desc:    "Earbuds, headphones & Bluetooth speakers from top brands. Immersive sound for every moment.",
-    cta:     "Explore Audio",
-    href:    "/products?category=Audio",
-    bg:      "from-emerald-600 to-teal-800",
-    accent:  "bg-emerald-500",
-    pill:    "bg-emerald-500/30 text-emerald-100",
-    pattern: "emerald",
+    tag:      "Latest Compatible",
+    title:    "iPhone 17 & 18\nCase Converting",
+    desc:     "Seamlessly upgrade your iPhone casing with our premium conversion kits. Perfect fit, flawless finish.",
+    cta:      "Shop Now",
+    href:     "/products?category=Casing+Converter",
+    image:    "/banners/iphone1718caseconverting.png",
+    imgBg:    "#0f0f0f",
+    pill:     "bg-gray-400/30 text-gray-200",
   },
 ];
 
 export default function HeroBanner() {
-  const [current, setCurrent] = useState(0);
+  const [current, setCurrent]   = useState(0);
   const [animating, setAnimating] = useState(false);
 
   const goTo = useCallback((idx: number) => {
@@ -65,9 +61,8 @@ export default function HeroBanner() {
   const prev = () => goTo((current - 1 + SLIDES.length) % SLIDES.length);
   const next = useCallback(() => goTo((current + 1) % SLIDES.length), [current, goTo]);
 
-  // Auto-play
   useEffect(() => {
-    const t = setInterval(next, 5000);
+    const t = setInterval(next, 5500);
     return () => clearInterval(t);
   }, [next]);
 
@@ -76,63 +71,72 @@ export default function HeroBanner() {
   return (
     <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl" style={{ height: "480px" }}>
 
-      {/* Slides */}
+      {/* Full-width background images */}
       {SLIDES.map((s, i) => (
         <div
           key={i}
-          className={`absolute inset-0 bg-gradient-to-br ${s.bg} transition-opacity duration-500 ${
+          className={`absolute inset-0 transition-opacity duration-500 ${
             i === current ? "opacity-100 z-10" : "opacity-0 z-0"
           }`}
+          style={{ backgroundColor: s.imgBg }}
         >
-          {/* Decorative circles */}
-          <div className="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-white/5" />
-          <div className="absolute -bottom-32 -left-16 w-80 h-80 rounded-full bg-white/5" />
-          <div className="absolute top-10 right-1/3 w-32 h-32 rounded-full bg-white/5" />
+          <img
+            src={s.image}
+            alt=""
+            className="w-full h-full object-contain object-right"
+            draggable={false}
+          />
+          {/* Left-side gradient overlay for text readability */}
+          <div
+            className="absolute inset-0"
+            style={{ background: `linear-gradient(to right, ${s.imgBg} 35%, ${s.imgBg}cc 50%, transparent 70%)` }}
+          />
         </div>
       ))}
 
-      {/* Content */}
-      <div className="relative z-20 h-full max-w-7xl mx-auto px-6 sm:px-10 flex flex-col justify-center">
-        <div
-          key={current}
-          className="max-w-xl"
-          style={{ animation: "fadeSlideUp 0.5s ease-out both" }}
-        >
-          <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-4 ${slide.pill}`}>
-            {slide.tag}
-          </span>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-4">
-            {slide.title}
-          </h1>
-          <p className="text-white/70 text-base sm:text-lg mb-8 max-w-md leading-relaxed">
-            {slide.desc}
-          </p>
-          <Link
-            href={slide.href}
-            className="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-gray-900 font-bold text-sm rounded-full hover:bg-gray-100 transition-colors shadow-lg"
+      {/* Text — left side */}
+      <div className="relative z-20 h-full flex items-center">
+        <div className="w-full sm:w-1/2 px-8 sm:px-12 lg:px-16">
+          <div
+            key={current}
+            style={{ animation: "fadeSlideIn 0.5s ease-out both" }}
           >
-            {slide.cta}
-            <ChevronRight className="w-4 h-4" />
-          </Link>
+            <span className={`inline-block px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest mb-4 ${slide.pill}`}>
+              {slide.tag}
+            </span>
+            <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-extrabold text-white leading-tight mb-4 whitespace-pre-line drop-shadow-lg">
+              {slide.title}
+            </h1>
+            <p className="text-white/80 text-sm sm:text-base mb-8 max-w-sm leading-relaxed">
+              {slide.desc}
+            </p>
+            <Link
+              href={slide.href}
+              className="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-gray-900 font-bold text-sm rounded-full hover:bg-gray-100 transition-colors shadow-lg"
+            >
+              {slide.cta}
+              <ChevronRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
       </div>
 
       {/* Prev / Next */}
       <button
         onClick={prev}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm flex items-center justify-center text-white transition-all hover:scale-110"
+        className="absolute left-3 top-1/2 -translate-y-1/2 z-30 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm flex items-center justify-center text-white transition-all hover:scale-110"
       >
-        <ChevronLeft className="w-5 h-5" />
+        <ChevronLeft className="w-4 h-4" />
       </button>
       <button
         onClick={next}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm flex items-center justify-center text-white transition-all hover:scale-110"
+        className="absolute right-3 top-1/2 -translate-y-1/2 z-30 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm flex items-center justify-center text-white transition-all hover:scale-110"
       >
-        <ChevronRight className="w-5 h-5" />
+        <ChevronRight className="w-4 h-4" />
       </button>
 
       {/* Dots */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2">
+      <div className="absolute bottom-5 right-8 z-30 flex items-center gap-2">
         {SLIDES.map((_, i) => (
           <button
             key={i}
@@ -144,15 +148,15 @@ export default function HeroBanner() {
         ))}
       </div>
 
-      {/* Slide counter */}
-      <div className="absolute top-5 right-5 z-30 text-white/50 text-xs font-semibold tabular-nums">
+      {/* Counter */}
+      <div className="absolute top-5 right-5 z-30 text-white/40 text-xs font-semibold tabular-nums">
         {String(current + 1).padStart(2, "0")} / {String(SLIDES.length).padStart(2, "0")}
       </div>
 
       <style>{`
-        @keyframes fadeSlideUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to   { opacity: 1; transform: translateY(0); }
+        @keyframes fadeSlideIn {
+          from { opacity: 0; transform: translateX(-24px); }
+          to   { opacity: 1; transform: translateX(0); }
         }
       `}</style>
     </div>

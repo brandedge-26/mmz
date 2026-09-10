@@ -8,7 +8,7 @@ import { Search, Plus, Pencil, Trash2, Package, RefreshCw, AlertTriangle } from 
 import EditProductModal, { type FullProduct } from "./EditProductModal";
 import DeleteModal from "./DeleteModal";
 
-const CATEGORIES = ["All", "Cases", "Screen Protection", "Power & Charging", "Audio", "Accessories", "Panels"];
+const CATEGORIES = ["All", "Panels", "Mobile Batteries", "Charging Jacks", "Keypad Mobile Parts", "Trending Accessories", "Chargers", "Power Bank", "Casing Converter", "Smart Watches", "Car Accessories", "Audio"];
 
 interface Product {
   _id: string;
