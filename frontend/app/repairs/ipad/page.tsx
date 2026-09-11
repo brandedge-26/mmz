@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import RepairPageTemplate from "@/components/RepairPageTemplate";
+
+export const metadata: Metadata = {
+  title: "iPad Repair in Karachi — Screen, Battery & More",
+  description: "Professional iPad repair in Karachi. Screen replacement, battery, charging port & more. Fast service, 90-day warranty. Saddar & North Karachi.",
+  alternates: { canonical: "https://memonmobilezone122.pk/repairs/ipad" },
+};
 
 const repairs = [
   { name: "Screen Replacement", desc: "Cracked or shattered iPad display replaced with OEM-grade glass.", price: "From Rs. 6,500", time: "2–3 hrs" },

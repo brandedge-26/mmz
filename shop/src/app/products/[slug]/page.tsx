@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import ProductDetail from "./ProductDetail";
 import type { ShopProduct } from "@/lib/products";
 
@@ -72,6 +73,33 @@ async function fetchRelated(category: string, excludeSlug: string): Promise<Shop
   } catch {
     return [];
   }
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await fetchProduct(slug);
+  if (!product) return { title: "Product Not Found" };
+
+  const price = `Rs. ${product.price.toLocaleString()}`;
+  const desc = product.description
+    ? `${product.description.slice(0, 140)}…`
+    : `Buy ${product.name} in Karachi at ${price}. ${product.inStock ? "In stock" : "Out of stock"}. Fast delivery. Memon Mobile Zone.`;
+
+  return {
+    title: `${product.name} — ${price}`,
+    description: desc,
+    openGraph: {
+      title: `${product.name} — ${price} | MMZ Shop`,
+      description: desc,
+      images: product.image ? [{ url: product.image, alt: product.name }] : [],
+      type: "website",
+    },
+    alternates: { canonical: `https://shop.memonmobilezone122.pk/products/${slug}` },
+  };
 }
 
 export default async function ProductPage({

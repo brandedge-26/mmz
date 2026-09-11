@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import RepairPageTemplate from "@/components/RepairPageTemplate";
+
+export const metadata: Metadata = {
+  title: "Vivo Repair in Karachi — Screen, Battery & More",
+  description: "Professional Vivo phone repair in Karachi. Screen, battery, charging port & more. Fast service, 90-day warranty. 2 branches: Saddar & North Karachi.",
+  alternates: { canonical: "https://memonmobilezone122.pk/repairs/vivo" },
+};
 
 const repairs = [
   { name: "Screen Replacement", desc: "Cracked or unresponsive Vivo display replaced with OEM-grade glass.", price: "From Rs. 3,500", time: "1–2 hrs" },

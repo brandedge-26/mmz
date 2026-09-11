@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import RepairPageTemplate from "@/components/RepairPageTemplate";
+
+export const metadata: Metadata = {
+  title: "Tablet Repair in Karachi — Screen, Battery & More",
+  description: "Professional tablet repair in Karachi. Screen, battery, charging port & more for all brands. Fast service, 90-day warranty. Saddar & North Karachi.",
+  alternates: { canonical: "https://memonmobilezone122.pk/repairs/tablet" },
+};
 
 const repairs = [
   { name: "Screen Replacement", desc: "Cracked or unresponsive tablet display replaced with quality glass.", price: "From Rs. 4,500", time: "2–3 hrs" },

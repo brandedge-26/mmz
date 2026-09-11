@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import RepairPageTemplate from "@/components/RepairPageTemplate";
+
+export const metadata: Metadata = {
+  title: "Oppo Repair in Karachi — Screen, Battery & More",
+  description: "Professional Oppo phone repair in Karachi. Screen, battery, charging port & more. Fast service, 90-day warranty. 2 branches: Saddar & North Karachi.",
+  alternates: { canonical: "https://memonmobilezone122.pk/repairs/oppo" },
+};
 
 const repairs = [
   { name: "Screen Replacement", desc: "Cracked or unresponsive Oppo display replaced with OEM-grade glass.", price: "From Rs. 3,500", time: "1–2 hrs" },

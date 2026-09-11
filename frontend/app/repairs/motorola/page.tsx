@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import RepairPageTemplate from "@/components/RepairPageTemplate";
+
+export const metadata: Metadata = {
+  title: "Motorola Repair in Karachi — Screen, Battery & More",
+  description: "Professional Motorola phone repair in Karachi. Screen, battery, charging port & more. Fast service, 90-day warranty. Saddar & North Karachi.",
+  alternates: { canonical: "https://memonmobilezone122.pk/repairs/motorola" },
+};
 
 const repairs = [
   { name: "Screen Replacement", desc: "Cracked LCD or P-OLED display replaced with OEM-grade panel.", price: "From Rs. 2,800", time: "1–2 hrs" },

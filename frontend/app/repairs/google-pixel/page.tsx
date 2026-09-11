@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import RepairPageTemplate from "@/components/RepairPageTemplate";
+
+export const metadata: Metadata = {
+  title: "Google Pixel Repair in Karachi — Screen, Battery & More",
+  description: "Professional Google Pixel repair in Karachi. Screen, battery, charging port & more. Fast service, 90-day warranty. Saddar & North Karachi.",
+  alternates: { canonical: "https://memonmobilezone122.pk/repairs/google-pixel" },
+};
 
 const repairs = [
   { name: "Screen Replacement", desc: "Cracked OLED display replaced with OEM-grade panel — touch & Face Unlock preserved.", price: "From Rs. 4,000", time: "1–2 hrs" },

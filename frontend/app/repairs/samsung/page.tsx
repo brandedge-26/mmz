@@ -1,4 +1,13 @@
+import type { Metadata } from "next";
 import RepairPageTemplate from "@/components/RepairPageTemplate";
+
+export const metadata: Metadata = {
+  title: "Samsung Repair in Karachi — Screen, Battery & More",
+  description:
+    "Professional Samsung Galaxy repair in Karachi. Screen replacement from Rs. 3,500, battery from Rs. 2,000. Same-day service. 90-day warranty. Saddar & North Karachi.",
+  keywords: ["Samsung repair Karachi", "Samsung screen replacement Karachi", "Samsung battery replacement Karachi", "Galaxy repair Karachi", "Samsung repair Saddar"],
+  alternates: { canonical: "https://memonmobilezone122.pk/repairs/samsung" },
+};
 
 const repairs = [
   { name: "Screen Replacement", desc: "Cracked AMOLED/Super AMOLED display replaced with OEM-grade panel.", price: "From Rs. 3,500", time: "1–2 hrs" },

@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import RepairPageTemplate from "@/components/RepairPageTemplate";
+
+export const metadata: Metadata = {
+  title: "LG Repair in Karachi — Screen, Battery & More",
+  description: "Professional LG phone repair in Karachi. Screen, battery, charging port & more. Fast service, 90-day warranty. Saddar & North Karachi.",
+  alternates: { canonical: "https://memonmobilezone122.pk/repairs/lg" },
+};
 
 const repairs = [
   { name: "Screen Replacement", desc: "Cracked OLED or LCD display replaced with OEM-grade panel.", price: "From Rs. 2,500", time: "1–2 hrs" },

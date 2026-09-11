@@ -6,7 +6,7 @@ import { useState } from "react";
 import {
   LayoutDashboard, ShoppingBag, Package, Wrench,
   Users, BarChart3, Settings, LogOut, X,
-  ChevronDown, CalendarCheck, MessageSquare, PlusCircle, List, Bell, Star, Tag,
+  ChevronDown, CalendarCheck, MessageSquare, PlusCircle, List, Bell, Star, Tag, Image,
 } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
 
@@ -183,6 +183,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
             )}
           </li>
 
+          <li><NavLink href="/banners"        icon={Image}     label="Banners" /></li>
           <li><NavLink href="/customers"      icon={Users}     label="Customers" /></li>
           <li><NavLink href="/reviews"        icon={Star}      label="Reviews" /></li>
           <li><NavLink href="/promos"         icon={Tag}       label="Promo Codes" /></li>

@@ -1,4 +1,13 @@
+import type { Metadata } from "next";
 import RepairPageTemplate from "@/components/RepairPageTemplate";
+
+export const metadata: Metadata = {
+  title: "iPhone Repair in Karachi — Screen, Battery & More",
+  description:
+    "Professional iPhone repair in Karachi. Screen replacement from Rs. 4,500, battery from Rs. 2,500. Same-day service. 90-day warranty. Saddar & North Karachi.",
+  keywords: ["iPhone repair Karachi", "iPhone screen replacement Karachi", "iPhone battery replacement Karachi", "iPhone repair Saddar", "Apple repair Karachi"],
+  alternates: { canonical: "https://memonmobilezone122.pk/repairs/iphone" },
+};
 
 const repairs = [
   { name: "Screen Replacement", desc: "Cracked or unresponsive display replaced with OEM-grade glass.", price: "From Rs. 4,500", time: "1–2 hrs" },
