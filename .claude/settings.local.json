@@ -20,7 +20,9 @@
       "Bash(npx tsc:*)",
       "Bash(npm run:*)",
       "Bash(xargs grep:*)",
-      "Bash(grep -i \"oppo\\\\|vivo\\\\|xiaomi\\\\|realme\\\\|nokia\" find C:/Users/User/Documents/Projects/mmz/frontend/public -name \"*.png\" -o -name \"*.svg\")"
+      "Bash(grep -i \"oppo\\\\|vivo\\\\|xiaomi\\\\|realme\\\\|nokia\" find C:/Users/User/Documents/Projects/mmz/frontend/public -name \"*.png\" -o -name \"*.svg\")",
+      "Bash(node scripts/seedBanners.js)",
+      "Bash(node -e ':*)"
     ]
   }
 }

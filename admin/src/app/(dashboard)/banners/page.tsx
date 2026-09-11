@@ -182,30 +182,28 @@ function EditModal({ banner, onSave, onClose }: {
             </div>
           </div>
 
-          {/* Desktop text fields */}
-          {banner.type === "desktop" && (
-            <div className="grid sm:grid-cols-2 gap-4">
-              <Field label="Tag / Badge">
-                <input type="text" value={tag} onChange={(e) => setTag(e.target.value)} className={inp} placeholder="e.g. Stay Charged" />
-              </Field>
-              <Field label="Button Text">
-                <input type="text" value={btnText} onChange={(e) => setBtnText(e.target.value)} className={inp} placeholder="e.g. Shop Now" />
-              </Field>
-              <Field label="Title">
-                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} className={inp} placeholder="e.g. Power Banks" />
-              </Field>
-              <Field label="Overlay Color">
-                <div className="flex items-center gap-3">
-                  <input type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)}
-                    className="w-10 h-10 rounded-lg border border-gray-200 cursor-pointer p-0.5" />
-                  <input type="text" value={bgColor} onChange={(e) => setBgColor(e.target.value)} className={`${inp} flex-1`} />
-                </div>
-              </Field>
-              <Field label="Description" hint="">
-                <textarea value={desc} onChange={(e) => setDesc(e.target.value)} rows={2} className={inp} placeholder="Short subtitle…" />
-              </Field>
-            </div>
-          )}
+          {/* Text overlay fields */}
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Field label="Tag / Badge">
+              <input type="text" value={tag} onChange={(e) => setTag(e.target.value)} className={inp} placeholder="e.g. Premium Quality" />
+            </Field>
+            <Field label="Button Text">
+              <input type="text" value={btnText} onChange={(e) => setBtnText(e.target.value)} className={inp} placeholder="e.g. Shop Now" />
+            </Field>
+            <Field label="Title">
+              <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} className={inp} placeholder="e.g. Mobile Panels" />
+            </Field>
+            <Field label="Overlay Color">
+              <div className="flex items-center gap-3">
+                <input type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)}
+                  className="w-10 h-10 rounded-lg border border-gray-200 cursor-pointer p-0.5" />
+                <input type="text" value={bgColor} onChange={(e) => setBgColor(e.target.value)} className={`${inp} flex-1`} />
+              </div>
+            </Field>
+            <Field label="Description">
+              <textarea value={desc} onChange={(e) => setDesc(e.target.value)} rows={2} className={inp} placeholder="Short subtitle…" />
+            </Field>
+          </div>
 
           <div className="flex gap-3 pt-2">
             <button onClick={onClose} disabled={saving}
@@ -399,29 +397,25 @@ export default function BannersPage() {
                 )}
               </Field>
 
-              {tab === "desktop" && (
-                <>
-                  <Field label="Tag / Badge" hint="Short label above title">
-                    <input type="text" value={tag} onChange={(e) => setTag(e.target.value)} placeholder="e.g. Stay Charged" className={inp} />
-                  </Field>
-                  <Field label="Title">
-                    <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. Power Banks" className={inp} />
-                  </Field>
-                  <Field label="Description">
-                    <textarea value={desc} onChange={(e) => setDesc(e.target.value)} rows={2} placeholder="Short subtitle…" className={inp} />
-                  </Field>
-                  <Field label="Button Text">
-                    <input type="text" value={btnText} onChange={(e) => setBtnText(e.target.value)} placeholder="e.g. Shop Now" className={inp} />
-                  </Field>
-                  <Field label="Overlay Color">
-                    <div className="flex items-center gap-3">
-                      <input type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)}
-                        className="w-10 h-10 rounded-lg border border-gray-200 cursor-pointer p-0.5" />
-                      <input type="text" value={bgColor} onChange={(e) => setBgColor(e.target.value)} placeholder="#0f172a" className={`${inp} flex-1`} />
-                    </div>
-                  </Field>
-                </>
-              )}
+              <Field label="Tag / Badge" hint="Short label above title">
+                <input type="text" value={tag} onChange={(e) => setTag(e.target.value)} placeholder="e.g. Premium Quality" className={inp} />
+              </Field>
+              <Field label="Title">
+                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. Mobile Panels" className={inp} />
+              </Field>
+              <Field label="Description">
+                <textarea value={desc} onChange={(e) => setDesc(e.target.value)} rows={2} placeholder="Short subtitle…" className={inp} />
+              </Field>
+              <Field label="Button Text">
+                <input type="text" value={btnText} onChange={(e) => setBtnText(e.target.value)} placeholder="e.g. Shop Now" className={inp} />
+              </Field>
+              <Field label="Overlay Color">
+                <div className="flex items-center gap-3">
+                  <input type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)}
+                    className="w-10 h-10 rounded-lg border border-gray-200 cursor-pointer p-0.5" />
+                  <input type="text" value={bgColor} onChange={(e) => setBgColor(e.target.value)} placeholder="#0f172a" className={`${inp} flex-1`} />
+                </div>
+              </Field>
 
               <button onClick={handleUpload} disabled={uploading || !file}
                 className="mt-auto w-full py-3 bg-violet-600 hover:bg-violet-700 disabled:opacity-50 text-white font-semibold text-sm rounded-xl transition-colors flex items-center justify-center gap-2">
