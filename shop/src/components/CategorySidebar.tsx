@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { X, ChevronDown } from "lucide-react";
 
-const SIDEBAR_ITEMS = [
+const SIDEBAR_ITEMS: SidebarItem[] = [
   { label: "All Products",         href: "/products" },
   { label: "Panels",               href: "/products?category=Panels" },
   { label: "Mobile Batteries",     href: "/products?category=Mobile+Batteries" },
@@ -18,6 +18,9 @@ const SIDEBAR_ITEMS = [
   { label: "Car Accessories",      href: "/products?category=Car+Accessories" },
   { label: "Audio",                href: "/products?category=Audio" },
 ];
+
+interface SidebarChild { label: string; href: string; }
+interface SidebarItem  { label: string; href: string; children?: SidebarChild[]; }
 
 interface Props {
   open: boolean;
@@ -93,7 +96,7 @@ export default function CategorySidebar({ open, onClose }: Props) {
                       >
                         Shop all {item.label} →
                       </Link>
-                      {item.children.map((child) => (
+                      {item.children?.map((child) => (
                         <Link
                           key={child.label}
                           href={child.href}

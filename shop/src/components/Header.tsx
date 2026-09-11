@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { useRouter } from "next/navigation";
-import { ShoppingBag, Search, Menu, X, LogOut, User, Package, MapPin } from "lucide-react";
+import { ShoppingBag, Search, Menu, X, LogOut, User, Package, MapPin, ChevronDown } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
 import { useCartStore } from "@/store/cartStore";
 import CartSidebar from "./CartSidebar";
