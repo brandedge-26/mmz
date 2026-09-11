@@ -56,6 +56,7 @@ export const metadata: Metadata = {
   },
   alternates: { canonical: BASE_URL },
   icons: { icon: "/favicon.svg" },
+  verification: { google: "w_3z3FU5JQZ6P5gGogabo2AOfl6SCgQVhD6CCAGGXZY" },
 };
 
 const jsonLd = {
