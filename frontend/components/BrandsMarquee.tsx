@@ -1,19 +1,23 @@
 import Image from "next/image";
 
 const BRANDS = [
-  { name: "Apple",        src: "/appoinments/brands/apple.svg" },
-  { name: "Samsung",      src: "/appoinments/brands/samsung.svg" },
-  { name: "Google Pixel", src: "/appoinments/brands/gooogle-pixel.svg" },
-  { name: "Motorola",     src: "/appoinments/brands/motorola-real.svg" },
-  { name: "OnePlus",      src: "/appoinments/brands/oneplus.svg" },
-  { name: "Vivo",         src: "/appoinments/brands/vivo.svg" },
-  { name: "Oppo",         src: "/appoinments/brands/oppo.svg" },
-  { name: "Xiaomi",       src: "/appoinments/brands/xiaomi.svg" },
-  { name: "Infinix",      src: "/appoinments/brands/infinix.svg" },
-  { name: "Realme",       src: "/appoinments/brands/realme.svg" },
-  { name: "Tecno",        src: "/appoinments/brands/tecno.svg" },
-  { name: "Lenovo",       src: "/appoinments/brands/lenovo.svg" },
-  { name: "Huawei",       src: "/appoinments/brands/huawei.png" },
+  { name: "Samsung",      src: "/brandlogos/samsung.svg" },
+  { name: "Apple",        src: "/brandlogos/apple.svg" },
+  { name: "Xiaomi",       src: "/brandlogos/xiaomi.svg" },
+  { name: "Vivo",         src: "/brandlogos/vivo.svg" },
+  { name: "Oppo",         src: "/brandlogos/oppo.png" },
+  { name: "Infinix",      src: "/brandlogos/infinix.svg" },
+  { name: "Tecno",        src: "/brandlogos/tecno.svg" },
+  { name: "Realme",       src: "/brandlogos/realme.svg" },
+  { name: "Sparx",        src: "/brandlogos/sparx.jpg" },
+  { name: "VGO TEL",      src: "/brandlogos/vgo_tel.svg" },
+  { name: "Itel",         src: "/brandlogos/itel.svg" },
+  { name: "QMobile",      src: "/brandlogos/qmobile.png" },
+  { name: "E-Tachi",      src: "/brandlogos/etachi.jpg" },
+  { name: "Sego",         src: "/brandlogos/sego.webp" },
+  { name: "OnePlus",      src: "/brandlogos/oneplus.svg" },
+  { name: "Motorola",     src: "/brandlogos/motorola-real.svg" },
+  { name: "Google Pixel", src: "/brandlogos/google_pixel.svg" },
 ];
 
 const MARQUEE = [...BRANDS, ...BRANDS];

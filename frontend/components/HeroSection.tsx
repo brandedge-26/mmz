@@ -2,12 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 
 const deviceCards = [
-  { label: "Phone",           image: "/hero_images/mobile_phone.png",                    href: "/appointment" },
+  { label: "iPhone / Android", image: "/hero_images/mobile_phone.png",                    href: "/appointment" },
   { label: "Tablet",          image: "/header-images/tech-repair/tablet.png",            href: "/appointment" },
   { label: "iPad",            image: "/header-images/tech-repair/ipad.png",              href: "/appointment" },
-  { label: "Smart Watches",   image: "/home/services/smartwatch-service.png",            href: "/appointment" },
-  { label: "Headphones",      image: "/header-images/shop-accessories/audio.png",        href: "/appointment" },
-  { label: "Power Bank",      image: "/hero_images/powerbank.png",                           href: "/appointment" },
+  { label: "Smart Watches",   image: "/hero_images/smartwatch.png",                      href: "/appointment" },
+  { label: "Headphones",      image: "/hero_images/headphone.png",                       href: "/appointment" },
+  { label: "Power Bank",      image: "/hero_images/powerbank.png",                       href: "/appointment" },
   { label: "Audio Speakers",  image: "/hero_images/audio.png",                           href: "/appointment" },
   { label: "Earbuds",         image: "/home/services/earbuds-service.jpg",               href: "/appointment" },
 ];

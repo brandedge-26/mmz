@@ -22,7 +22,24 @@
       "Bash(xargs grep:*)",
       "Bash(grep -i \"oppo\\\\|vivo\\\\|xiaomi\\\\|realme\\\\|nokia\" find C:/Users/User/Documents/Projects/mmz/frontend/public -name \"*.png\" -o -name \"*.svg\")",
       "Bash(node scripts/seedBanners.js)",
-      "Bash(node -e ':*)"
+      "Bash(node -e ':*)",
+      "Bash(curl:*)",
+      "WebFetch(domain:commons.wikimedia.org)",
+      "WebFetch(domain:www.worldvectorlogo.com)",
+      "WebFetch(domain:brandslogos.com)",
+      "WebFetch(domain:seeklogo.com)",
+      "WebFetch(domain:www.tecno-mobile.com)",
+      "WebFetch(domain:nothing.tech)",
+      "WebFetch(domain:www.oppo.com)",
+      "WebFetch(domain:www.infinixmobility.com)",
+      "WebFetch(domain:www.vivo.com)",
+      "WebFetch(domain:pk.infinixmobility.com)",
+      "WebFetch(domain:www.vgotel.com)",
+      "WebFetch(domain:www.qmobile.com.pk)",
+      "WebFetch(domain:www.sparxmobile.com)",
+      "WebFetch(domain:www.itel-mobile.com)",
+      "WebFetch(domain:www.itel-life.com)",
+      "WebFetch(domain:www.sparxmobiles.net)"
     ]
   }
 }
