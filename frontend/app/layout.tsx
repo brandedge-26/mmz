@@ -15,19 +15,25 @@ const BASE_URL = "https://memonmobilezone122.pk";
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "Memon Mobile Zone — Phone Repair in Karachi",
-    template: "%s | Memon Mobile Zone",
+    default: "Memon Mobile Zone 122 — Phone Repair in Karachi",
+    template: "%s | Memon Mobile Zone 122",
   },
   description:
     "Expert phone & tablet repair in Karachi. Cracked screen, dead battery, water damage — fixed fast with genuine parts & 90-day warranty. 2 branches: Saddar & North Karachi.",
   keywords: [
+    "Memon 122",
+    "Memon zone",
+    "Memon mobile",
+    "Memon mobile 122",
+    "Memon Mobile Zone",
+    "Memon Mobile Zone 122",
+    "memonmobilezone",
     "phone repair Karachi",
     "mobile repair Karachi",
     "iPhone repair Karachi",
     "Samsung repair Karachi",
     "screen replacement Karachi",
     "battery replacement Karachi",
-    "Memon Mobile Zone",
     "mobile repair Saddar",
     "mobile repair North Karachi",
     "City Star Mall repair",
