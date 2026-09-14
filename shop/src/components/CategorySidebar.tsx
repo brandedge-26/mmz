@@ -15,7 +15,7 @@ const SIDEBAR_ITEMS: SidebarItem[] = [
   { label: "Power Bank",           href: "/products?category=Power+Bank" },
   { label: "Casing Converter",     href: "/products?category=Casing+Converter" },
   { label: "Smart Watches",        href: "/products?category=Smart+Watches" },
-  { label: "Car Accessories",      href: "/products?category=Car+Accessories" },
+  { label: "Car Chargers",         href: "/products?category=Car+Accessories" },
   { label: "Audio",                href: "/products?category=Audio" },
 ];
 
