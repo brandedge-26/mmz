@@ -5,18 +5,18 @@ import Link from "next/link";
 import { X, ChevronDown } from "lucide-react";
 
 const SIDEBAR_ITEMS: SidebarItem[] = [
-  { label: "All Products",         href: "/products" },
+  { label: "Audio",                href: "/products?category=Audio" },
   { label: "Panels",               href: "/products?category=Panels" },
-  { label: "Mobile Batteries",     href: "/products?category=Mobile+Batteries" },
-  { label: "Charging Jacks",       href: "/products?category=Charging+Jacks" },
-  { label: "Keypad Mobile Parts",  href: "/products?category=Keypad+Mobile+Parts" },
-  { label: "Trending Accessories", href: "/products?category=Trending+Accessories" },
   { label: "Chargers",             href: "/products?category=Chargers" },
   { label: "Power Bank",           href: "/products?category=Power+Bank" },
-  { label: "Casing Converter",     href: "/products?category=Casing+Converter" },
-  { label: "Smart Watches",        href: "/products?category=Smart+Watches" },
+  { label: "All Products",         href: "/products" },
   { label: "Car Chargers",         href: "/products?category=Car+Accessories" },
-  { label: "Audio",                href: "/products?category=Audio" },
+  { label: "Smart Watches",        href: "/products?category=Smart+Watches" },
+  { label: "Charging Jacks",       href: "/products?category=Charging+Jacks" },
+  { label: "Mobile Batteries",     href: "/products?category=Mobile+Batteries" },
+  { label: "Casing Converter",     href: "/products?category=Casing+Converter" },
+  { label: "Keypad Mobile Parts",  href: "/products?category=Keypad+Mobile+Parts" },
+  { label: "Trending Accessories", href: "/products?category=Trending+Accessories" },
 ];
 
 interface SidebarChild { label: string; href: string; }

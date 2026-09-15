@@ -7,11 +7,11 @@ const CATEGORIES = [
   // 2-line labels — left side
   { label: "Mobile Batteries",     image: "/category/mobile_battery-removebg-preview.png",       href: "/products?category=Mobile+Batteries" },
   { label: "Charging Jacks",       image: "/category/charging_jacks-removebg-preview.png",       href: "/products?category=Charging+Jacks" },
-  { label: "Keypad Mobile Parts",  image: "/category/keypad_mobile_parts-removebg-preview.png",  href: "/products?category=Keypad+Mobile+Parts" },
+  { label: "Keypad Mobile LCD",    image: "/category/mobile-lcd.png",                            href: "/products?category=Keypad+Mobile+Parts" },
   { label: "Trending Accessories", image: "/category/trending_accessories-removebg-preview.png", href: "/products?category=Trending+Accessories" },
   { label: "Casing Converter",     image: "/category/casing_converts-removebg-preview.png",      href: "/products?category=Casing+Converter" },
   { label: "Smart Watches",        image: "/category/smart_watch-removebg-preview.png",           href: "/products?category=Smart+Watches" },
-  { label: "Car Chargers",         image: "/category/car_accessories-removebg-preview.png",       href: "/products?category=Car+Accessories" },
+  { label: "Car Chargers",         image: "/category/car-chargers.png",                           href: "/products?category=Car+Accessories" },
   // 1-line labels — right side
   { label: "Panels",               image: "/category/mobile_panel-removebg-preview.png",          href: "/products?category=Panels" },
   { label: "Chargers",             image: "/category/mobile_chargers-removebg-preview.png",       href: "/products?category=Chargers" },
