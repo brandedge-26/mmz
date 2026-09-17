@@ -182,7 +182,7 @@ export default function Footer() {
           <div>
             <h3 className="text-gray-900 font-bold text-sm mb-5">Brands</h3>
             <ul className="grid grid-cols-2 gap-x-3 gap-y-2">
-              {["Vivo","Redmi","Xiaomi","OnePlus","Google Pixel","Poco","Nokia","Oppo","Infinix","Huawei","Samsung","Sparx","Sony","ZTE","Aquos","Dcode","Oukitel","Vnus","Alcatel","QSmart","Digit","LG","Realme","Apple","Nubia","Itel","Motorola","Honor"].map((b) => (
+              {["Vivo","Redmi","Xiaomi","OnePlus","Google Pixel","Poco","Nokia","Oppo","Infinix","Huawei","Samsung","Sparx","Sony","ZTE","Aquos","Dcode","Oukitel","Vnus","Alcatel","QSmart","Digit","LG","Realme","Apple","Nubia","Itel","Motorola","Honor","TCL"].map((b) => (
                 <li key={b}>
                   <span className="text-gray-500 text-xs">{b}</span>
                 </li>

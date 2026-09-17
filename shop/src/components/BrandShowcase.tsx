@@ -27,6 +27,7 @@ const BRANDS = [
   { name: "Honor",        logo: "/brandlogos/honor.png" },
   { name: "LG",          logo: "/brandlogos/lg.svg" },
   { name: "QSmart",      logo: "/brandlogos/Q_smart.avif" },
+  { name: "TCL",         logo: "/brandlogos/tcl.png" },
 ];
 
 // Duplicate for seamless marquee loop

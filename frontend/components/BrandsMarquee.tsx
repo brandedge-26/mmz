@@ -29,6 +29,7 @@ const BRANDS = [
   { name: "Honor",        src: "/brandlogos/honor.png" },
   { name: "LG",          src: "/brandlogos/lg.svg" },
   { name: "QSmart",      src: "/brandlogos/Q_smart.avif" },
+  { name: "TCL",         src: "/brandlogos/tcl.png" },
 ];
 
 const MARQUEE = [...BRANDS, ...BRANDS];
