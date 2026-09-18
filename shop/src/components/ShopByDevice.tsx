@@ -5,7 +5,7 @@ const DEVICES = [
   {
     name:    "iPhone",
     query:   "iPhone",
-    image:   "/devices/iphone.png",
+    image:   "/devices/iphonenew.png",
     isLogo:  false,
     color:   "group-hover:border-gray-400",
     badge:   "bg-gray-100 text-gray-700",
@@ -13,7 +13,7 @@ const DEVICES = [
   {
     name:    "Samsung",
     query:   "Samsung",
-    image:   "/devices/samsung.png",
+    image:   "/devices/samsungnew.png",
     isLogo:  false,
     color:   "group-hover:border-blue-300",
     badge:   "bg-blue-50 text-blue-700",
@@ -37,7 +37,7 @@ const DEVICES = [
   {
     name:    "Motorola",
     query:   "Motorola",
-    image:   "/devices/motorola.png",
+    image:   "/devices/motrolanew.png",
     isLogo:  false,
     color:   "group-hover:border-violet-300",
     badge:   "bg-violet-50 text-violet-700",

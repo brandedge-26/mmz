@@ -6,9 +6,9 @@ const brands = [
   { label: "Start a Samsung repair",   image: "/home/brand-small-banner/samsung.png",     href: "/repairs/samsung",      mobileOnly: false },
   { label: "Start an Apple repair",    image: "/home/brand-small-banner/iphone.png",      href: "/repairs/iphone",       mobileOnly: false },
   { label: "Start a Google repair",    image: "/home/brand-small-banner/google-pixel.png",href: "/repairs/google-pixel", mobileOnly: false },
-  { label: "Start an Oppo repair",     image: "/home/brand-small-banner/oppo.png",        href: "/repairs/oppo",         mobileOnly: false },
   { label: "Start a OnePlus repair",   image: "/home/brand-small-banner/one-plus.png",    href: "/repairs/oneplus",      mobileOnly: false },
-  { label: "Start a Realme repair",    image: "/home/brand-small-banner/realme.png",      href: "/repairs/realme",       mobileOnly: true  },
+  { label: "Start an Oppo repair",     image: "/home/brand-small-banner/oppo.png",        href: "/repairs/oppo",         mobileOnly: false },
+  { label: "Start a Vivo repair",      image: "/home/brand-small-banner/vivo.png",        href: "/repairs/vivo",         mobileOnly: true  },
 ];
 
 export default function BrandsSection() {
