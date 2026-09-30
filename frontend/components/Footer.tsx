@@ -2,11 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 
 const repairLinks = [
-  { label: "iPhone Repair", href: "/repairs/iphone" },
-  { label: "Samsung Repair", href: "/repairs/samsung" },
-  { label: "Google Pixel Repair", href: "/repairs/google-pixel" },
-  { label: "Motorola Repair", href: "/repairs/motorola" },
-  { label: "LG Repair", href: "/repairs/lg" },
+  { label: "iPhone / Android Repair", href: "/repairs/iphone" },
+  { label: "Samsung Repair",          href: "/repairs/samsung" },
+  { label: "Google Pixel Repair",     href: "/repairs/google-pixel" },
+  { label: "Motorola Repair",         href: "/repairs/motorola" },
+  { label: "Tablet / iPad Repair",    href: "/appointment" },
 ];
 
 const companyLinks = [
@@ -115,8 +115,8 @@ export default function Footer() {
                 </div>
                 <div>
                   <p className="text-xs text-gray-400 leading-none mb-0.5">Working Hours</p>
-                  <p className="text-sm font-semibold text-gray-800">Mon–Sat: 1:00 PM – 11:00 PM</p>
-                  <p className="text-sm font-semibold text-gray-800">Sunday: 10:00 AM – 12:00 AM</p>
+                  <p className="text-sm font-semibold text-gray-800">Mon–Sat: 12:00 PM – 10:00 PM</p>
+                  <p className="text-sm font-semibold text-gray-800">Sunday: Closed</p>
                 </div>
               </div>
 
@@ -129,7 +129,7 @@ export default function Footer() {
                 </div>
                 <div>
                   <p className="text-xs text-gray-400 leading-none mb-0.5">Branch 1 — Saddar</p>
-                  <p className="text-sm text-gray-700 leading-snug">Shop No LB-41, City Star Mall,<br />Saddar, Karachi</p>
+                  <p className="text-sm text-gray-700 leading-snug">Shop No LB-41 (Lower Basement), City Star Mall,<br />Saddar, Karachi</p>
                 </div>
               </div>
 

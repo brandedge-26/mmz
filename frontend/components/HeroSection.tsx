@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const deviceCards = [
-  { label: "iPhone / Android", image: "/hero_images/mobile_phone.png",                    href: "/appointment" },
+  { label: "iPhone / Android", image: "/home/iphone_android.png", href: "/appointment" },
   { label: "Tablet",          image: "/header-images/tech-repair/tablet.png",            href: "/appointment" },
   { label: "iPad",            image: "/header-images/tech-repair/ipad.png",              href: "/appointment" },
   { label: "Smart Watches",   image: "/hero_images/smartwatch.png",                      href: "/appointment" },
@@ -39,7 +39,7 @@ export default function HeroSection() {
                   href={card.href}
                   className="flex flex-col items-center gap-2 p-4 rounded-2xl border border-gray-200 hover:border-violet-300 hover:bg-violet-50 transition-all group"
                 >
-                  <div className={`relative ${"imgClass" in card && card.imgClass ? card.imgClass : "w-14 h-12"}`}>
+                  <div className="relative w-14 h-12">
                     <Image
                       src={card.image}
                       alt={card.label}

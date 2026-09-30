@@ -2,19 +2,25 @@ import Link from "next/link";
 import Image from "next/image";
 
 const repairLinks = [
-  { label: "iPhone Repair" },
+  { label: "iPhone / Android Repair" },
   { label: "Samsung Repair" },
   { label: "Google Pixel Repair" },
   { label: "Motorola Repair" },
-  { label: "LG Repair" },
+  { label: "Tablet / iPad Repair" },
 ];
 
 const shopLinks = [
-  { label: "All Products", href: "/products" },
-  { label: "Cases", href: "/products?category=Cases" },
-  { label: "Screen Protection", href: "/products?category=Screen+Protection" },
-  { label: "Power & Cables", href: "/products?category=Power" },
-  { label: "Audio", href: "/products?category=Audio" },
+  { label: "All Products",         href: "/products" },
+  { label: "Mobile Batteries",     href: "/products?category=Mobile+Batteries" },
+  { label: "Charging Jacks",       href: "/products?category=Charging+Jacks" },
+  { label: "Keypad Mobile Parts",  href: "/products?category=Keypad+Mobile+Parts" },
+  { label: "Panels",               href: "/products?category=Panels" },
+  { label: "Chargers",             href: "/products?category=Chargers" },
+  { label: "Power Bank",           href: "/products?category=Power+Bank" },
+  { label: "Car Chargers",         href: "/products?category=Car+Accessories" },
+  { label: "Smart Watches",        href: "/products?category=Smart+Watches" },
+  { label: "Trending Accessories", href: "/products?category=Trending+Accessories" },
+  { label: "Casing Converter",     href: "/products?category=Casing+Converter" },
 ];
 
 const socials = [
@@ -93,8 +99,8 @@ export default function Footer() {
                 </div>
                 <div>
                   <p className="text-xs text-gray-400 leading-none mb-0.5">Working Hours</p>
-                  <p className="text-sm font-semibold text-gray-800">Mon–Sat: 1:00 PM – 11:00 PM</p>
-                  <p className="text-sm font-semibold text-gray-800">Sunday: 10:00 AM – 12:00 AM</p>
+                  <p className="text-sm font-semibold text-gray-800">Mon–Sat: 12:00 PM – 10:00 PM</p>
+                  <p className="text-sm font-semibold text-gray-800">Sunday: Closed</p>
                 </div>
               </div>
 
@@ -107,7 +113,7 @@ export default function Footer() {
                 </div>
                 <div>
                   <p className="text-xs text-gray-400 leading-none mb-0.5">Branch 1 — Saddar</p>
-                  <p className="text-sm text-gray-700 leading-snug">Shop No LB-41, City Star Mall,<br />Saddar, Karachi</p>
+                  <p className="text-sm text-gray-700 leading-snug">Shop No LB-41 (Lower Basement), City Star Mall,<br />Saddar, Karachi</p>
                 </div>
               </div>
 

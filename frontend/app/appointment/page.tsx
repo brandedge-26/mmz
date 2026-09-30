@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
@@ -233,17 +233,10 @@ const ISSUES = [
   "Software Issue","Back Cover Damage","Overheating","Button Repair",
 ];
 
-// Mon–Sat: 1:00 PM – 11:00 PM  (last slot 10 PM, 1hr before close)
+// Mon–Sat: 12:00 PM – 10:00 PM  (last slot 9 PM, 1hr before close)
 const MON_SAT_SLOTS = [
-  "1:00 PM","2:00 PM","3:00 PM","4:00 PM","5:00 PM",
-  "6:00 PM","7:00 PM","8:00 PM","9:00 PM","10:00 PM",
-];
-
-// Sunday: 10:00 AM – 12:00 AM  (last slot 11 PM, 1hr before midnight close)
-const SUNDAY_SLOTS = [
-  "10:00 AM","11:00 AM","12:00 PM","1:00 PM","2:00 PM",
-  "3:00 PM","4:00 PM","5:00 PM","6:00 PM","7:00 PM",
-  "8:00 PM","9:00 PM","10:00 PM","11:00 PM",
+  "12:00 PM","1:00 PM","2:00 PM","3:00 PM","4:00 PM",
+  "5:00 PM","6:00 PM","7:00 PM","8:00 PM","9:00 PM",
 ];
 
 const STEPS_VISIT  = ["Device","Issues","Service","Schedule","Details"];
@@ -254,23 +247,26 @@ function getAvailableDates(): Date[] {
   const d = new Date();
   d.setDate(d.getDate() + 1);
   while (dates.length < 14) {
-    dates.push(new Date(d));
+    if (d.getDay() !== 0) dates.push(new Date(d)); // skip Sunday
     d.setDate(d.getDate() + 1);
   }
   return dates;
-}
-
-function isSunday(dateLabel: string): boolean {
-  return dateLabel.startsWith("Sun");
 }
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
 export default function AppointmentPage() {
   const [step, setStep]                         = useState(1);
+  const brandSectionRef                         = useRef<HTMLDivElement>(null);
 
   // Step 1 — device
   const [category, setCategory]                 = useState<Category | "">("");
+
+  useEffect(() => {
+    if (category) {
+      setTimeout(() => brandSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+    }
+  }, [category]);
   const [brand, setBrand]                       = useState("");
   const [model, setModel]                       = useState("");
   const [otherBrandText, setOtherBrandText]     = useState("");
@@ -631,7 +627,7 @@ export default function AppointmentPage() {
 
                 {/* Brand pills */}
                 {category && (
-                  <div className="mb-6">
+                  <div className="mb-6" ref={brandSectionRef}>
                     <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">
                       {isAccessories ? "Select type" : "Select brand"}
                     </p>
@@ -945,16 +941,12 @@ export default function AppointmentPage() {
                   <div className="mb-2">
                     <div className="flex items-center gap-3 mb-3">
                       <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Select a time</p>
-                      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
-                        isSunday(date)
-                          ? "bg-blue-50 text-blue-500"
-                          : "bg-violet-50 text-violet-500"
-                      }`}>
-                        {isSunday(date) ? "Open 10 AM – 12 AM" : "Open 1 PM – 11 PM"}
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-violet-50 text-violet-500">
+                        Open 12 PM – 10 PM
                       </span>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      {(isSunday(date) ? SUNDAY_SLOTS : MON_SAT_SLOTS).map((slot) => {
+                      {MON_SAT_SLOTS.map((slot) => {
                         const sel = time === slot;
                         return (
                           <button key={slot} onClick={() => setTime(slot)}

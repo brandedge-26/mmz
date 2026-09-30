@@ -7,11 +7,12 @@ import { usePathname } from "next/navigation";
 import { Home, Calendar, Phone, Cpu, ShoppingBag, X } from "lucide-react";
 
 const PHONE_REPAIRS = [
-  { label: "iPhone",        image: "/header-images/phone-repair/iphone.png",  href: "/repairs/iphone" },
-  { label: "Samsung",       image: "/header-images/phone-repair/samsung.png", href: "/repairs/samsung" },
-  { label: "Google Pixel",  image: "/header-images/phone-repair/google.png",  href: "/repairs/google-pixel" },
-  { label: "Oppo",          image: "/header-images/phone-repair/oppo.jpg",    href: "/repairs/oppo" },
-  { label: "Vivo",          image: "/header-images/phone-repair/vivo.jpg",    href: "/repairs/vivo" },
+  { label: "iPhone",        image: "/header-images/phone-repair/iphone.png",           href: "/repairs/iphone" },
+  { label: "Samsung",       image: "/header-images/phone-repair/samsung.png",          href: "/repairs/samsung" },
+  { label: "Google Pixel",  image: "/header-images/phone-repair/google.png",           href: "/repairs/google-pixel" },
+  { label: "Oppo",          image: "/header-images/phone-repair/oppo.jpg",             href: "/repairs/oppo" },
+  { label: "Vivo",          image: "/header-images/phone-repair/vivo.jpg",             href: "/repairs/vivo" },
+  { label: "Others",        image: "/home/android.png",                                href: "/appointment" },
 ];
 
 const TECH_REPAIRS = [
@@ -169,8 +170,6 @@ export default function MobileBottomNav() {
           {/* Shop */}
           <Link
             href="https://shop.memonmobilezone122.pk"
-            target="_blank"
-            rel="noopener noreferrer"
             onClick={close}
             className="flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-colors text-gray-400 hover:text-violet-600"
           >

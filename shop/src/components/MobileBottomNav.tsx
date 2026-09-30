@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, ShoppingBag, ShoppingCart, User, X, LayoutGrid, Heart } from "lucide-react";
+import { Home, ShoppingBag, ShoppingCart, User, X, LayoutGrid, Heart, Wrench } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
 import { useCartStore } from "@/store/cartStore";
 import { useWishlistStore } from "@/store/wishlistStore";
@@ -174,6 +174,16 @@ export default function MobileBottomNav() {
             </div>
             <span className="text-[10px] font-semibold">Wishlist</span>
           </Link>
+
+          {/* Repair */}
+          <a
+            href="https://memonmobilezone122.pk"
+            onClick={closeMenu}
+            className="flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-colors text-gray-400 hover:text-violet-600"
+          >
+            <Wrench className="w-5 h-5" />
+            <span className="text-[10px] font-semibold">Repair</span>
+          </a>
 
           {/* Account */}
           <Link
